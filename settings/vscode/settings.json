@@ -1,0 +1,48 @@
+{
+  "window.zoomLevel": 2,
+  "workbench.colorTheme": "Visual Studio Dark",
+  "workbench.sideBar.location": "right",
+  "editor.fontFamily": "Cascadia Code, Dank Monk",
+  "editor.fontSize": 18,
+  "editor.lineHeight": 1,
+  "editor.tabSize": 2,
+  "editor.fontLigatures": true,
+  "editor.renderWhitespace": "all",
+  "editor.renderControlCharacters": true,
+  "editor.dragAndDrop": false,
+  "editor.cursorSmoothCaretAnimation": "on",
+  "editor.smoothScrolling": true,
+  "editor.minimap.enabled": false,
+  "editor.wordWrap": "on",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.guides.bracketPairs": true,
+  "editor.inlineSuggest.enabled": true,
+  "editor.formatOnSave": false,
+  // Enable per-language
+  "[javascript]": {
+    "editor.formatOnSave": true
+  },
+  "[html]": {
+    "editor.formatOnSave": true
+  },
+  "[typescript]": {
+    "editor.formatOnSave": true
+  },
+  "[json]": {
+    "editor.formatOnSave": true
+  },
+  "terminal.integrated.fontFamily": "CaskaydiaCove NF",
+  "terminal.integrated.fontSize": 12,
+  "terminal.integrated.lineHeight": 1.2,
+  "terminal.integrated.fontLigatures": true,
+  "powershell.codeFormatting.trimWhitespaceAroundPipe": true,
+  "powershell.codeFormatting.useConstantStrings": true,
+  "powershell.codeFormatting.useCorrectCasing": true,
+  "powershell.powerShellAdditionalExePaths": {
+    "PowerShell": "C:/Program Files/PowerShell/7/pwsh.exe"
+  },
+  "powershell.powerShellDefaultVersion": "PowerShell",
+  "files.defaultLanguage": "markdown",
+  "gitlens.views.branches.branches.layout": "list",
+  "git.openRepositoryInParentFolders": "never"
+}

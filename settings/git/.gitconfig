@@ -1,0 +1,34 @@
+# This is Git's per-user configuration file.
+[user]
+	name = Bobby Johnson
+	email = bobby@notmyself.io
+#	signingkey = 0E66B483EDA47168
+[merge]
+	tool = vscode
+[mergetool "vscode"]
+	cmd = "code-insiders --wait $MERGED"
+[diff]
+	tool = vscode
+[difftool "vscode"]
+	cmd = "code-insiders --wait --diff  $LOCAL $REMOTE"
+[core]
+	editor = code-insiders --wait
+[alias]
+	cm = !git add -A && git commit -m
+[commit]
+#	gpgsign = true
+[filter "lfs"]
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+[pull]
+	ff = only
+[push]
+	autoSetupRemote = true
+[init]
+	defaultBranch = main
+# [gpg]
+#	program = gpg
+
+
