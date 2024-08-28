@@ -1,7 +1,7 @@
-# New BLE Developer Setup
-A set of PowerShell scripts that will install common developer tools and configurations needed by a new BLE Developer.
+# New Developer Setup
+A set of PowerShell scripts that will install common developer tools and configurations needed by a new Developer.
 
-**Note:** This script requires local Administrator to run properly. That means you will need to complete the CyberArk enrollment process first.
+**Note:** This script requires local Administrator to run properly.
 
 ## Installed Packages
  - winget - CLI based windows package manager
