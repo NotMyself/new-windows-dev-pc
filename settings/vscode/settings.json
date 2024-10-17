@@ -44,5 +44,8 @@
   "powershell.powerShellDefaultVersion": "PowerShell",
   "files.defaultLanguage": "markdown",
   "gitlens.views.branches.branches.layout": "list",
-  "git.openRepositoryInParentFolders": "never"
+  "git.openRepositoryInParentFolders": "never",
+  "[xml]": {
+    "editor.defaultFormatter": "DotJoshJohnson.xml"
+  }
 }
