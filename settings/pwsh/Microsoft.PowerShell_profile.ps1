@@ -2,6 +2,7 @@
 oh-my-posh init pwsh --config ~/.theme.omp.json | Invoke-Expression
 
 # enable fnm fast node manager
+fnm completions --shell powershell | Out-String | Invoke-Expression
 fnm env --use-on-cd | Out-String | Invoke-Expression
 
 # History

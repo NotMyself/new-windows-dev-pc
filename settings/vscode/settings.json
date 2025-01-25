@@ -44,21 +44,7 @@
   "files.defaultLanguage": "markdown",
   "gitlens.views.branches.branches.layout": "list",
   "git.openRepositoryInParentFolders": "never",
-  "extensions.trustedPublishers": [
-		"vsls-contrib",
-		"amodio",
-		"christian-kohler",
-		"davidanson",
-		"eamodio",
-		"editorconfig",
-		"esbenp",
-		"hjb2012",
-		"humao",
-		"mikestead",
-		"pflannery",
-		"piotrpalarz",
-		"rpinski",
-		"vscode-icons-team",
-		"wix"
-	]
+  "[xml]": {
+    "editor.defaultFormatter": "DotJoshJohnson.xml"
+  }
 }
