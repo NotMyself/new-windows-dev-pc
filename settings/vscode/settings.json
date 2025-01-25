@@ -1,6 +1,5 @@
 {
   "window.zoomLevel": 2,
-  "workbench.colorTheme": "Visual Studio Dark",
   "workbench.sideBar.location": "right",
   "editor.fontFamily": "Cascadia Code, Dank Monk",
   "editor.fontSize": 18,
@@ -44,5 +43,22 @@
   "powershell.powerShellDefaultVersion": "PowerShell",
   "files.defaultLanguage": "markdown",
   "gitlens.views.branches.branches.layout": "list",
-  "git.openRepositoryInParentFolders": "never"
+  "git.openRepositoryInParentFolders": "never",
+  "extensions.trustedPublishers": [
+		"vsls-contrib",
+		"amodio",
+		"christian-kohler",
+		"davidanson",
+		"eamodio",
+		"editorconfig",
+		"esbenp",
+		"hjb2012",
+		"humao",
+		"mikestead",
+		"pflannery",
+		"piotrpalarz",
+		"rpinski",
+		"vscode-icons-team",
+		"wix"
+	]
 }

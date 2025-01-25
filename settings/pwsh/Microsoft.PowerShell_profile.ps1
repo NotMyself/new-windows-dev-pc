@@ -39,31 +39,31 @@ function work {
 }
 
 function touch {
-  New-Item -ItemType File -Name $args
+  New-Item -ItemType File -Name $args[0]
 }
 
 function mkdir {
-  New-Item -ItemType Directory -Name $args
+  New-Item -ItemType Directory -Name $args[0]
 }
 
 function rmdir {
-  Remove-Item -Recurse -Force $args
+  Remove-Item -Recurse -Force $args[0]
 }
 
 function rm {
-  Remove-Item -Force $args
+  Remove-Item -Force $args[0]
 }
 
 function mv {
-  Move-Item $args
+  Move-Item $args[0] $args[1]
 }
 
 function cp {
-  Copy-Item $args
+  Copy-Item $args[0] $args[1]
 }
 
 function ls {
-  Get-ChildItem $args
+  Get-ChildItem $args[0]
 }
 
 function backup-vs {
@@ -72,7 +72,6 @@ function backup-vs {
   code --list-extensions > $ExtensionFile
 }
 
- function sln
-{
+ function sln {
   Get-ChildItem *.sln | Invoke-Item
-} 
+}
