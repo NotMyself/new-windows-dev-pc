@@ -17,7 +17,7 @@ if(-Not (Test-Command 'winget')) {
 ./installs/winget.ps1
 
 # Install VSCode Extensions
-if(Test-Command 'code-insiders') {
+if(Test-Command 'code') {
     ./installs/vscode.ps1
 }
 
@@ -28,9 +28,9 @@ if(Test-Command 'code-insiders') {
 New-Item -Force -Path ~/.gitconfig -ItemType SymbolicLink -Value $PSScriptRoot\settings\git\.gitconfig
 
 # VSCode
-New-Item -Force -Path $env:APPDATA\'Code - Insiders'\User\settings.json -ItemType SymbolicLink -Value $PSScriptRoot\settings\vscode\settings.json
+New-Item -Force -Path $env:APPDATA\'Code'\User\settings.json -ItemType SymbolicLink -Value $PSScriptRoot\settings\vscode\settings.json
 
-New-Item -Force -Path $env:APPDATA\'Code - Insiders'\User\keybindings.json -ItemType SymbolicLink -Value $PSScriptRoot\settings\vscode\keybindings.json
+New-Item -Force -Path $env:APPDATA\'Code'\User\keybindings.json -ItemType SymbolicLink -Value $PSScriptRoot\settings\vscode\keybindings.json
 
 
 # Powershell
