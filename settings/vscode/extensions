@@ -16,6 +16,7 @@ ms-dotnettools.csharp
 ms-dotnettools.vscode-dotnet-runtime
 ms-vscode-remote.remote-containers
 ms-vscode.live-server
+ms-vscode.powershell
 pflannery.vscode-versionlens
 piotrpalarz.vscode-gitignore-generator
 rpinski.shebang-snippets
