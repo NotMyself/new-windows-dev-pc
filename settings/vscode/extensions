@@ -3,6 +3,8 @@ christian-kohler.npm-intellisense
 christian-kohler.path-intellisense
 davidanson.vscode-markdownlint
 dbaeumer.vscode-eslint
+docker.docker
+dotjoshjohnson.xml
 eamodio.gitlens
 editorconfig.editorconfig
 esbenp.prettier-vscode
@@ -10,6 +12,7 @@ github.copilot
 github.copilot-chat
 hjb2012.vscode-es6-string-html
 humao.rest-client
+interactive-smartlog.interactive-smartlog
 mikestead.dotenv
 ms-azuretools.vscode-docker
 ms-dotnettools.csharp
@@ -20,6 +23,7 @@ ms-vscode.powershell
 pflannery.vscode-versionlens
 piotrpalarz.vscode-gitignore-generator
 rpinski.shebang-snippets
+shd101wyy.markdown-preview-enhanced
 vscode-icons-team.vscode-icons
 vsls-contrib.gistfs
 wix.vscode-import-cost
