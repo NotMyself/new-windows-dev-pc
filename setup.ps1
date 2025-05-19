@@ -36,4 +36,4 @@ New-Item -Force -Path $env:APPDATA\'Code'\User\keybindings.json -ItemType Symbol
 # Powershell
 New-Item -Force -Path ~/.theme.omp.json -ItemType SymbolicLink -Value $PSScriptRoot\settings\pwsh\.theme.omp.json
 
-New-Item -Force -Path $profile -ItemType SymbolicLink -Value $PSScriptRoot\settings\pwsh\Microsoft.PowerShell_profile.ps1
+New-Item -Force -Path "${profile}" -ItemType SymbolicLink -Value $PSScriptRoot\settings\pwsh\Microsoft.PowerShell_profile.ps1
