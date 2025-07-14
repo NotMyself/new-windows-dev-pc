@@ -13,8 +13,6 @@ Set-PSReadLineOption -EditMode Windows
  
 # Alias
  
-Set-Alias -Name code -Value code-insiders
-
 function ~ {
   Set-Location ~
 }

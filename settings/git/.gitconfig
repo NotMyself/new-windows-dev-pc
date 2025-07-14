@@ -6,13 +6,13 @@
 [merge]
 	tool = vscode
 [mergetool "vscode"]
-	cmd = "code-insiders --wait $MERGED"
+	cmd = "code --wait $MERGED"
 [diff]
 	tool = vscode
 [difftool "vscode"]
-	cmd = "code-insiders --wait --diff  $LOCAL $REMOTE"
+	cmd = "code --wait --diff  $LOCAL $REMOTE"
 [core]
-	editor = code-insiders --wait
+	editor = code --wait
 [alias]
 	cm = !git add -A && git commit -m
 [commit]
