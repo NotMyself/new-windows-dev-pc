@@ -22,11 +22,11 @@ winget install Microsoft.dotnet
 winget install Schniz.fnm
  
 # IDE
-winget install Microsoft.VisualStudio.2022.Community --override "--passive --config $PSScriptRoot\..\settings\visual-studio\.vsconfig"
+winget install Microsoft.VisualStudio.2022.Professional --override "--passive --config $PSScriptRoot\..\settings\visual-studio\.vsconfig"
 winget install Microsoft.VisualStudioCode
 winget install Microsoft.VisualStudioCode.CLI
 # winget install Microsoft.SQLServer.2019.Developer
-# winget install Microsoft.SQLServerManagementStudio
+winget install Microsoft.SQLServerManagementStudio
 winget install Microsoft.AzureDataStudio.Insiders
  
 winget install JetBrains.Toolbox
