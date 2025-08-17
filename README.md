@@ -41,7 +41,7 @@ A set of PowerShell scripts that will install common developer tools and configu
 
 The setup includes pre-configured settings that get symlinked to your user directories:
 
-- **Git**: Custom `.gitconfig` with VSCode integration and useful aliases
+- **Git**: Custom `.gitconfig` with VSCode integration, GitHub CLI credentials, and useful aliases (`cm` for add-all-and-commit)
 - **VSCode**: Settings and keybindings optimized for development
 - **PowerShell**: Enhanced profile with Oh My Posh, fnm integration, and Unix-like aliases
 - **Extensions**: Curated list of VSCode extensions for development
@@ -86,6 +86,13 @@ Located in the `installs/` directory:
   - Comprehensive error handling and progress tracking
   - Automatic cleanup of temporary files
   - Multiple installation methods with fallback
+
+### Visual Studio Configuration
+
+- **`.vsconfig`** - Visual Studio component configuration file:
+  - Automatically used by Visual Studio installer when present
+  - Defines consistent workload and component installations
+  - Located in `settings/visual-studio/.vsconfig`
 
 ### PowerShell Profile Features
 
@@ -158,6 +165,8 @@ If automatic elevation fails:
 └── settings/
     ├── git/
     │   └── .gitconfig       # Git configuration with VSCode integration
+    ├── visual-studio/
+    │   └── .vsconfig        # Visual Studio workload configuration
     ├── vscode/
     │   ├── settings.json    # VSCode settings optimized for development
     │   ├── keybindings.json # VSCode keybindings

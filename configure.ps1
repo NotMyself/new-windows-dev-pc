@@ -90,6 +90,11 @@ try {
     New-ConfigLink -LinkPath "$HOME\.theme.omp.json" -TargetPath "$PSScriptRoot\settings\pwsh\.theme.omp.json" -Description "Oh My Posh theme"
     New-ConfigLink -LinkPath $profile -TargetPath "$PSScriptRoot\settings\pwsh\Microsoft.PowerShell_profile.ps1" -Description "PowerShell profile"
     
+    # Claude Code Configuration
+    Write-Host "Configuring Claude Code..."
+    $claudeConfigDir = "$HOME\.claude"
+    New-ConfigLink -LinkPath "$claudeConfigDir\settings.json" -TargetPath "$PSScriptRoot\settings\claude-code\settings.json" -Description "Claude Code settings"
+    
     Write-Step "Configuration completed successfully!"
     Write-Host "Restart your terminal and VSCode to apply the new settings." -ForegroundColor Green
 }

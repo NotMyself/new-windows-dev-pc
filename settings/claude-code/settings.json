@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Read",
+      "Write",
+      "Edit",
+      "MultiEdit",
+      "Bash",
+      "Glob",
+      "Grep",
+      "LS",
+      "TodoWrite",
+      "Task",
+      "WebFetch",
+      "WebSearch"
+    ],
+    "deny": [],
+    "ask": [
+      "NotebookEdit",
+      "KillBash"
+    ],
+    "defaultMode": "default"
+  },
+  "includeCoAuthoredBy": true,
+  "cleanupPeriodDays": 30,
+  "env": {
+    "EDITOR": "code",
+    "GIT_EDITOR": "code --wait",
+    "POWERSHELL_TELEMETRY_OPTOUT": "1"
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "Write-Host '✓ File modified' -ForegroundColor Green",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command", 
+            "command": "Write-Host '🔧 Running command...' -ForegroundColor Yellow",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "Write-Host \"📁 $(Split-Path -Leaf $PWD) | 🕐 $(Get-Date -Format 'HH:mm')\" -NoNewline",
+    "padding": 2
+  }
+}
