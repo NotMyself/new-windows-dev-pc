@@ -14,7 +14,9 @@ hjb2012.vscode-es6-string-html
 humao.rest-client
 interactive-smartlog.interactive-smartlog
 mikestead.dotenv
+ms-azuretools.vscode-containers
 ms-azuretools.vscode-docker
+ms-dotnettools.csdevkit
 ms-dotnettools.csharp
 ms-dotnettools.vscode-dotnet-runtime
 ms-vscode-remote.remote-containers

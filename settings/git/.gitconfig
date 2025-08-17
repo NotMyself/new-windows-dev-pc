@@ -3,6 +3,8 @@
 	name = Bobby Johnson
 	email = bobby@notmyself.io
 #	signingkey = 0E66B483EDA47168
+[safe]
+	directory = *
 [merge]
 	tool = vscode
 [mergetool "vscode"]
@@ -32,3 +34,10 @@
 #	program = gpg
 
 
+
+[credential "https://github.com"]
+	helper = 
+	helper = !'C:\\Program Files\\GitHub CLI\\gh.exe' auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !'C:\\Program Files\\GitHub CLI\\gh.exe' auth git-credential

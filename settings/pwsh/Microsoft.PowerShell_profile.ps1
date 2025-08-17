@@ -66,11 +66,89 @@ function ls {
 }
 
 function backup-vs {
-  $ProfilePath = Get-Item $profile | Select-Object -ExpandProperty Target
-  $ExtensionFile = [System.IO.Path]::GetDirectoryName($ProfilePath) + '\..\vscode\extensions'
-  code --list-extensions > $ExtensionFile
+    <#
+    .SYNOPSIS
+    Backs up currently installed VSCode extensions to the extensions file.
+    #>
+    try {
+        if (-not (Get-Command code -ErrorAction SilentlyContinue)) {
+            Write-Error "VSCode CLI not found. Please ensure VSCode is installed and in PATH."
+            return
+        }
+        
+        $ProfilePath = Get-Item $profile | Select-Object -ExpandProperty Target
+        $ExtensionFile = Join-Path (Split-Path $ProfilePath -Parent) "..\vscode\extensions"
+        
+        if (-not (Test-Path (Split-Path $ExtensionFile -Parent))) {
+            Write-Error "VSCode settings directory not found: $(Split-Path $ExtensionFile -Parent)"
+            return
+        }
+        
+        $extensions = code --list-extensions
+        $extensions | Sort-Object | Out-File -FilePath $ExtensionFile -Encoding UTF8
+        
+        Write-Host "VSCode extensions backed up to: $ExtensionFile" -ForegroundColor Green
+        Write-Host "Found $($extensions.Count) extensions" -ForegroundColor Cyan
+    }
+    catch {
+        Write-Error "Failed to backup VSCode extensions: $($_.Exception.Message)"
+    }
 }
 
- function sln {
-  Get-ChildItem *.sln | Invoke-Item
+function sln {
+    <#
+    .SYNOPSIS
+    Opens the first .sln file found in the current directory.
+    #>
+    try {
+        $slnFiles = Get-ChildItem -Filter "*.sln"
+        
+        if ($slnFiles.Count -eq 0) {
+            Write-Warning "No .sln files found in the current directory."
+            return
+        }
+        
+        if ($slnFiles.Count -eq 1) {
+            Write-Host "Opening: $($slnFiles[0].Name)" -ForegroundColor Green
+            Invoke-Item $slnFiles[0]
+        } else {
+            Write-Host "Multiple .sln files found:" -ForegroundColor Yellow
+            for ($i = 0; $i -lt $slnFiles.Count; $i++) {
+                Write-Host "  [$i] $($slnFiles[$i].Name)"
+            }
+            $selection = Read-Host "Select file to open (0-$($slnFiles.Count-1))"
+            
+            if ($selection -match '^\d+$' -and [int]$selection -lt $slnFiles.Count) {
+                Write-Host "Opening: $($slnFiles[[int]$selection].Name)" -ForegroundColor Green
+                Invoke-Item $slnFiles[[int]$selection]
+            } else {
+                Write-Error "Invalid selection: $selection"
+            }
+        }
+    }
+    catch {
+        Write-Error "Failed to open solution file: $($_.Exception.Message)"
+    }
+}
+
+# Additional utility functions
+function which {
+    param([Parameter(Mandatory)][string]$Command)
+    Get-Command $Command -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source
+}
+
+function grep {
+    param(
+        [Parameter(Mandatory)][string]$Pattern,
+        [string]$Path = "."
+    )
+    Select-String -Pattern $Pattern -Path $Path -Recurse
+}
+
+function find {
+    param(
+        [Parameter(Mandatory)][string]$Name,
+        [string]$Path = "."
+    )
+    Get-ChildItem -Path $Path -Recurse -Filter $Name -ErrorAction SilentlyContinue
 }
