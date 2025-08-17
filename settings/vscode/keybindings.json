@@ -1,1 +1,7 @@
-{}
+[
+  {
+    "key": "shift+enter",
+    "command": "workbench.action.terminal.runSelectedText",
+    "when": "editorTextFocus && !findInputFocussed && !replaceInputFocussed"
+  }
+]
