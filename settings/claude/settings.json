@@ -1,0 +1,16 @@
+{
+  "env": {
+    "SHELL": "powershell",
+    "CLAUDE_SHELL": "powershell",
+    "CLAUDE_AGENTS_PATH": ".claude/agents"
+  },
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:docs.anthropic.com)",
+      "Bash(powershell:*)",
+      "Bash(mkdir:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

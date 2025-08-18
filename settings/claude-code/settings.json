@@ -1,7 +1,18 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "env": {
+    "SHELL": "powershell",
+    "CLAUDE_SHELL": "powershell",
+    "CLAUDE_AGENTS_PATH": ".claude/agents",
+    "EDITOR": "code",
+    "GIT_EDITOR": "code --wait",
+    "POWERSHELL_TELEMETRY_OPTOUT": "1"
+  },
   "permissions": {
     "allow": [
+      "WebFetch(domain:docs.anthropic.com)",
+      "Bash(powershell:*)",
+      "Bash(mkdir:*)",
       "Read",
       "Write",
       "Edit",
@@ -24,11 +35,6 @@
   },
   "includeCoAuthoredBy": true,
   "cleanupPeriodDays": 30,
-  "env": {
-    "EDITOR": "code",
-    "GIT_EDITOR": "code --wait",
-    "POWERSHELL_TELEMETRY_OPTOUT": "1"
-  },
   "hooks": {
     "PostToolUse": [
       {

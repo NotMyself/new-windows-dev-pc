@@ -45,6 +45,68 @@ function Write-Step {
     Write-Host "[$(Get-Date -Format 'HH:mm:ss')] $Message" -ForegroundColor Cyan
 }
 
+function Install-Fonts {
+    param([string]$FontZipPath)
+    
+    try {
+        if (-not (Test-Path $FontZipPath)) {
+            Write-Warning "Font zip file not found: $FontZipPath"
+            return
+        }
+        
+        Write-Host "  Installing fonts from $FontZipPath..." -ForegroundColor Green
+        
+        # Create temporary directory for extraction
+        $tempDir = Join-Path $env:TEMP "CascadiaCodeFonts"
+        if (Test-Path $tempDir) {
+            Remove-Item $tempDir -Recurse -Force
+        }
+        New-Item -Path $tempDir -ItemType Directory -Force | Out-Null
+        
+        # Extract fonts
+        Expand-Archive -Path $FontZipPath -DestinationPath $tempDir -Force
+        
+        # Get font files
+        $fontFiles = Get-ChildItem -Path $tempDir -Recurse -Include "*.ttf", "*.otf"
+        
+        if ($fontFiles.Count -eq 0) {
+            Write-Warning "No font files found in the archive"
+            return
+        }
+        
+        # Install fonts
+        $fontsInstalled = 0
+        foreach ($fontFile in $fontFiles) {
+            try {
+                # Copy to Windows Fonts directory
+                $fontName = $fontFile.Name
+                $fontDestination = Join-Path $env:windir "Fonts\$fontName"
+                
+                if (-not (Test-Path $fontDestination)) {
+                    Copy-Item $fontFile.FullName $fontDestination -Force
+                    
+                    # Register font in registry
+                    $fontDisplayName = $fontFile.BaseName
+                    New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts" -Name $fontDisplayName -Value $fontName -PropertyType String -Force | Out-Null
+                    
+                    $fontsInstalled++
+                }
+            }
+            catch {
+                Write-Warning "Failed to install font $($fontFile.Name): $($_.Exception.Message)"
+            }
+        }
+        
+        Write-Host "  ✓ Installed $fontsInstalled fonts" -ForegroundColor Green
+        
+        # Cleanup
+        Remove-Item $tempDir -Recurse -Force -ErrorAction SilentlyContinue
+    }
+    catch {
+        Write-Warning "Font installation failed: $($_.Exception.Message)"
+    }
+}
+
 try {
     Write-Step "Starting developer setup installation..."
     
@@ -65,6 +127,11 @@ try {
             Write-Warning "Some WinGet installations may have failed. Check the output above."
         }
     }
+    
+    # Install Fonts
+    Write-Step "Installing developer fonts..."
+    $fontZipPath = Join-Path $PSScriptRoot "fonts\CascadiaCode.zip"
+    Install-Fonts -FontZipPath $fontZipPath
     
     # Install VSCode Extensions
     if (-not $SkipExtensions -and (Test-Command 'code')) {

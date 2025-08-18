@@ -152,3 +152,134 @@ function find {
     )
     Get-ChildItem -Path $Path -Recurse -Filter $Name -ErrorAction SilentlyContinue
 }
+
+function Set-GitUser {
+    <#
+    .SYNOPSIS
+    Updates the .gitconfig file with the current user's name and email address.
+    
+    .DESCRIPTION
+    This function prompts for or automatically detects the current user's name and email,
+    then updates the Git configuration. It can use the Windows user account name as a 
+    starting point and allows for manual override.
+    
+    .PARAMETER Name
+    The user's full name. If not provided, will prompt for input with current user as default.
+    
+    .PARAMETER Email
+    The user's email address. If not provided, will prompt for input.
+    
+    .PARAMETER Auto
+    Attempt to automatically detect user information from the system and Git config.
+    
+    .EXAMPLE
+    Set-GitUser
+    # Prompts for name and email interactively
+    
+    .EXAMPLE
+    Set-GitUser -Name "John Doe" -Email "john@example.com"
+    # Sets Git user directly with provided values
+    
+    .EXAMPLE
+    Set-GitUser -Auto
+    # Attempts to auto-detect from current Git config or system
+    #>
+    [CmdletBinding()]
+    param(
+        [string]$Name,
+        [string]$Email,
+        [switch]$Auto
+    )
+    
+    try {
+        # Get current Git config values if they exist
+        $currentGitName = git config --global user.name 2>$null
+        $currentGitEmail = git config --global user.email 2>$null
+        
+        # Get system user info as fallback
+        $systemUser = [System.Security.Principal.WindowsIdentity]::GetCurrent()
+        $systemName = $systemUser.Name -replace '^.*\\', ''  # Remove domain prefix
+        
+        # Try to get full name from user account
+        try {
+            $adUser = Get-WmiObject -Class Win32_UserAccount -Filter "Name='$systemName'" -ErrorAction SilentlyContinue
+            if ($adUser -and $adUser.FullName) {
+                $systemFullName = $adUser.FullName
+            } else {
+                $systemFullName = $systemName
+            }
+        } catch {
+            $systemFullName = $systemName
+        }
+        
+        if ($Auto) {
+            # Auto mode: use current Git config or system defaults
+            $finalName = if ($currentGitName) { $currentGitName } else { $systemFullName }
+            $finalEmail = if ($currentGitEmail) { $currentGitEmail } else { "$systemName@$(hostname.exe)" }
+            
+            Write-Host "Auto-detected configuration:" -ForegroundColor Cyan
+            Write-Host "  Name: $finalName" -ForegroundColor Yellow
+            Write-Host "  Email: $finalEmail" -ForegroundColor Yellow
+            
+            $confirm = Read-Host "Use these values? (Y/n)"
+            if ($confirm -and $confirm.ToLower() -ne 'y' -and $confirm.ToLower() -ne 'yes') {
+                Write-Host "Cancelled by user" -ForegroundColor Yellow
+                return
+            }
+        } else {
+            # Interactive or parameter mode
+            if (-not $Name) {
+                $defaultName = if ($currentGitName) { $currentGitName } else { $systemFullName }
+                $Name = Read-Host "Enter your full name [$defaultName]"
+                if (-not $Name) { $Name = $defaultName }
+            }
+            
+            if (-not $Email) {
+                $defaultEmail = if ($currentGitEmail) { $currentGitEmail } else { "$systemName@$(hostname.exe)" }
+                $Email = Read-Host "Enter your email address [$defaultEmail]"
+                if (-not $Email) { $Email = $defaultEmail }
+            }
+            
+            $finalName = $Name
+            $finalEmail = $Email
+        }
+        
+        # Validate inputs
+        if (-not $finalName -or -not $finalEmail) {
+            Write-Error "Both name and email are required"
+            return
+        }
+        
+        if ($finalEmail -notmatch '^[^\s@]+@[^\s@]+\.[^\s@]+$') {
+            Write-Warning "Email format may not be valid: $finalEmail"
+            $proceed = Read-Host "Continue anyway? (y/N)"
+            if ($proceed.ToLower() -ne 'y' -and $proceed.ToLower() -ne 'yes') {
+                Write-Host "Cancelled by user" -ForegroundColor Yellow
+                return
+            }
+        }
+        
+        # Update Git configuration
+        Write-Host "Updating Git configuration..." -ForegroundColor Green
+        
+        git config --global user.name $finalName
+        git config --global user.email $finalEmail
+        
+        # Verify the changes
+        $newName = git config --global user.name
+        $newEmail = git config --global user.email
+        
+        Write-Host "✓ Git configuration updated successfully:" -ForegroundColor Green
+        Write-Host "  Name: $newName" -ForegroundColor Cyan
+        Write-Host "  Email: $newEmail" -ForegroundColor Cyan
+        
+        # Show location of .gitconfig
+        $gitConfigPath = git config --global --list --show-origin | Select-String "user.name" | ForEach-Object { ($_ -split "\t")[0] -replace "file:", "" }
+        if ($gitConfigPath) {
+            Write-Host "  Config file: $gitConfigPath" -ForegroundColor Gray
+        }
+    }
+    catch {
+        Write-Error "Failed to update Git configuration: $($_.Exception.Message)"
+    }
+}

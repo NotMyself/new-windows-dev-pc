@@ -94,6 +94,47 @@ try {
     Write-Host "Configuring Claude Code..."
     $claudeConfigDir = "$HOME\.claude"
     New-ConfigLink -LinkPath "$claudeConfigDir\settings.json" -TargetPath "$PSScriptRoot\settings\claude-code\settings.json" -Description "Claude Code settings"
+    New-ConfigLink -LinkPath "$claudeConfigDir\agents" -TargetPath "$PSScriptRoot\settings\claude\agents" -Description "Claude Code agents"
+    New-ConfigLink -LinkPath "$claudeConfigDir\commands" -TargetPath "$PSScriptRoot\settings\claude\commands" -Description "Claude Code commands"
+    New-ConfigLink -LinkPath "$claudeConfigDir\.mcp.json" -TargetPath "$PSScriptRoot\settings\claude\.mcp.json" -Description "MCP server configuration"
+    
+    # Hosts File Configuration (Development domains)
+    Write-Host "Configuring hosts file for development domains..."
+    $hostsFile = "$env:WINDIR\System32\drivers\etc\hosts"
+    $devHosts = "$PSScriptRoot\settings\etc\hosts"
+    
+    if (Test-Path $devHosts) {
+        try {
+            # Read current hosts file
+            $currentHosts = Get-Content $hostsFile -ErrorAction SilentlyContinue
+            $devHostsContent = Get-Content $devHosts
+            
+            # Check if dev domains are already present
+            $needsUpdate = $false
+            foreach ($line in $devHostsContent) {
+                if ($line.Trim() -and -not $line.StartsWith('#') -and $currentHosts -notcontains $line) {
+                    $needsUpdate = $true
+                    break
+                }
+            }
+            
+            if ($needsUpdate -or $Force) {
+                # Backup current hosts file
+                Copy-Item $hostsFile "$hostsFile.backup-$(Get-Date -Format 'yyyyMMdd-HHmmss')" -Force
+                
+                # Add development domains if not present
+                $updatedContent = $currentHosts + "`n# Development domains added by Windows Dev Setup" + $devHostsContent
+                $updatedContent | Set-Content $hostsFile -Force
+                Write-Host "  ✓ Development domains added to hosts file" -ForegroundColor Green
+            } else {
+                Write-Host "  ✓ Development domains already present in hosts file" -ForegroundColor Green
+            }
+        }
+        catch {
+            Write-Warning "  ✗ Failed to update hosts file: $($_.Exception.Message)"
+            Write-Host "    You may need to manually add development domains from $devHosts" -ForegroundColor Yellow
+        }
+    }
     
     Write-Step "Configuration completed successfully!"
     Write-Host "Restart your terminal and VSCode to apply the new settings." -ForegroundColor Green

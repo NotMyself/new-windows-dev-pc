@@ -1,0 +1,40 @@
+{
+  "mcpServers": {
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp"]
+    },
+    "nuget": {
+      "command": "npx",
+      "args": ["-y", "@microsoft/nuget-mcp-server"]
+    },
+    "package-search": {
+      "command": "npx",
+      "args": ["-y", "@wong2/package-registry-search"]
+    },
+    "dotnet-cli": {
+      "command": "npx",
+      "args": ["-y", "@dotnet/mcp-dotnet-cli"]
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem"]
+    },
+    "git": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-git"]
+    },
+    "azure-devops": {
+      "command": "npx",
+      "args": ["-y", "@microsoft/azure-devops-mcp"]
+    },
+    "azure-cli": {
+      "command": "npx",
+      "args": ["-y", "@azure/mcp-server"]
+    },
+    "mssql": {
+      "command": "npx",
+      "args": ["-y", "@microsoft/mcp-server-mssql"]
+    }
+  }
+}
