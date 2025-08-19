@@ -201,28 +201,44 @@ The Claude Code setup includes:
 
 ### 📖 readme-maintainer
 
-**Purpose**: Updates and maintains README.md files with depth-first hierarchical processing, nested structure support, and modern documentation best practices.
+**Purpose**: Updates and maintains README.md files with bottom-up hierarchical processing from deepest directories to root, featuring intelligent content extraction, automated summarization, and modern documentation best practices across nested directory structures.
 
 **Tools**: Read, Edit, MultiEdit, Glob, Grep, Task
 **Command**: `/readme`
 
 **Key Capabilities**:
 
-- **Depth-First README Processing**: Process README files starting from deepest nested directories and working up to root, ensuring proper dependency flow and hierarchical consistency
-- **Hierarchical Documentation Architecture**: Implement nested documentation strategies where parent READMEs provide overviews based on completed child documentation
-- **Content Distribution Management**: Ensure appropriate content distribution across hierarchy levels with detailed information in deepest directories and summaries in parent levels
-- **Cross-linking and Navigation**: Maintain consistent navigation and references between parent and child README files with validated dependency relationships
-- **Modern Documentation Standards**: Implementation with intelligent delegation to markdown-specialist for optimal formatting and linting compliance
-- **Structure Optimization**: Organize README content with clear, scannable sections and logical hierarchical flow that respects processing order
-- **Consistency Maintenance**: Ensure documentation style and format consistency across all README files in the hierarchy using depth-first processing principles
+- **Bottom-Up Directory Discovery**: Discover ALL README.md files in the complete directory tree and calculate their nesting depth for proper processing order determination
+- **Depth-Based Processing Order**: Process README files starting from deepest nested directories and working systematically up to root, ensuring proper dependency flow and hierarchical consistency
+- **Intelligent Content Extraction**: Extract key information from already-processed child READMEs for parent-level summarization with accuracy validation and contextual integration
+- **Intelligent Hierarchical Summarization**: Automatically create summary sections in parent READMEs that accurately reflect completed child documentation with proper content flow management and intelligent content distribution
+- **Automated Content Extraction**: Extract primary purpose, key features, quantitative information, integration points, usage patterns, and unique value propositions from completed child READMEs for accurate parent-level summarization
+- **Subdirectory Detection and Integration**: Systematically discover, analyze, and integrate content from all subdirectory READMEs using bottom-up dependency management and automated summarization workflows
+- **Processing Order Tracking**: Maintain clear logging and tracking of processing order for transparency, debugging, and dependency validation throughout the entire hierarchy
+- **Automated Content Distribution**: Ensure appropriate content distribution across hierarchy levels with detailed information flowing naturally into automatically generated parent summaries
+- **Cross-linking and Navigation Management**: Build navigation and references that respect bottom-up processing dependencies with validated parent-child relationships and extracted context
+- **Sequential Implementation**: Execute processing queue strictly in depth order with content extraction timing, dependency validation, and parent integration as each child completes
+- **Quality Assurance Integration**: Leverage markdown-specialist for formatting validation across the entire processed hierarchy with summary accuracy verification
+- **Modern Documentation Standards**: Implementation with sophisticated delegation patterns for optimal formatting, linting compliance, and technical accuracy across hierarchical structures
+
+**Enhanced Processing Algorithm**:
+1. **Complete Discovery**: Use Glob to find ALL README.md files recursively in the directory tree
+2. **Depth Calculation**: Calculate directory nesting depth for each README file using path separator counting
+3. **Processing Queue Creation**: Sort README files by depth (deepest first, shallowest last) to establish proper dependency order
+4. **Sequential Bottom-Up Processing**: Process README files from most deeply nested to root, ensuring dependency order is maintained
+5. **Intelligent Content Extraction**: Extract key information from completed child READMEs immediately for parent-level summarization integration using automated content detection algorithms
+6. **Dependency Validation**: Ensure no README is processed until all its children are complete with processing order compliance
+7. **Quality Assurance**: Delegate to markdown-specialist for final formatting validation across the entire processed hierarchy
 
 **Usage Examples**:
 
 ```bash
-/readme "Update the README documentation hierarchy using depth-first processing to ensure proper dependency flow"
-/readme "Analyze the nested README structure and process files from deepest to shallowest"
-/readme "Create a hierarchical documentation system where detailed child READMEs are completed before parent summaries"
-/readme "Review all README files using depth-first processing to ensure they work as a cohesive system"
+/readme "Update the README documentation hierarchy using rigorous bottom-up processing to ensure proper dependency flow and accurate parent summaries extracted from completed child documentation"
+/readme "Discover all README files, calculate directory depths, sort deepest-first, and process systematically from most nested to root with automated content extraction"
+/readme "Create a hierarchical documentation system with bottom-up processing where detailed child READMEs are completed first, then summarized accurately in parent documentation"
+/readme "Process the project documentation using strict bottom-up order with content extraction to ensure parent overviews accurately reflect completed child documentation through automated summarization"
+/readme "Implement rigorous bottom-up README processing with directory depth calculation and automated summarization to ensure proper content distribution and accurate parent-child relationships"
+/readme "Review all README files using comprehensive bottom-up processing with intelligent summarization to ensure they work together as a cohesive documentation system with accurate content flow"
 ```
 
 ## Agent Workflow Integration
@@ -320,15 +336,15 @@ The Claude Code configuration includes:
 
 Each agent has a corresponding command file in `commands/` that creates slash commands:
 
-| Command File      | Slash Command   | Agent Invoked                |
-|-------------------|-----------------|------------------------------|
-| `csharp.md`       | `/csharp`       | `csharp-specialist`          |
-| `devops.md`       | `/devops`       | `azure-devops-specialist`    |
-| `markdown.md`     | `/markdown`     | `markdown-specialist`        |
-| `mstest.md`       | `/mstest`       | `mstest-specialist`          |
-| `new-agent.md`    | `/new-agent`    | `claude-agent-specialist`    |
-| `new-feature.md`  | `/new-feature`  | `feature-prompt-specialist`  |
-| `readme.md`       | `/readme`       | `readme-maintainer`          |
+| Command File      | Slash Command   | Agent Invoked                | Key Features                                              |
+|-------------------|-----------------|------------------------------|----------------------------------------------------------|
+| `csharp.md`       | `/csharp`       | `csharp-specialist`          | Modern C# development with intelligent delegation         |
+| `devops.md`       | `/devops`       | `azure-devops-specialist`    | Azure DevOps operations with CI/CD integration          |
+| `markdown.md`     | `/markdown`     | `markdown-specialist`        | Markdown formatting and linting compliance              |
+| `mstest.md`       | `/mstest`       | `mstest-specialist`          | .NET unit testing with framework integration            |
+| `new-agent.md`    | `/new-agent`    | `claude-agent-specialist`    | Meta-agent creation with delegation intelligence        |
+| `new-feature.md`  | `/new-feature`  | `feature-prompt-specialist`  | Feature specification with contextual decision-making   |
+| `readme.md`       | `/readme`       | `readme-maintainer`          | Bottom-up hierarchical processing with intelligent summarization and automated content extraction |
 
 **Command Features**:
 
@@ -340,25 +356,25 @@ Each agent has a corresponding command file in `commands/` that creates slash co
 
 ### Method 1: Direct Commands (Recommended)
 ```bash
-# Update README with modern best practices
+# Update README hierarchy with bottom-up processing, intelligent summarization, and automated content extraction
 /readme
 
-# Create or improve agents
+# Create or improve agents with delegation intelligence
 /new-agent
 
-# Azure DevOps operations
+# Azure DevOps operations with CI/CD integration
 /devops
 
-# Modern C# development with latest language features
+# Modern C# development with latest language features and testing integration
 /csharp
 
-# .NET testing and unit test generation
+# .NET testing and unit test generation with framework integration
 /mstest
 
-# Create comprehensive feature specifications and requirements
+# Create comprehensive feature specifications with contextual decision-making
 /new-feature
 
-# Format and lint markdown documents
+# Format and lint markdown documents with domain-specific expertise
 /markdown
 ```
 

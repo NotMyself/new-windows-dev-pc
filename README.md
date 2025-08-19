@@ -5,9 +5,16 @@
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Claude Code](https://img.shields.io/badge/Claude_Code-Ready-purple.svg)](https://claude.ai/code)
 
-A comprehensive Windows developer setup automation repository containing PowerShell scripts to install and configure development tools, IDEs, and environments for new developers. Features 7 specialized Claude Code agents with sophisticated delegation intelligence, contextual decision-making frameworks, and hierarchical documentation processing for enhanced development workflows and optimal ecosystem efficiency.
+A comprehensive Windows developer setup automation repository containing PowerShell scripts to install and configure development tools, IDEs, and environments for new developers. Features modular installation scripts, symbolic link-based configuration management, and integrated Claude Code setup with 7 specialized agents for enhanced development workflows.
 
-**Note:** These scripts automatically request Administrator privileges when needed - no need to "Run as Administrator" manually.
+**Key Features:**
+- **Automated Tool Installation**: WinGet-based package management with progress tracking
+- **Configuration Management**: Symbolic links for centralized settings (Git, VSCode, PowerShell, Claude Code)
+- **Developer Fonts**: Cascadia Code font installation for optimal coding experience
+- **Claude Code Integration**: 7 specialized agents with intelligent delegation capabilities
+- **Modular Architecture**: Separate scripts for different installation components
+
+**Note:** All scripts automatically request Administrator privileges when needed - no need to "Run as Administrator" manually.
 
 ## Table of Contents
 
@@ -23,11 +30,36 @@ A comprehensive Windows developer setup automation repository containing PowerSh
 
 ## Quick Start
 
-1. **Install tools**: Run `.\install.ps1` to install all development tools via WinGet and VSCode extensions
-2. **Configure settings**: Run `.\configure.ps1` to create symbolic links for configuration files (Git, VSCode, Windows Terminal, PowerShell, Claude Code)
-3. **Claude Code**: 7 specialized agents with sophisticated delegation intelligence and contextual decision-making frameworks are automatically configured for enhanced development workflows, hierarchical documentation processing, and optimal ecosystem efficiency
+### Two-Step Setup Process
 
-**💡 Tip**: You can double-click the scripts or run them from any PowerShell prompt - they'll automatically request elevation when needed.
+1. **Install Development Tools**
+   ```powershell
+   .\install.ps1
+   ```
+   - Installs WinGet package manager (if not present)
+   - Installs development tools, IDEs, and utilities via WinGet
+   - Installs Cascadia Code developer fonts
+   - Installs curated VSCode extensions
+
+2. **Configure Development Environment**
+   ```powershell
+   .\configure.ps1
+   ```
+   - Creates symbolic links for configuration files
+   - Sets up Git, VSCode, Windows Terminal, and PowerShell profiles
+   - Configures Claude Code with 7 specialized agents
+   - Links custom hosts file and system configurations
+
+### Architecture Overview
+
+This repository uses a **modular architecture** with clear separation of concerns:
+
+- **Core Scripts** (`install.ps1`, `configure.ps1`) - Main entry points with automatic elevation
+- **Installation Modules** (`installs/` directory) - Specialized installation scripts for different components
+- **Configuration Files** (`settings/` directory) - Centralized settings that get symlinked to user directories
+- **Symbolic Link Management** - Configuration files stay in the repository and are linked to system locations
+
+**💡 Tip**: You can run scripts from any PowerShell prompt or double-click them - they automatically request elevation when needed.
 
 ## Installed Packages
 
@@ -63,18 +95,37 @@ A comprehensive Windows developer setup automation repository containing PowerSh
 ### Developer Fonts
 - **Cascadia Code** - Microsoft's monospaced font optimized for programming and terminal use
 
-## Configuration Files
+## Configuration Management
 
-The setup includes pre-configured settings that get symlinked to your user directories:
+The setup uses **symbolic links** to centralize configuration management, keeping all settings in the repository while linking them to their expected system locations.
 
-- **VSCode**: Settings and keybindings optimized for development
-- **Windows Terminal**: Custom terminal configuration
-- **PowerShell**: Enhanced profile with Oh My Posh, fnm integration, and Unix-like aliases
-- **Extensions**: Curated list of VSCode extensions for development
-- **Claude Code**: Global settings with PowerShell shell configuration, specialized agents, and commands
-- **Hosts file**: Custom hosts entries in settings/etc/hosts
+### Included Configuration Files
 
-> **Note**: Git and Visual Studio configurations are referenced in configure.ps1 but the actual configuration files are not included in the repository.
+| Component | Configuration | Target Location |
+|-----------|---------------|-----------------|
+| **VSCode** | Settings and keybindings | `%APPDATA%\Code\User\` |
+| **Windows Terminal** | Terminal configuration | `%LOCALAPPDATA%\Microsoft\Windows Terminal\` |
+| **PowerShell** | Enhanced profile with Oh My Posh | `$PROFILE` |
+| **Claude Code** | 7 specialized agents and commands | `~/.claude/` |
+| **System Hosts** | Custom hosts file entries | `C:\Windows\System32\drivers\etc\hosts` |
+
+### Configuration Benefits
+
+- **Version Control**: All configurations are tracked in Git
+- **Consistency**: Same settings across multiple machines
+- **Backup**: Configuration changes are automatically backed up
+- **Portability**: Easy to replicate development environment
+- **Centralized Management**: Update settings in one place
+
+### Symbolic Link Details
+
+The `configure.ps1` script creates symbolic links that:
+- **Preserve existing settings** (with `-Force` option to overwrite)
+- **Support multiple installation paths** (e.g., Windows Terminal standard vs. Store versions)
+- **Validate paths** before creating links
+- **Provide detailed feedback** during the linking process
+
+> **Note**: Git and Visual Studio configurations are referenced in configure.ps1 but the actual configuration files are not included in the repository to avoid overwriting personal settings.
 
 ## Prerequisites
 
@@ -87,255 +138,426 @@ The setup includes pre-configured settings that get symlinked to your user direc
 
 ### Main Scripts
 
-- **`.\install.ps1`** - Main installation script with options:
-  - `-SkipWinGet` - Skip WinGet and package installation
-  - `-SkipExtensions` - Skip VSCode extension installation
-  - Automatically installs WinGet if not present
-  - Runs tool installation via WinGet with progress tracking
-  - Installs Cascadia Code fonts from `fonts/CascadiaCode.zip`
-  - Installs VSCode extensions from the curated list
+#### `.\install.ps1` - Development Tools Installation
 
-- **`.\configure.ps1`** - Configuration script with options:
-  - `-Force` - Overwrite existing configuration files
-  - Creates symbolic links for available configuration files (VSCode, Windows Terminal, PowerShell, Claude Code, system hosts)
-  - Supports dual-location Windows Terminal configuration (standard and Microsoft Store installations)
-  - Enhanced directory removal handling with automatic confirmation bypass
-  - Validates paths and provides detailed feedback
+**Purpose**: Installs all development tools, fonts, and VSCode extensions
+
+**Parameters**:
+- `-SkipWinGet` - Skip WinGet package manager and package installation
+- `-SkipExtensions` - Skip VSCode extension installation
+
+**Process**:
+1. **WinGet Installation**: Automatically installs WinGet if not present
+2. **Tool Installation**: Runs WinGet package installation with progress tracking
+3. **Font Installation**: Installs Cascadia Code fonts from `fonts/CascadiaCode.zip`
+4. **Extension Installation**: Installs VSCode extensions from curated extensions list
+
+**Example Usage**:
+```powershell
+# Full installation
+.\install.ps1
+
+# Skip package installation, only install extensions
+.\install.ps1 -SkipWinGet
+
+# Skip extensions, only install packages
+.\install.ps1 -SkipExtensions
+```
+
+#### `.\configure.ps1` - Configuration Environment Setup
+
+**Purpose**: Creates symbolic links for all configuration files
+
+**Parameters**:
+- `-Force` - Overwrite existing configuration files and directories
+
+**Process**:
+1. **Path Validation**: Validates all target paths before creating links
+2. **Symbolic Link Creation**: Creates links for VSCode, Windows Terminal, PowerShell, Claude Code
+3. **Multi-Path Support**: Handles multiple installation locations (e.g., Windows Terminal standard vs. Store)
+4. **System Configuration**: Links hosts file and other system-level configurations
+
+**Example Usage**:
+```powershell
+# Standard configuration setup
+.\configure.ps1
+
+# Force overwrite existing configurations
+.\configure.ps1 -Force
+```
 
 ### Component Scripts
 
-Located in the `installs/` directory:
-- **`winget.ps1`** - Installs development tools via WinGet with options:
-  - `-SkipPackages` - Array of package IDs to skip during installation
-  - `-IncludeBrowsers` - Install optional browser packages (Edge Beta, Chrome Beta, Firefox Developer Edition)
-  - Core development tools (.NET, fnm, Azure CLI, Git, Claude)
-  - IDE installations (Visual Studio 2022 Professional, VSCode, JetBrains Toolbox)
-  - Database tools (SQL Server Management Studio, Azure Data Studio Insiders)
-  - Progress tracking with individual package installation status
+The `installs/` directory contains modular installation scripts for specific components:
 
-- **`vscode.ps1`** - Installs VSCode extensions with options:
-  - `-ExtensionsFile` - Custom path to extensions file
-  - Supports comments in extensions file
-  - Progress tracking and error handling per extension
+#### `winget.ps1` - Package Manager Installation
 
-- **`install-winget.ps1`** - Installs WinGet package manager:
-  - Comprehensive error handling and progress tracking
-  - Automatic cleanup of temporary files
-  - Multiple installation methods with fallback
+**Purpose**: Installs development tools and utilities via WinGet package manager
 
-### Windows Terminal Configuration
+**Parameters**:
+- `-SkipPackages` - Array of package IDs to skip during installation
+- `-IncludeBrowsers` - Install optional browser packages (Edge Beta, Chrome Beta, Firefox Developer Edition)
 
-- **`settings.json`** - Windows Terminal configuration file:
-  - Located in `settings/windows-terminal/settings.json`
-  - Supports both standard and Microsoft Store installations with dual symlink approach
+**Tool Categories**:
+- **Core Development Tools**: .NET SDK, Fast Node Manager (fnm), Azure CLI, Git, Claude AI
+- **IDEs and Editors**: Visual Studio 2022 Professional, VSCode, JetBrains Toolbox
+- **Database Tools**: SQL Server Management Studio, Azure Data Studio Insiders
+- **Windows Tools**: PowerToys, Windows Terminal, PowerShell 7+, Oh My Posh
+- **Optional Browsers**: Available with `-IncludeBrowsers` parameter
+
+**Example Usage**:
+```powershell
+# Install all packages
+.\installs\winget.ps1
+
+# Install packages with optional browsers
+.\installs\winget.ps1 -IncludeBrowsers
+
+# Skip specific packages
+.\installs\winget.ps1 -SkipPackages @("Microsoft.VisualStudio.2022.Professional")
+```
+
+#### `vscode.ps1` - VSCode Extensions Installation
+
+**Purpose**: Installs curated VSCode extensions for development
+
+**Parameters**:
+- `-ExtensionsFile` - Custom path to extensions file (default: `settings/vscode/extensions`)
+
+**Features**:
+- Supports comments in extensions file (lines starting with `#`)
+- Progress tracking and error handling per extension
+- Automatic retry logic for failed installations
+- Integration with `backup-vs` PowerShell function for extension management
+
+#### `install-winget.ps1` - WinGet Bootstrap
+
+**Purpose**: Installs WinGet package manager if not present
+
+**Features**:
+- Multiple installation methods with automatic fallback
+- Comprehensive error handling and progress tracking
+- Automatic cleanup of temporary installation files
+- Validation of WinGet installation success
+
 
 ## PowerShell Profile Features
 
-The included PowerShell profile provides:
-- Oh My Posh prompt integration (requires ~/.theme.omp.json)
-- Fast Node Manager (fnm) integration with completions and auto-use
-- Enhanced PSReadLine with history prediction and ListView
-- Unix-like aliases: `ls`, `rm`, `mv`, `cp`, `touch`, `mkdir`, `rmdir`
-- Navigation shortcuts: `~`, `..`, `....`, `......`, `oss`, `work`
-- Enhanced utility functions:
-  - `backup-vs` - Backup VSCode extensions to the extensions file
-  - `sln` - Smart solution file opener with multi-file selection support
-  - `which` - Find command location (Get-Command wrapper)
-  - `grep` - Search text in files using Select-String
-  - `find` - Find files by name using Get-ChildItem
-  - `Set-GitUser` - Interactive Git user configuration with auto-detection
+The included PowerShell profile (`settings/pwsh/Microsoft.PowerShell_profile.ps1`) provides a comprehensive enhancement to the PowerShell experience:
+
+### Core Integrations
+
+- **Oh My Posh Prompt**: Custom prompt themes and Git integration (requires `~/.theme.omp.json`)
+- **Fast Node Manager (fnm)**: Automatic Node.js version management with completions and auto-use
+- **Enhanced PSReadLine**: History prediction, ListView mode, and improved editing experience
+
+### Unix-like Aliases
+
+Common Unix commands mapped to PowerShell equivalents:
+```powershell
+ls, rm, mv, cp, touch, mkdir, rmdir
+```
+
+### Navigation Shortcuts
+
+Quick directory navigation:
+```powershell
+~         # Navigate to home directory
+..        # Go up one directory
+....      # Go up two directories  
+......    # Go up three directories
+oss       # Navigate to open source projects
+work      # Navigate to work projects
+```
+
+### Enhanced Utility Functions
+
+| Function | Purpose | Usage |
+|----------|---------|-------|
+| `backup-vs` | Backup currently installed VSCode extensions to extensions file | `backup-vs` |
+| `sln` | Smart solution file opener with multi-file selection | `sln [pattern]` |
+| `which` | Find command location (Get-Command wrapper) | `which git` |
+| `grep` | Search text in files using Select-String | `grep "pattern" *.txt` |
+| `find` | Find files by name using Get-ChildItem | `find "*.cs"` |
+| `Set-GitUser` | Interactive Git user configuration with auto-detection | `Set-GitUser` |
+
+### Profile Benefits
+
+- **Consistent Experience**: Unix-like commands for cross-platform familiarity
+- **Enhanced Productivity**: Smart shortcuts and utility functions
+- **Development Focus**: Git integration, solution file management, and extension backup
+- **Modern Shell Features**: Improved history, completion, and navigation
 
 ## Claude Code Integration
 
-The setup includes comprehensive Claude Code configuration with 7 specialized agents featuring sophisticated delegation intelligence, contextual decision-making frameworks, and development tool integrations:
+The setup includes comprehensive Claude Code configuration optimized for Windows development workflows. Located in `settings/claude/`, this configuration provides 7 specialized agents with intelligent delegation capabilities and seamless development tool integration.
 
-### Global Settings
-- **PowerShell Shell**: Configures Claude Code to use PowerShell instead of bash for better Windows compatibility
+### Global Configuration
+
+**PowerShell Integration** (`settings/claude/settings.json`):
+- **Default Shell**: Configures Claude Code to use PowerShell instead of bash for Windows compatibility
+- **Environment Variables**: Sets `SHELL` and `CLAUDE_SHELL` to PowerShell for consistent shell experience
 - **Permissions**: Pre-configured permissions for common development operations
-- **Environment Variables**: Sets `SHELL` and `CLAUDE_SHELL` to PowerShell
 
-### Specialized Agents
+### Agent Architecture
 
-The repository includes seven specialized agents with sophisticated delegation intelligence and contextual decision-making frameworks for enhanced development workflows:
+The system includes **7 specialized agents** designed for intelligent collaboration and workflow automation:
 
-#### 🔧 Claude Agent Specialist (`/new-agent`)
-**Purpose**: Meta-agent that designs and creates other specialized agents with proper structure, validation, sophisticated delegation intelligence, and best practices for optimal ecosystem integration.
+### Available Agents
 
-#### ☁️ Azure DevOps Specialist (`/devops`)
-**Purpose**: Azure DevOps specialist for pipelines, builds, releases, and project management with intelligent delegation to .NET and testing specialists for technical accuracy and comprehensive CI/CD integration.
+| Agent | Command | Purpose | Key Capabilities |
+|-------|---------|---------|------------------|
+| **🔧 Claude Agent Specialist** | `/new-agent` | Meta-agent for creating specialized agents | Agent design, validation, delegation patterns |
+| **☁️ Azure DevOps Specialist** | `/devops` | Azure DevOps and CI/CD operations | Pipeline management, builds, releases |
+| **📝 README Maintainer** | `/readme` | Documentation hierarchy management | Bottom-up processing, content extraction |
+| **💻 C# Specialist** | `/csharp` | Modern C# development | Latest language features, frameworks |
+| **🧪 MSTest Specialist** | `/mstest` | .NET unit testing | MSTest.Sdk, NSubstitute, test automation |
+| **📋 Feature Prompt Specialist** | `/new-feature` | Feature specification creation | Requirements analysis, structured prompts |
+| **📝 Markdown Specialist** | `/markdown` | Markdown formatting and linting | CommonMark, GitHub Flavored Markdown |
 
-#### 📝 README Maintainer (`/readme`)
-**Purpose**: Updates and maintains README.md files with depth-first hierarchical processing, nested documentation structures, modern documentation best practices, and intelligent delegation to markdown-specialist for optimal formatting and quality assurance.
+### Agent Capabilities
 
-#### 💻 C# Specialist (`/csharp`)
-**Purpose**: Modern C# development specialist using latest language features, frameworks, and best practices with intelligent delegation to testing specialists for comprehensive test coverage and quality assurance.
+**Intelligent Delegation**: Each agent includes sophisticated decision-making frameworks for optimal collaboration:
+- **Domain Expertise**: Specialized knowledge for specific development areas
+- **Cross-Agent Collaboration**: Automatic delegation to other agents when needed
+- **Quality Assurance**: Built-in validation and formatting standards
+- **Workflow Integration**: Seamless integration with Windows development tools
 
-#### 🧪 MSTest Specialist (`/mstest`)
-**Purpose**: .NET unit testing specialist using MSTest.Sdk and NSubstitute for component testing with intelligent delegation to csharp-specialist for test target analysis and azure-devops-specialist for CI/CD pipeline integration.
+### Quick Access Commands
 
-#### 📋 Feature Prompt Specialist (`/new-feature`)
-**Purpose**: Specialized agent for creating comprehensive, well-structured feature prompts for software development tasks with intelligent delegation to domain specialists for technical accuracy and automatic formatting through markdown-specialist integration.
+After running `.\configure.ps1`, these slash commands provide direct access to specialized agents:
 
-#### 📝 Markdown Specialist (`/markdown`)
-**Purpose**: Creates well-formed, linted markdown documents and reformats existing markdown files following CommonMark and GitHub Flavored Markdown standards with intelligent decision-making for complex formatting scenarios and domain-specific expertise integration.
+```powershell
+# Documentation and content management
+/readme          # Update README hierarchy with intelligent processing
+/markdown        # Format and lint markdown documents
+/new-feature     # Create comprehensive feature specifications
 
-### Quick Agent Commands
+# Development and testing
+/csharp          # Modern C# development assistance
+/mstest          # .NET unit testing and test generation
+/devops          # Azure DevOps and CI/CD operations
 
-```bash
-# Update README with depth-first hierarchical processing
-/readme
-
-# Create or improve agents with delegation intelligence
-/new-agent
-
-# Azure DevOps operations
-/devops
-
-# Modern C# development with latest language features
-/csharp
-
-# .NET testing and unit test generation
-/mstest
-
-# Create comprehensive feature specifications and requirements
-/new-feature
-
-# Format and lint markdown documents
-/markdown
+# Agent management
+/new-agent       # Create or improve specialized agents
 ```
 
-> **Note**: These commands are available after running `.\configure.ps1` to set up Claude Code integration. Each agent includes sophisticated delegation intelligence and contextual decision-making frameworks to automatically collaborate with other specialists for optimal results and ecosystem efficiency.
+### Agent Integration Benefits
 
-### Agent Workflow Integration
+- **Consistent Workflows**: Standardized approaches across all development tasks
+- **Quality Assurance**: Built-in validation and formatting standards
+- **Time Efficiency**: Automated delegation reduces manual coordination
+- **Knowledge Sharing**: Cross-agent collaboration ensures comprehensive solutions
+- **Windows Optimization**: All agents configured for Windows development workflows
 
-The agents are designed to work together as an integrated workflow system with sophisticated delegation intelligence and contextual decision-making frameworks, with each agent capable of calling others using intelligent collaboration patterns to ensure comprehensive, properly formatted, and optimally efficient results:
+> **Setup Note**: Run `.\configure.ps1` to activate Claude Code integration. All agents include intelligent delegation capabilities and will automatically collaborate with other specialists when needed for optimal results.
 
-**Documentation Chain**:
-- `readme-maintainer` → `markdown-specialist`: README updates automatically formatted and linted
-- `claude-agent-specialist` → `readme-maintainer` → `markdown-specialist`: New agent creation triggers complete documentation update
-- `feature-prompt-specialist` → `markdown-specialist`: Feature documentation properly formatted
+### Workflow Integration Patterns
 
-**Development Chain**:
-- `feature-prompt-specialist` → `csharp-specialist`: Requirements analysis followed by modern C# implementation
-- `csharp-specialist` → `mstest-specialist`: Code implementation followed by comprehensive unit testing
-- `azure-devops-specialist` → `mstest-specialist`: CI/CD pipelines with integrated testing workflows
-- `csharp-specialist` → `azure-devops-specialist`: Modern .NET applications with proper CI/CD integration
+The agents work together through intelligent delegation patterns:
+
+**Documentation Workflows**:
+```
+readme-maintainer → markdown-specialist
+├─ Hierarchical README processing
+└─ Automatic formatting and linting
+
+feature-prompt-specialist → markdown-specialist  
+├─ Requirements documentation
+└─ Structured specification formatting
+```
+
+**Development Workflows**:
+```
+csharp-specialist → mstest-specialist
+├─ Modern C# implementation  
+└─ Comprehensive unit testing
+
+azure-devops-specialist → csharp-specialist → mstest-specialist
+├─ CI/CD pipeline setup
+├─ .NET application integration
+└─ Automated testing workflows
+```
+
+**Meta Workflows**:
+```
+claude-agent-specialist → readme-maintainer → markdown-specialist
+├─ New agent creation
+├─ Documentation updates
+└─ Quality assurance formatting
+```
 
 
-### Advanced Usage
+## Advanced Usage
 
-#### Script Parameters
+### Script Parameter Reference
+
+**Main Installation Script**:
 ```powershell
-# Install with options
-.\install.ps1 -SkipWinGet          # Skip package installation
-.\install.ps1 -SkipExtensions      # Skip VSCode extensions
+# Complete installation with all components
+.\install.ps1
 
-# Configure with options
-.\configure.ps1 -Force              # Overwrite existing configs
+# Selective installation options
+.\install.ps1 -SkipWinGet          # Skip package installation, only fonts and extensions
+.\install.ps1 -SkipExtensions      # Skip VSCode extensions, only packages and fonts
+```
 
-# Component scripts with options
-.\installs\winget.ps1 -IncludeBrowsers     # Install optional browsers
+**Configuration Script**:
+```powershell
+# Standard configuration setup
+.\configure.ps1
+
+# Force overwrite existing configurations
+.\configure.ps1 -Force             # Overwrites existing symlinks and directories
+```
+
+**Component Script Options**:
+```powershell
+# WinGet package installation with options
+.\installs\winget.ps1 -IncludeBrowsers                    # Include optional browser packages
 .\installs\winget.ps1 -SkipPackages @("Microsoft.VisualStudio.2022.Professional")  # Skip specific packages
+
+# VSCode extension installation with custom list
 .\installs\vscode.ps1 -ExtensionsFile "custom-extensions.txt"
 ```
 
-#### Symbolic Link Mappings
+### Symbolic Link Reference
 
-The `configure.ps1` script creates the following symbolic links:
+The `configure.ps1` script creates symbolic links from system locations to repository files:
 
-**VSCode Configuration:**
-- `%APPDATA%\Code\User\settings.json` → `settings/vscode/settings.json`
-- `%APPDATA%\Code\User\keybindings.json` → `settings/vscode/keybindings.json`
+| Component | System Location | Repository Location |
+|-----------|-----------------|---------------------|
+| **VSCode Settings** | `%APPDATA%\Code\User\settings.json` | `settings/vscode/settings.json` |
+| **VSCode Keybindings** | `%APPDATA%\Code\User\keybindings.json` | `settings/vscode/keybindings.json` |
+| **Windows Terminal** | `%LOCALAPPDATA%\Microsoft\Windows Terminal\settings.json` | `settings/windows-terminal/settings.json` |
+| **Windows Terminal (Store)** | `%LOCALAPPDATA%\Packages\Microsoft.WindowsTerminal*\LocalState\settings.json` | `settings/windows-terminal/settings.json` |
+| **PowerShell Profile** | `$PROFILE` | `settings/pwsh/Microsoft.PowerShell_profile.ps1` |
+| **Claude Settings** | `~/.claude/settings.json` | `settings/claude/settings.json` |
+| **Claude Agents** | `~/.claude/agents/` | `settings/claude/agents/` |
+| **Claude Commands** | `~/.claude/commands/` | `settings/claude/commands/` |
+| **System Hosts** | `C:\Windows\System32\drivers\etc\hosts` | `settings/etc/hosts` |
 
-**Windows Terminal Configuration:**
-- `%LOCALAPPDATA%\Microsoft\Windows Terminal\settings.json` → `settings/windows-terminal/settings.json`
-- `%LOCALAPPDATA%\Packages\Microsoft.WindowsTerminal*\LocalState\settings.json` → `settings/windows-terminal/settings.json` (Store version)
+**Multi-Path Support**: The script automatically detects and creates links for multiple installation paths (e.g., Windows Terminal standard vs. Microsoft Store versions).
 
-**PowerShell Configuration:**
-- `$profile` → `settings/pwsh/Microsoft.PowerShell_profile.ps1`
+### VSCode Extension Management
 
-**Claude Code Configuration:**
-- `~/.claude/settings.json` → `settings/claude/settings.json`
-- `~/.claude/agents/` → `settings/claude/agents/`
-- `~/.claude/commands/` → `settings/claude/commands/`
+**Adding/Removing Extensions**:
+1. **Manual Edit**: Update `settings/vscode/extensions` file (supports comments with `#`)
+2. **Backup Current**: Use `backup-vs` PowerShell function to sync from installed extensions
+3. **Install New**: Run `.\installs\vscode.ps1` to install newly added extensions
 
-**System Configuration:**
-- `C:\Windows\System32\drivers\etc\hosts` → `settings/etc/hosts`
+**Extension File Format**:
+```
+# Core Extensions
+ms-vscode.vscode-typescript-next
+ms-vscode.vscode-json
 
-#### Modifying Extensions
-
-To add or remove VSCode extensions:
-1. Edit `settings/vscode/extensions` (supports comments with #)
-2. Use the `backup-vs` PowerShell function to update from currently installed extensions
-3. Run `.\installs\vscode.ps1` to install new extensions
+# C# Development
+ms-dotnettools.csharp
+ms-dotnettools.vscode-dotnet-runtime
+```
 
 ## Troubleshooting
 
-### Common Issues
+### Common Issues and Solutions
 
-- **UAC Prompt**: Scripts automatically request elevation - click "Yes" when prompted
-- **Execution Policy**: Scripts use `-ExecutionPolicy Bypass` during elevation
-- **WinGet Issues**: Script will try multiple installation methods if primary fails
-- **VSCode Extensions**: Check that VSCode is installed and `code` command is in PATH
-- **Symbolic Links**: Ensure target files exist before running `configure.ps1`
+| Issue | Symptoms | Solution |
+|-------|----------|----------|
+| **UAC Elevation** | Scripts fail to run with permissions error | Click "Yes" when UAC prompt appears (automatic elevation) |
+| **Execution Policy** | PowerShell blocks script execution | Scripts use `-ExecutionPolicy Bypass` during elevation |
+| **WinGet Installation** | Package installation fails | Script tries multiple installation methods with fallback |
+| **VSCode Extensions** | Extensions fail to install | Verify VSCode is installed and `code` command is in PATH |
+| **Symbolic Link Creation** | Configuration linking fails | Ensure target files exist in `settings/` directory |
+| **Path Not Found** | Scripts can't find components | Run scripts from repository root directory |
 
-### Manual Fallback
+### Manual Recovery
 
-If automatic elevation fails:
-
+**If Automatic Elevation Fails**:
 ```powershell
-# Run PowerShell as Administrator manually, then:
+# Open PowerShell as Administrator manually, then navigate to repository:
+cd "C:\path\to\new-windows-dev-pc"
 .\install.ps1
 .\configure.ps1
 ```
 
+**If WinGet Installation Fails**:
+```powershell
+# Try installing WinGet manually first:
+.\installs\install-winget.ps1
+# Then run main installation:
+.\install.ps1
+```
+
 ### Getting Help
 
-For additional assistance:
-- Review the detailed [CLAUDE.md](CLAUDE.md) file for comprehensive project documentation
-- Check individual script files for inline documentation and comments
-- Use PowerShell's `Get-Help` with script files for parameter information
+**Documentation Resources**:
+- **[CLAUDE.md](C:\Users\bobby\src\new-windows-dev-pc\CLAUDE.md)** - Comprehensive project documentation and architecture
+- **Script Comments** - Individual script files contain inline documentation
+- **PowerShell Help** - Use `Get-Help .\script-name.ps1` for parameter information
+- **Claude Code Agents** - Use `/readme` command for documentation assistance
 
-## File Structure
+**Log Analysis**:
+- Scripts provide timestamped output for troubleshooting
+- Check error messages for specific package or configuration failures
+- Verify Administrator privileges are granted when prompted
+
+## Repository Structure
 
 ```
-├── install.ps1              # Main installation script (auto-elevates)
-├── configure.ps1            # Configuration symbolic links (auto-elevates)
-├── CLAUDE.md                # Claude Code documentation
-├── fonts/
-│   └── CascadiaCode.zip     # Developer fonts for installation
-├── installs/
-│   ├── winget.ps1           # WinGet package installations with browser options
-│   ├── vscode.ps1           # VSCode extension installer
-│   └── install-winget.ps1   # WinGet installer with error handling
-└── settings/
-    ├── vscode/
-    │   ├── settings.json    # VSCode settings optimized for development
-    │   ├── keybindings.json # VSCode keybindings
-    │   └── extensions       # Curated extension list
-    ├── windows-terminal/
-    │   └── settings.json    # Windows Terminal configuration
-    ├── claude/
-    │   ├── README.md                       # Claude Code configuration documentation
-    │   ├── settings.json                   # Claude Code global settings with PowerShell shell
-    │   ├── agents/                         # Specialized Claude agents (7 agents)
-    │   │   ├── azure-devops-specialist.md  # Azure DevOps operations with delegation intelligence
-    │   │   ├── claude-agent-specialist.md  # Meta-agent for creating agents with collaboration patterns
-    │   │   ├── csharp-specialist.md        # Modern C# development with testing integration
-    │   │   ├── feature-prompt-specialist.md # Feature specification with contextual decision-making
-    │   │   ├── markdown-specialist.md      # Markdown formatting and linting specialist
-    │   │   ├── mstest-specialist.md        # .NET unit testing with CI/CD integration
-    │   │   └── readme-maintainer.md        # Hierarchical README processing with depth-first algorithms
-    │   └── commands/                       # Quick access commands for agents (7 commands)
-    │       ├── csharp.md                   # /csharp command
-    │       ├── devops.md                   # /devops command
-    │       ├── markdown.md                 # /markdown command
-    │       ├── mstest.md                   # /mstest command
-    │       ├── new-agent.md                # /new-agent command
-    │       ├── new-feature.md              # /new-feature command
-    │       └── readme.md                   # /readme command
-    ├── pwsh/
-    │   └── Microsoft.PowerShell_profile.ps1  # Enhanced PowerShell profile
-    └── etc/
-        └── hosts            # Custom hosts file entries
+new-windows-dev-pc/
+├── 📄 install.ps1                    # Main installation script (auto-elevates)
+├── 📄 configure.ps1                  # Configuration symbolic links (auto-elevates)  
+├── 📄 README.md                      # This documentation file
+├── 📄 CLAUDE.md                      # Claude Code project documentation
+│
+├── 📁 fonts/
+│   └── 📦 CascadiaCode.zip           # Developer fonts for installation
+│
+├── 📁 installs/                      # Modular installation scripts
+│   ├── 📄 winget.ps1                 # WinGet package installations with browser options
+│   ├── 📄 vscode.ps1                 # VSCode extension installer with progress tracking
+│   └── 📄 install-winget.ps1         # WinGet installer with error handling and fallback
+│
+└── 📁 settings/                      # Configuration files (symlinked to system locations)
+    ├── 📁 vscode/
+    │   ├── 📄 settings.json          # VSCode settings optimized for development
+    │   ├── 📄 keybindings.json       # VSCode keybindings and shortcuts
+    │   └── 📄 extensions             # Curated VSCode extension list
+    │
+    ├── 📁 windows-terminal/
+    │   └── 📄 settings.json          # Windows Terminal configuration
+    │
+    ├── 📁 claude/                    # Claude Code configuration (7 agents + commands)
+    │   ├── 📄 README.md              # Claude Code configuration documentation
+    │   ├── 📄 settings.json          # Global settings with PowerShell shell configuration
+    │   ├── 📁 agents/                # Specialized agent definitions
+    │   │   ├── 📄 azure-devops-specialist.md      # Azure DevOps and CI/CD operations
+    │   │   ├── 📄 claude-agent-specialist.md      # Meta-agent for creating agents
+    │   │   ├── 📄 csharp-specialist.md            # Modern C# development
+    │   │   ├── 📄 feature-prompt-specialist.md    # Feature specification creation
+    │   │   ├── 📄 markdown-specialist.md          # Markdown formatting and linting
+    │   │   ├── 📄 mstest-specialist.md            # .NET unit testing
+    │   │   └── 📄 readme-maintainer.md            # Documentation hierarchy management
+    │   └── 📁 commands/              # Quick access slash commands
+    │       ├── 📄 csharp.md          # /csharp command
+    │       ├── 📄 devops.md          # /devops command
+    │       ├── 📄 markdown.md        # /markdown command
+    │       ├── 📄 mstest.md          # /mstest command
+    │       ├── 📄 new-agent.md       # /new-agent command
+    │       ├── 📄 new-feature.md     # /new-feature command
+    │       └── 📄 readme.md          # /readme command
+    │
+    ├── 📁 pwsh/
+    │   └── 📄 Microsoft.PowerShell_profile.ps1   # Enhanced PowerShell profile
+    │
+    └── 📁 etc/
+        └── 📄 hosts                  # Custom hosts file entries
 ```
+
+### Key Components
+
+- **Core Scripts**: Main entry points with automatic elevation handling
+- **Modular Installs**: Specialized installation scripts for different components  
+- **Configuration Management**: Centralized settings with symbolic link automation
+- **Claude Code Integration**: 7 specialized agents with intelligent delegation capabilities
+- **Enhanced PowerShell**: Custom profile with modern tooling and Unix-like aliases
