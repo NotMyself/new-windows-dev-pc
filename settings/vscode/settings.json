@@ -48,5 +48,6 @@
     "editor.defaultFormatter": "DotJoshJohnson.xml"
   },
   "github.copilot.nextEditSuggestions.enabled": true,
-  "workbench.startupEditor": "none"
+  "workbench.startupEditor": "none",
+  "git.confirmSync": false
 }
