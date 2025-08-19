@@ -135,13 +135,7 @@ The setup uses **symbolic links** to centralize configuration management, keepin
 - **Portability**: Easy to replicate development environment
 - **Centralized Management**: Update settings in one place
 
-### Symbolic Link Details
-
-The `configure.ps1` script creates symbolic links that:
-- **Preserve existing settings** (with `-Force` option to overwrite)
-- **Support multiple installation paths** (e.g., Windows Terminal standard vs. Store versions)
-- **Validate paths** before creating links
-- **Provide detailed feedback** during the linking process
+For detailed information about the symbolic link creation process, path validation, and multi-path support, see the [Installation Scripts documentation](installs/README.md#symbolic-link-management).
 
 > **Note**: Git and Visual Studio configurations are referenced in configure.ps1 but the actual configuration files are not included in the repository to avoid overwriting personal settings.
 

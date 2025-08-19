@@ -227,6 +227,42 @@ These scripts are typically called by the main setup scripts:
 - **`install.ps1`**: Calls `install-winget.ps1`, then `winget.ps1`, then `vscode.ps1`
 - **Individual execution**: Each script can be run independently if prerequisites are met
 
+## Symbolic Link Management
+
+The configuration setup process (`configure.ps1`) uses symbolic links to centralize configuration management while maintaining system compatibility. This approach keeps all settings in the repository while linking them to their expected system locations.
+
+### Symbolic Link Creation Process
+
+The `configure.ps1` script creates symbolic links that:
+- **Preserve existing settings** (with `-Force` option to overwrite)
+- **Support multiple installation paths** (e.g., Windows Terminal standard vs. Store versions)
+- **Validate paths** before creating links
+- **Provide detailed feedback** during the linking process
+
+### Multi-Path Support
+
+The script automatically detects and creates links for multiple installation paths:
+
+| Component | Primary Path | Alternative Path |
+|-----------|--------------|------------------|
+| **Windows Terminal** | `%LOCALAPPDATA%\Microsoft\Windows Terminal\settings.json` | `%LOCALAPPDATA%\Packages\Microsoft.WindowsTerminal*\LocalState\settings.json` |
+| **VSCode** | `%APPDATA%\Code\User\` | User profile directory variations |
+| **PowerShell** | `$PROFILE` | Multiple profile paths supported |
+
+### Path Validation Features
+
+- **Pre-creation validation**: Ensures target directories exist
+- **Source file verification**: Confirms repository files are available
+- **Backup handling**: Creates backups before overwriting (with `-Force`)
+- **Error recovery**: Graceful handling of permission or path issues
+
+### Symbolic Link Benefits
+
+- **Live configuration updates**: Changes to repository files immediately affect system settings
+- **Version control integration**: All configuration changes are tracked in Git
+- **Easy restoration**: Simple repository checkout restores all settings
+- **Multi-machine consistency**: Same configurations across different development machines
+
 ## Configuration Files
 
 ### Extensions List
