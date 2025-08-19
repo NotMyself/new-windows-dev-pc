@@ -201,9 +201,3 @@ new-windows-dev-pc/
         └── 📄 hosts                  # Custom hosts file entries
 ```
 
-### Key Components
-
-- **Core Scripts**: Main entry points with automatic elevation handling
-- **Modular Installs**: Specialized installation scripts for different components  
-- **Configuration Management**: Centralized settings with symbolic link automation
-- **Enhanced PowerShell**: Custom profile with modern tooling and Unix-like aliases
