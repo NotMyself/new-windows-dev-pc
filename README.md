@@ -64,37 +64,54 @@ This repository uses a **modular architecture** with clear separation of concern
 
 ## Installed Packages
 
+The setup installs a comprehensive suite of development tools organized by category. All packages are installed via WinGet package manager for consistency and easy updates.
+
 ### Windows & CLI Tools
-- **WinGet** - CLI based Windows package manager
-- **PowerToys** - Windows system utilities
-- **Windows Terminal** - Modern terminal application with dual-location configuration support
-- **PowerShell** - Latest cross-platform PowerShell
-- **Oh My Posh** - Custom PowerShell prompts
+
+| Package | Description | Purpose |
+|---------|-------------|---------|
+| **WinGet** | CLI-based Windows package manager | Package installation and management |
+| **PowerToys** | Windows system utilities | Enhanced Windows functionality and productivity |
+| **Windows Terminal** | Modern terminal application | Enhanced terminal experience with dual-location configuration support |
+| **PowerShell** | Latest cross-platform PowerShell | Modern shell with enhanced scripting capabilities |
+| **Oh My Posh** | Custom PowerShell prompts | Customizable prompt themes with Git integration |
 
 ### Development Environment
-- **Git** - Version control system
-- **Git LFS** - Large File System for Git
-- **GitHub CLI** - Command-line interface for GitHub
-- **.NET** - Microsoft development framework
-- **fnm** - Fast Node.js version manager
-- **Azure CLI** - Command-line interface for Azure
-- **Claude** - Anthropic's AI assistant
+
+| Package | Description | Purpose |
+|---------|-------------|---------|
+| **Git** | Version control system | Source code management and collaboration |
+| **Git LFS** | Large File System for Git | Handling large files in Git repositories |
+| **GitHub CLI** | Command-line interface for GitHub | GitHub operations from the command line |
+| **.NET** | Microsoft development framework | Cross-platform development runtime and SDK |
+| **fnm** | Fast Node.js version manager | Node.js version management and switching |
+| **Azure CLI** | Command-line interface for Azure | Azure cloud service management |
+| **Claude** | Anthropic's AI assistant | AI-powered development assistance |
 
 ### IDEs & Editors
-- **Visual Studio 2022 Professional** - Full-featured IDE
-- **Visual Studio Code** - Lightweight code editor
-- **VSCode CLI** - Command-line interface for VSCode
-- **Azure Data Studio Insiders** - Database management tool
-- **SQL Server Management Studio** - SQL Server administration
-- **JetBrains Toolbox** - JetBrains IDE manager
 
-### Optional Browsers (disabled by default)
-- **Microsoft Edge Beta** - Available with `-IncludeBrowsers` parameter
-- **Google Chrome Beta** - Available with `-IncludeBrowsers` parameter
-- **Firefox Developer Edition** - Available with `-IncludeBrowsers` parameter
+| Package | Description | Purpose |
+|---------|-------------|---------|
+| **Visual Studio 2022 Professional** | Full-featured IDE | Comprehensive development environment for .NET |
+| **Visual Studio Code** | Lightweight code editor | Modern, extensible code editor |
+| **VSCode CLI** | Command-line interface for VSCode | VSCode operations from the command line |
+| **Azure Data Studio Insiders** | Database management tool | SQL Server and Azure database management |
+| **SQL Server Management Studio** | SQL Server administration | Advanced SQL Server database administration |
+| **JetBrains Toolbox** | JetBrains IDE manager | Management and installation of JetBrains IDEs |
+
+### Optional Browsers
+
+| Package | Description | Availability |
+|---------|-------------|--------------|
+| **Microsoft Edge Beta** | Beta version of Microsoft Edge | Available with `-IncludeBrowsers` parameter |
+| **Google Chrome Beta** | Beta version of Google Chrome | Available with `-IncludeBrowsers` parameter |
+| **Firefox Developer Edition** | Developer-focused Firefox version | Available with `-IncludeBrowsers` parameter |
 
 ### Developer Fonts
-- **Cascadia Code** - Microsoft's monospaced font optimized for programming and terminal use
+
+| Package | Description | Purpose |
+|---------|-------------|---------|
+| **Cascadia Code** | Microsoft's monospaced font | Optimized for programming and terminal use with ligatures |
 
 ## Configuration Management
 
