@@ -1,11 +1,11 @@
-# Agent Architect Command
+# New Agent Command
 
-This command uses the agent-architect agent to design and create new specialized agents with proper structure, validation, and best practices.
+This command uses the new-agent meta-agent to design and create new specialized agents with proper structure, validation, and best practices.
 
 ## Usage
 
 ```
-/agent-architect
+/new-agent
 ```
 
 ## Description
@@ -19,7 +19,7 @@ This command will:
 
 ## Agent Used
 
-- **agent-architect**: Meta-agent that designs and creates other specialized agents with proper structure, validation, and best practices
+- **claude-agent-specialist**: Meta-agent that designs and creates other specialized agents with proper structure, validation, and best practices
 
 ## Tools Available to Agent
 

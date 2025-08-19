@@ -1,11 +1,11 @@
-# Azure DevOps Command
+# DevOps Command
 
-This command uses the azure-devops-specialist agent template to help with Azure DevOps operations including pipelines, builds, releases, and project management.
+This command uses the devops agent template to help with Azure DevOps operations including pipelines, builds, releases, and project management.
 
 ## Usage
 
 ```
-/azure-devops
+/devops
 ```
 
 ## Description
@@ -17,9 +17,9 @@ This command will:
 - Manage repositories, work items, service connections, and security policies
 - Implement modern DevOps best practices for 2024-2025
 
-## Agent Template Used
+## Agent Used
 
-- **azure-devops-specialist**: Template for Azure DevOps operations and modern CI/CD practices
+- **devops**: Azure DevOps specialist for pipelines, builds, releases, and project management operations
 
 ## Tools Available
 

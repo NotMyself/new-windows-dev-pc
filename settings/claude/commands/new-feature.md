@@ -1,11 +1,11 @@
-# Feature Prompt Specialist Command
+# New Feature Command
 
 This command uses the feature-prompt-specialist agent to create comprehensive, well-structured feature prompts for software development tasks.
 
 ## Usage
 
 ```
-/feature-prompt-specialist
+/new-feature
 ```
 
 ## Description

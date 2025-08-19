@@ -60,15 +60,15 @@ function New-ConfigLink {
         
         # Remove existing link/file if Force is specified
         if ((Test-Path $LinkPath) -and $Force) {
-            Remove-Item $LinkPath -Force
+            Remove-Item $LinkPath -Force -Recurse
         }
         
         # Create symbolic link
         New-Item -Force -Path $LinkPath -ItemType SymbolicLink -Value $TargetPath -ErrorAction Stop | Out-Null
-        Write-Host "  ✓ $Description" -ForegroundColor Green
+        Write-Host "  Successful: $Description" -ForegroundColor Green
     }
     catch {
-        Write-Warning "  ✗ Failed to create $Description`: $($_.Exception.Message)"
+        Write-Warning "  Failed to create $Description - $($_.Exception.Message)"
     }
 }
 
@@ -90,51 +90,22 @@ try {
     New-ConfigLink -LinkPath "$HOME\.theme.omp.json" -TargetPath "$PSScriptRoot\settings\pwsh\.theme.omp.json" -Description "Oh My Posh theme"
     New-ConfigLink -LinkPath $profile -TargetPath "$PSScriptRoot\settings\pwsh\Microsoft.PowerShell_profile.ps1" -Description "PowerShell profile"
     
+    # Windows Terminal Configuration
+    Write-Host "Configuring Windows Terminal..."
+    New-ConfigLink -LinkPath "$env:LOCALAPPDATA\Microsoft\Windows Terminal\settings.json" -TargetPath "$PSScriptRoot\settings\windows-terminal\settings.json" -Description "Windows Terminal settings (standard)"
+    # Also configure package location for Store installations (stable package name)
+    $terminalPackage = Get-ChildItem -Path "$env:LOCALAPPDATA\Packages" -Directory | Where-Object { $_.Name -like "Microsoft.WindowsTerminal*_8wekyb3d8bbwe" } | Select-Object -First 1
+    if ($terminalPackage) {
+        $terminalConfigDir = "$($terminalPackage.FullName)\LocalState"
+        New-ConfigLink -LinkPath "$terminalConfigDir\settings.json" -TargetPath "$PSScriptRoot\settings\windows-terminal\settings.json" -Description "Windows Terminal settings (package)"
+    }
+    
     # Claude Code Configuration
     Write-Host "Configuring Claude Code..."
     $claudeConfigDir = "$HOME\.claude"
-    New-ConfigLink -LinkPath "$claudeConfigDir\settings.json" -TargetPath "$PSScriptRoot\settings\claude-code\settings.json" -Description "Claude Code settings"
-    New-ConfigLink -LinkPath "$claudeConfigDir\agents" -TargetPath "$PSScriptRoot\settings\claude\agents" -Description "Claude Code agents"
-    New-ConfigLink -LinkPath "$claudeConfigDir\commands" -TargetPath "$PSScriptRoot\settings\claude\commands" -Description "Claude Code commands"
-    New-ConfigLink -LinkPath "$claudeConfigDir\.mcp.json" -TargetPath "$PSScriptRoot\settings\claude\.mcp.json" -Description "MCP server configuration"
-    
-    # Hosts File Configuration (Development domains)
-    Write-Host "Configuring hosts file for development domains..."
-    $hostsFile = "$env:WINDIR\System32\drivers\etc\hosts"
-    $devHosts = "$PSScriptRoot\settings\etc\hosts"
-    
-    if (Test-Path $devHosts) {
-        try {
-            # Read current hosts file
-            $currentHosts = Get-Content $hostsFile -ErrorAction SilentlyContinue
-            $devHostsContent = Get-Content $devHosts
-            
-            # Check if dev domains are already present
-            $needsUpdate = $false
-            foreach ($line in $devHostsContent) {
-                if ($line.Trim() -and -not $line.StartsWith('#') -and $currentHosts -notcontains $line) {
-                    $needsUpdate = $true
-                    break
-                }
-            }
-            
-            if ($needsUpdate -or $Force) {
-                # Backup current hosts file
-                Copy-Item $hostsFile "$hostsFile.backup-$(Get-Date -Format 'yyyyMMdd-HHmmss')" -Force
-                
-                # Add development domains if not present
-                $updatedContent = $currentHosts + "`n# Development domains added by Windows Dev Setup" + $devHostsContent
-                $updatedContent | Set-Content $hostsFile -Force
-                Write-Host "  ✓ Development domains added to hosts file" -ForegroundColor Green
-            } else {
-                Write-Host "  ✓ Development domains already present in hosts file" -ForegroundColor Green
-            }
-        }
-        catch {
-            Write-Warning "  ✗ Failed to update hosts file: $($_.Exception.Message)"
-            Write-Host "    You may need to manually add development domains from $devHosts" -ForegroundColor Yellow
-        }
-    }
+    New-ConfigLink -LinkPath "$claudeConfigDir\settings.json" -TargetPath "$PSScriptRoot\settings\claude\settings.json" -Description "Claude Code settings"
+    New-ConfigLink -LinkPath "$claudeConfigDir\agents" -TargetPath "$PSScriptRoot\settings\claude\agents" -Description "Claude agents directory"
+    New-ConfigLink -LinkPath "$claudeConfigDir\commands" -TargetPath "$PSScriptRoot\settings\claude\commands" -Description "Claude commands directory"
     
     Write-Step "Configuration completed successfully!"
     Write-Host "Restart your terminal and VSCode to apply the new settings." -ForegroundColor Green

@@ -1,5 +1,5 @@
 ---
-name: agent-architect
+name: claude-agent-specialist
 description: Meta-agent that designs and creates other specialized agents with proper structure, validation, and best practices
 tools: Read, Write, Glob, Grep, Task
 ---
@@ -61,6 +61,16 @@ Only include necessary tools:
 - **WebSearch/WebFetch**: For online resources
 - **TodoWrite**: For task management
 - **Task**: For calling other specialized agents
+
+## Sub-Agent Integration
+
+When creating agents that benefit from specialized expertise, document appropriate sub-agent integration via the Task tool:
+
+- **markdown-specialist**: For properly formatted agent documentation with clean markdown structure
+- **readme-maintainer**: For updating agent documentation and maintaining the agents README
+- **csharp**: When creating agents that work with .NET/C# code
+- **mstest**: When creating agents that involve .NET testing scenarios
+- **devops**: When creating agents that integrate with Azure DevOps or CI/CD
 
 ### 5. Agent File Structure
 

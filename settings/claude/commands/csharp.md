@@ -1,11 +1,11 @@
-# C# Developer Command
+# C# Command
 
-This command uses the csharp-developer agent to write modern C# code following current best practices and industry standards.
+This command uses the csharp agent to write modern C# code following current best practices and industry standards.
 
 ## Usage
 
 ```
-/csharp-developer
+/csharp
 ```
 
 ## Description
@@ -20,7 +20,7 @@ This command will:
 
 ## Agent Used
 
-- **csharp-developer**: Specialized agent for modern C# development with latest language features and best practices
+- **csharp-specialist**: Specialized agent for modern C# development with latest language features and best practices
 
 ## Tools Available to Agent
 

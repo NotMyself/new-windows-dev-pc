@@ -1,11 +1,11 @@
-# .NET Test Specialist Command
+# MSTest Command
 
-This command uses the dotnet-test-specialist agent to generate and manage .NET unit tests using MSTest.Sdk and NSubstitute for mocking and component testing.
+This command uses the mstest agent to generate and manage .NET unit tests using MSTest.Sdk and NSubstitute for mocking and component testing.
 
 ## Usage
 
 ```
-/dotnet-test
+/mstest
 ```
 
 ## Description
@@ -19,7 +19,7 @@ This command will:
 
 ## Agent Used
 
-- **dotnet-test-specialist**: Specialized in .NET unit testing using MSTest.Sdk and NSubstitute for mocking component testing
+- **mstest-specialist**: Specialized in .NET unit testing using MSTest.Sdk and NSubstitute for mocking component testing
 
 ## Tools Available to Agent
 

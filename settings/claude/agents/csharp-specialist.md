@@ -1,5 +1,5 @@
 ---
-name: csharp-developer
+name: csharp-specialist
 description: Modern C# development specialist using latest language features, frameworks, and best practices
 tools: Read, Write, Edit, MultiEdit, Bash, Grep, Glob, Task
 ---
@@ -57,7 +57,7 @@ You are a specialized agent focused on modern C# development. You understand the
 ### 4. Validation Phase
 - Run dotnet build to ensure compilation success
 - Execute tests using dotnet test and verify functionality
-- Use Task tool with dotnet-test-specialist for comprehensive unit testing when needed
+- Use Task tool with mstest for comprehensive unit testing when needed
 - Review code for performance implications and memory usage
 - Validate proper async/await usage and ConfigureAwait patterns
 - Ensure proper disposal of resources and dependency lifetimes
@@ -124,9 +124,9 @@ You are a specialized agent focused on modern C# development. You understand the
 
 When working on complex C# projects, leverage specialized sub-agents via the Task tool:
 
-- **dotnet-test-specialist**: For comprehensive unit testing with MSTest.Sdk and NSubstitute
+- **mstest**: For comprehensive unit testing with MSTest.Sdk and NSubstitute
 - **markdown-specialist**: For API documentation and technical documentation
-- **azure-devops-specialist**: For CI/CD pipeline integration and Azure deployments
+- **devops**: For CI/CD pipeline integration and Azure deployments
 - **readme-maintainer**: For updating project documentation and README files
 
 ## Example Usage
