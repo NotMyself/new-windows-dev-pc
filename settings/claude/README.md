@@ -1,6 +1,6 @@
 # Claude Code Configuration
 
-This directory contains the complete Claude Code configuration for the Windows development setup automation repository. It includes specialized agents, commands, and settings that provide domain-specific expertise following modern development best practices.
+This directory contains the complete Claude Code configuration for the Windows development setup automation repository. It includes 7 specialized agents, 7 corresponding slash commands, and global settings that provide domain-specific expertise for Windows development workflows following modern best practices.
 
 ## Directory Structure
 
@@ -31,10 +31,10 @@ settings/claude/
 ## Configuration Overview
 
 The Claude Code setup includes:
-- **Specialized Agents**: Expert agents for specific development tasks
-- **Slash Commands**: Quick access commands that invoke the agents
-- **PowerShell Integration**: Optimized for Windows development workflows
-- **Global Settings**: Shell configuration and permissions management
+- **7 Specialized Agents**: Expert agents for Azure DevOps, C# development, testing, documentation, and agent creation
+- **7 Slash Commands**: Quick access commands that directly invoke the specialized agents
+- **PowerShell Integration**: Optimized for Windows development workflows with PowerShell as the default shell
+- **Global Settings**: Shell configuration, permissions management, and web access controls
 
 ## Available Agents
 
@@ -308,6 +308,7 @@ The Claude Code configuration includes:
 - **Shell Integration**: PowerShell as the default shell for Windows compatibility
 - **Agent Path**: `.claude/agents` for agent discovery
 - **Permissions**: Controlled access to PowerShell execution and documentation domains
+- **Web Access**: Allows fetching documentation from Anthropic's domain
 
 ### Command Integration
 
@@ -409,15 +410,14 @@ Before deploying new agents:
 
 ## Integration with Development Workflow
 
-### Symbolic Link Configuration
+### Project Integration
 
-The `configure.ps1` script creates symbolic links:
+The Claude Code configuration is part of the Windows development setup automation:
 
-```text
-settings/claude/agents → ~/.claude/agents
-settings/claude/commands → ~/.claude/commands
-settings/claude/settings.json → ~/.claude/settings.json
-```
+- **Configuration Files**: Located in `settings/claude/` directory within the project
+- **Agent Templates**: Specialized agents in `settings/claude/agents/` for development workflows
+- **Slash Commands**: Quick access commands in `settings/claude/commands/` for agent invocation
+- **Settings**: Global Claude Code configuration in `settings/claude/settings.json`
 
 ### PowerShell Profile Integration
 
@@ -429,16 +429,15 @@ The agents work seamlessly with the PowerShell profile's development tools:
 - .NET development and testing workflows
 - Node.js development workflows
 
-### MCP Server Support
+### Tool Integration
 
-The configuration includes MCP server support for:
+The agents integrate with Windows development tools through:
 
-- **NuGet** - Package management and dependency operations
-- **.NET CLI** - Build, test, and project operations
-- **Azure CLI** - Cloud service integration and management
-- **Git** - Repository operations and version control
-- **SQL Server** - Database operations and management
-- **Filesystem** - File system operations and project navigation
+- **PowerShell**: Native shell integration for Windows development workflows
+- **Azure CLI**: Cloud service integration and management via azure-devops-specialist
+- **Git**: Repository operations through PowerShell and agent workflows
+- **.NET CLI**: Build, test, and project operations via csharp-specialist and mstest-specialist
+- **VSCode**: Integration through the project's PowerShell profile and development workflows
 
 ## Best Practices
 
