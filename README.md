@@ -18,16 +18,23 @@ A comprehensive Windows developer setup automation repository containing PowerSh
 
 ## Table of Contents
 
+- [Prerequisites](#prerequisites)
 - [Quick Start](#quick-start)
 - [Installed Packages](#installed-packages)
 - [Configuration Management](#configuration-management)
 - [Claude Code Integration](#claude-code-integration)
 - [Documentation Structure](#documentation-structure)
-- [Prerequisites](#prerequisites)
 - [Detailed Usage](#detailed-usage)
 - [PowerShell Profile Features](#powershell-profile-features)
 - [Troubleshooting](#troubleshooting)
 - [Repository Structure](#repository-structure)
+
+## Prerequisites
+
+- **Windows 10/11** - Modern Windows operating system
+- **PowerShell 5.1+** - Included with Windows (PowerShell 7+ will be installed)
+- **Administrator Access** - User account with elevation privileges (scripts handle elevation automatically)
+- **Internet Connection** - Required for downloading packages and tools
 
 ## Quick Start
 
@@ -138,13 +145,6 @@ The setup uses **symbolic links** to centralize configuration management, keepin
 For detailed information about the symbolic link creation process, path validation, and multi-path support, see the [Installation Scripts documentation](installs/README.md#symbolic-link-management).
 
 > **Note**: Git and Visual Studio configurations are referenced in configure.ps1 but the actual configuration files are not included in the repository to avoid overwriting personal settings.
-
-## Prerequisites
-
-- **Windows 10/11** - Modern Windows operating system
-- **PowerShell 5.1+** - Included with Windows (PowerShell 7+ will be installed)
-- **Administrator Access** - User account with elevation privileges (scripts handle elevation automatically)
-- **Internet Connection** - Required for downloading packages and tools
 
 ## Detailed Usage
 
