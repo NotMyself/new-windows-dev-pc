@@ -1,6 +1,6 @@
 # Claude Code Configuration
 
-This directory contains the complete Claude Code configuration for the Windows development setup automation repository. It includes 7 specialized agents, 7 corresponding slash commands, and global settings that provide domain-specific expertise for Windows development workflows following modern best practices.
+This directory contains the complete Claude Code configuration for the Windows development setup automation repository. It includes 7 specialized agents with sophisticated delegation intelligence and contextual decision-making frameworks, 7 corresponding slash commands, and global settings that provide domain-specific expertise for Windows development workflows following modern best practices and intelligent collaboration patterns.
 
 ## Directory Structure
 
@@ -31,28 +31,31 @@ settings/claude/
 ## Configuration Overview
 
 The Claude Code setup includes:
-- **7 Specialized Agents**: Expert agents for Azure DevOps, C# development, testing, documentation, and agent creation
+- **7 Specialized Agents**: Expert agents for Azure DevOps, C# development, testing, documentation, and agent creation with sophisticated delegation intelligence
 - **7 Slash Commands**: Quick access commands that directly invoke the specialized agents
 - **PowerShell Integration**: Optimized for Windows development workflows with PowerShell as the default shell
 - **Global Settings**: Shell configuration, permissions management, and web access controls
+- **Intelligent Delegation Framework**: Each agent includes sophisticated decision-making capabilities for optimal sub-agent collaboration
+- **Multi-Agent Workflows**: Seamless integration patterns that prevent duplication and maximize ecosystem efficiency
 
 ## Available Agents
 
 ### 🔧 claude-agent-specialist
 
-**Purpose**: Meta-agent that designs and creates other specialized agents with proper structure, validation, and best practices.
+**Purpose**: Meta-agent that designs and creates other specialized agents with proper structure, validation, sophisticated delegation intelligence, and best practices for optimal ecosystem integration.
 
 **Tools**: Read, Write, Glob, Grep, Task
 **Command**: `/new-agent`
 
 **Key Capabilities**:
 
-- Agent design and architecture planning
-- Template creation following Claude Code standards
-- Validation and best practice enforcement
-- YAML frontmatter format compliance
-- Naming convention and uniqueness checks
-- Sub-agent integration and workflow orchestration
+- Agent design and architecture planning with delegation intelligence
+- Template creation following Claude Code standards with comprehensive sub-agent integration patterns
+- Validation and best practice enforcement including delegation decision frameworks
+- YAML frontmatter format compliance and Tool inclusion verification
+- Naming convention and uniqueness checks across the agent ecosystem
+- Sub-agent integration and workflow orchestration with contextual decision-making examples
+- Advanced delegation pattern design to prevent ecosystem overlap and maximize efficiency
 
 **Usage Examples**:
 
@@ -71,12 +74,12 @@ The Claude Code setup includes:
 
 **Key Capabilities**:
 
-- YAML pipeline creation and optimization
-- Azure CLI automation and scripting
-- Build agent and deployment configuration
-- Security scanning and compliance implementation
-- Modern CI/CD pattern implementation (2024-2025)
-- Integration with .NET testing and deployment workflows
+- YAML pipeline creation and optimization with intelligent delegation to .NET and testing specialists
+- Azure CLI automation and scripting with context-aware Task tool integration
+- Build agent and deployment configuration with sub-agent consultation for technical accuracy
+- Security scanning and compliance implementation using specialist expertise when needed
+- Modern CI/CD pattern implementation (2024-2025) with sophisticated delegation patterns
+- Integration with .NET testing and deployment workflows through csharp-specialist and mstest-specialist collaboration
 
 **Usage Examples**:
 
@@ -98,12 +101,12 @@ The Claude Code setup includes:
 
 - C# 12+ language features (primary constructors, collection expressions, ref readonly parameters, alias any type)
 - .NET 8+ framework capabilities with ASP.NET Core and Entity Framework Core
-- SOLID principles, dependency injection, and clean architecture patterns
-- Modern async/await patterns with proper ConfigureAwait usage
-- Integration with popular libraries (MediatR, FluentValidation, AutoMapper, Serilog, Carter)
-- Nullable reference types and null safety patterns
-- Record types, pattern matching, and switch expressions
-- Result patterns for error handling vs traditional exceptions
+- SOLID principles, dependency injection, and clean architecture patterns with intelligent delegation for testing
+- Modern async/await patterns with proper ConfigureAwait usage and mstest-specialist integration for async testing
+- Integration with popular libraries (MediatR, FluentValidation, AutoMapper, Serilog, Carter) with automatic testing delegation
+- Nullable reference types and null safety patterns with comprehensive test coverage via sub-agent collaboration
+- Record types, pattern matching, and switch expressions with contextual decision-making for quality assurance
+- Result patterns for error handling vs traditional exceptions with intelligent delegation to testing and documentation specialists
 
 **Usage Examples**:
 
@@ -125,14 +128,14 @@ The Claude Code setup includes:
 
 **Key Capabilities**:
 
-- MSTest.Sdk framework test generation with modern attributes
-- NSubstitute mocking and dependency isolation patterns
-- Component testing vs unit testing methodologies
-- Async/await testing patterns and best practices
-- Test architecture following .NET testing standards
-- Arrange-act-assert pattern implementation
-- Test execution and coverage analysis
-- Parameterized testing with DataTestMethod and DataRow
+- MSTest.Sdk framework test generation with modern attributes and csharp-specialist integration for test target analysis
+- NSubstitute mocking and dependency isolation patterns with intelligent delegation for complex scenarios
+- Component testing vs unit testing methodologies with azure-devops-specialist integration for CI/CD pipeline testing
+- Async/await testing patterns and best practices with contextual decision-making for test complexity
+- Test architecture following .NET testing standards with sub-agent consultation for domain-specific testing needs
+- Arrange-act-assert pattern implementation with sophisticated delegation to code and documentation specialists
+- Test execution and coverage analysis with automatic CI/CD integration through azure-devops-specialist collaboration
+- Parameterized testing with DataTestMethod and DataRow with intelligent formatting through markdown-specialist integration
 
 **Usage Examples**:
 
@@ -153,14 +156,14 @@ The Claude Code setup includes:
 
 **Key Capabilities**:
 
-- Requirements engineering principles and analysis
-- Comprehensive feature documentation with all necessary sections
-- Technical specifications with implementation guidance
-- Clear, testable acceptance criteria and success metrics
-- Context integration with existing codebases and architecture
-- Testing strategy and quality assurance requirements
-- User story and acceptance criteria writing techniques
-- Technical documentation following industry standards
+- Requirements engineering principles and analysis with intelligent delegation to domain specialists
+- Comprehensive feature documentation with all necessary sections and automatic markdown-specialist formatting
+- Technical specifications with implementation guidance through csharp-specialist and azure-devops-specialist collaboration
+- Clear, testable acceptance criteria and success metrics with mstest-specialist integration for testing strategy
+- Context integration with existing codebases and architecture using sophisticated delegation patterns
+- Testing strategy and quality assurance requirements with contextual decision-making for specialist consultation
+- User story and acceptance criteria writing techniques with intelligent formatting delegation
+- Technical documentation following industry standards with automatic quality assurance through sub-agent collaboration
 
 **Usage Examples**:
 
@@ -180,12 +183,12 @@ The Claude Code setup includes:
 
 **Key Capabilities**:
 
-- CommonMark and GitHub Flavored Markdown specification compliance
-- Markdown linting rules and markdownlint standards application
-- Table formatting, alignment, and accessibility optimization
-- Code block syntax highlighting and language specification
-- Link validation, formatting, and accessibility enhancement
-- Header hierarchy optimization and document structure improvement
+- CommonMark and GitHub Flavored Markdown specification compliance with intelligent decision-making for complex formatting
+- Markdown linting rules and markdownlint standards application with context-aware quality assurance
+- Table formatting, alignment, and accessibility optimization using sophisticated formatting algorithms
+- Code block syntax highlighting and language specification with domain-specific expertise integration
+- Link validation, formatting, and accessibility enhancement with comprehensive cross-reference checking
+- Header hierarchy optimization and document structure improvement with intelligent content organization patterns
 
 **Usage Examples**:
 
@@ -198,32 +201,33 @@ The Claude Code setup includes:
 
 ### 📖 readme-maintainer
 
-**Purpose**: Updates and maintains README.md files with modern documentation best practices and integrates with markdown-specialist for optimal formatting.
+**Purpose**: Updates and maintains README.md files with depth-first hierarchical processing, nested structure support, and modern documentation best practices.
 
 **Tools**: Read, Edit, MultiEdit, Glob, Grep, Task
 **Command**: `/readme`
 
 **Key Capabilities**:
 
-- README analysis and gap identification
-- Modern documentation standards implementation
-- Structure optimization with scannable sections
-- Badge integration and status indicators
-- Cross-platform compatibility considerations
-- Automatic markdown formatting via markdown-specialist integration
+- **Depth-First README Processing**: Process README files starting from deepest nested directories and working up to root, ensuring proper dependency flow and hierarchical consistency
+- **Hierarchical Documentation Architecture**: Implement nested documentation strategies where parent READMEs provide overviews based on completed child documentation
+- **Content Distribution Management**: Ensure appropriate content distribution across hierarchy levels with detailed information in deepest directories and summaries in parent levels
+- **Cross-linking and Navigation**: Maintain consistent navigation and references between parent and child README files with validated dependency relationships
+- **Modern Documentation Standards**: Implementation with intelligent delegation to markdown-specialist for optimal formatting and linting compliance
+- **Structure Optimization**: Organize README content with clear, scannable sections and logical hierarchical flow that respects processing order
+- **Consistency Maintenance**: Ensure documentation style and format consistency across all README files in the hierarchy using depth-first processing principles
 
 **Usage Examples**:
 
 ```bash
-/readme "Update the README.md file to include proper installation instructions"
-/readme "Analyze this project's README and identify missing sections"
-/readme "Create a comprehensive README following modern best practices"
-/readme "Review the README.md and ensure it accurately reflects current project functionality"
+/readme "Update the README documentation hierarchy using depth-first processing to ensure proper dependency flow"
+/readme "Analyze the nested README structure and process files from deepest to shallowest"
+/readme "Create a hierarchical documentation system where detailed child READMEs are completed before parent summaries"
+/readme "Review all README files using depth-first processing to ensure they work as a cohesive system"
 ```
 
 ## Agent Workflow Integration
 
-The agents in this repository are designed to work together as an integrated workflow system, with each agent capable of calling others via the Task tool to ensure comprehensive and properly formatted results:
+The agents in this repository are designed to work together as an integrated workflow system with sophisticated delegation intelligence, with each agent capable of calling others via the Task tool using contextual decision-making frameworks to ensure comprehensive, properly formatted, and optimally efficient results:
 
 ### Core Workflow Patterns
 
@@ -248,11 +252,13 @@ The agents in this repository are designed to work together as an integrated wor
 
 ### Benefits of Integrated Workflow
 
-- **Consistency**: All outputs follow established standards through specialized agents
-- **Completeness**: Multi-step workflows ensure comprehensive coverage of tasks
-- **Quality Assurance**: Multiple validation layers with specialized expertise
-- **Automation**: Reduces manual coordination between different aspects of development
-- **Expertise Chaining**: Each agent contributes its specialized knowledge to the final result
+- **Consistency**: All outputs follow established standards through specialized agents with intelligent delegation patterns
+- **Completeness**: Multi-step workflows ensure comprehensive coverage of tasks with sophisticated decision-making
+- **Quality Assurance**: Multiple validation layers with specialized expertise and contextual sub-agent consultation
+- **Automation**: Reduces manual coordination between different aspects of development through smart delegation frameworks
+- **Expertise Chaining**: Each agent contributes its specialized knowledge to the final result while preventing ecosystem overlap
+- **Efficiency Optimization**: Intelligent delegation patterns maximize specialist utilization and minimize redundant work
+- **Contextual Decision-Making**: Each agent includes sophisticated frameworks for determining when and how to delegate tasks
 
 ### Example Workflows
 

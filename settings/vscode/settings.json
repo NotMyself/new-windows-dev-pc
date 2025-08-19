@@ -47,5 +47,6 @@
   "[xml]": {
     "editor.defaultFormatter": "DotJoshJohnson.xml"
   },
-  "github.copilot.nextEditSuggestions.enabled": true
+  "github.copilot.nextEditSuggestions.enabled": true,
+  "workbench.startupEditor": "none"
 }

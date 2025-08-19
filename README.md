@@ -5,7 +5,7 @@
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Claude Code](https://img.shields.io/badge/Claude_Code-Ready-purple.svg)](https://claude.ai/code)
 
-A comprehensive Windows developer setup automation repository containing PowerShell scripts to install and configure development tools, IDEs, and environments for new developers. Includes specialized Claude Code agents for enhanced development workflows.
+A comprehensive Windows developer setup automation repository containing PowerShell scripts to install and configure development tools, IDEs, and environments for new developers. Features 7 specialized Claude Code agents with sophisticated delegation intelligence, contextual decision-making frameworks, and hierarchical documentation processing for enhanced development workflows and optimal ecosystem efficiency.
 
 **Note:** These scripts automatically request Administrator privileges when needed - no need to "Run as Administrator" manually.
 
@@ -25,7 +25,7 @@ A comprehensive Windows developer setup automation repository containing PowerSh
 
 1. **Install tools**: Run `.\install.ps1` to install all development tools via WinGet and VSCode extensions
 2. **Configure settings**: Run `.\configure.ps1` to create symbolic links for configuration files (Git, VSCode, Windows Terminal, PowerShell, Claude Code)
-3. **Claude Code**: Specialized agents are automatically configured for enhanced development workflows
+3. **Claude Code**: 7 specialized agents with sophisticated delegation intelligence and contextual decision-making frameworks are automatically configured for enhanced development workflows, hierarchical documentation processing, and optimal ecosystem efficiency
 
 **💡 Tip**: You can double-click the scripts or run them from any PowerShell prompt - they'll automatically request elevation when needed.
 
@@ -147,7 +147,7 @@ The included PowerShell profile provides:
 
 ## Claude Code Integration
 
-The setup includes comprehensive Claude Code configuration with specialized agents and development tool integrations:
+The setup includes comprehensive Claude Code configuration with 7 specialized agents featuring sophisticated delegation intelligence, contextual decision-making frameworks, and development tool integrations:
 
 ### Global Settings
 - **PowerShell Shell**: Configures Claude Code to use PowerShell instead of bash for better Windows compatibility
@@ -156,36 +156,36 @@ The setup includes comprehensive Claude Code configuration with specialized agen
 
 ### Specialized Agents
 
-The repository includes seven specialized agents for enhanced development workflows:
+The repository includes seven specialized agents with sophisticated delegation intelligence and contextual decision-making frameworks for enhanced development workflows:
 
 #### 🔧 Claude Agent Specialist (`/new-agent`)
-**Purpose**: Meta-agent that designs and creates other specialized agents with proper structure, validation, and best practices.
+**Purpose**: Meta-agent that designs and creates other specialized agents with proper structure, validation, sophisticated delegation intelligence, and best practices for optimal ecosystem integration.
 
 #### ☁️ Azure DevOps Specialist (`/devops`)
-**Purpose**: Azure DevOps specialist for pipelines, builds, releases, and project management.
+**Purpose**: Azure DevOps specialist for pipelines, builds, releases, and project management with intelligent delegation to .NET and testing specialists for technical accuracy and comprehensive CI/CD integration.
 
 #### 📝 README Maintainer (`/readme`)
-**Purpose**: Updates and maintains README.md files with modern documentation best practices and integrates with markdown-specialist for optimal formatting.
+**Purpose**: Updates and maintains README.md files with depth-first hierarchical processing, nested documentation structures, modern documentation best practices, and intelligent delegation to markdown-specialist for optimal formatting and quality assurance.
 
 #### 💻 C# Specialist (`/csharp`)
-**Purpose**: Modern C# development specialist using latest language features, frameworks, and best practices.
+**Purpose**: Modern C# development specialist using latest language features, frameworks, and best practices with intelligent delegation to testing specialists for comprehensive test coverage and quality assurance.
 
 #### 🧪 MSTest Specialist (`/mstest`)
-**Purpose**: .NET unit testing specialist using MSTest.Sdk and NSubstitute for component testing.
+**Purpose**: .NET unit testing specialist using MSTest.Sdk and NSubstitute for component testing with intelligent delegation to csharp-specialist for test target analysis and azure-devops-specialist for CI/CD pipeline integration.
 
 #### 📋 Feature Prompt Specialist (`/new-feature`)
-**Purpose**: Specialized agent for creating comprehensive, well-structured feature prompts for software development tasks.
+**Purpose**: Specialized agent for creating comprehensive, well-structured feature prompts for software development tasks with intelligent delegation to domain specialists for technical accuracy and automatic formatting through markdown-specialist integration.
 
 #### 📝 Markdown Specialist (`/markdown`)
-**Purpose**: Creates well-formed, linted markdown documents and reformats existing markdown files following CommonMark and GitHub Flavored Markdown standards.
+**Purpose**: Creates well-formed, linted markdown documents and reformats existing markdown files following CommonMark and GitHub Flavored Markdown standards with intelligent decision-making for complex formatting scenarios and domain-specific expertise integration.
 
 ### Quick Agent Commands
 
 ```bash
-# Update README with modern best practices
+# Update README with depth-first hierarchical processing
 /readme
 
-# Create or improve agents
+# Create or improve agents with delegation intelligence
 /new-agent
 
 # Azure DevOps operations
@@ -204,11 +204,11 @@ The repository includes seven specialized agents for enhanced development workfl
 /markdown
 ```
 
-> **Note**: These commands are available after running `.\configure.ps1` to set up Claude Code integration.
+> **Note**: These commands are available after running `.\configure.ps1` to set up Claude Code integration. Each agent includes sophisticated delegation intelligence and contextual decision-making frameworks to automatically collaborate with other specialists for optimal results and ecosystem efficiency.
 
 ### Agent Workflow Integration
 
-The agents are designed to work together as an integrated workflow system, with each agent capable of calling others to ensure comprehensive and properly formatted results:
+The agents are designed to work together as an integrated workflow system with sophisticated delegation intelligence and contextual decision-making frameworks, with each agent capable of calling others using intelligent collaboration patterns to ensure comprehensive, properly formatted, and optimally efficient results:
 
 **Documentation Chain**:
 - `readme-maintainer` → `markdown-specialist`: README updates automatically formatted and linted
@@ -319,20 +319,20 @@ For additional assistance:
     │   ├── README.md                       # Claude Code configuration documentation
     │   ├── settings.json                   # Claude Code global settings with PowerShell shell
     │   ├── agents/                         # Specialized Claude agents (7 agents)
-    │   │   ├── claude-agent-specialist.md  # Meta-agent for creating specialized agents
-    │   │   ├── azure-devops-specialist.md  # Azure DevOps operations specialist
-    │   │   ├── csharp-specialist.md        # Modern C# development specialist
-    │   │   ├── mstest-specialist.md        # .NET unit testing specialist
-    │   │   ├── feature-prompt-specialist.md # Feature specification specialist
+    │   │   ├── azure-devops-specialist.md  # Azure DevOps operations with delegation intelligence
+    │   │   ├── claude-agent-specialist.md  # Meta-agent for creating agents with collaboration patterns
+    │   │   ├── csharp-specialist.md        # Modern C# development with testing integration
+    │   │   ├── feature-prompt-specialist.md # Feature specification with contextual decision-making
     │   │   ├── markdown-specialist.md      # Markdown formatting and linting specialist
-    │   │   └── readme-maintainer.md        # README maintenance agent
+    │   │   ├── mstest-specialist.md        # .NET unit testing with CI/CD integration
+    │   │   └── readme-maintainer.md        # Hierarchical README processing with depth-first algorithms
     │   └── commands/                       # Quick access commands for agents (7 commands)
-    │       ├── new-agent.md                # /new-agent command
-    │       ├── devops.md                   # /devops command
     │       ├── csharp.md                   # /csharp command
-    │       ├── mstest.md                   # /mstest command
-    │       ├── new-feature.md              # /new-feature command
+    │       ├── devops.md                   # /devops command
     │       ├── markdown.md                 # /markdown command
+    │       ├── mstest.md                   # /mstest command
+    │       ├── new-agent.md                # /new-agent command
+    │       ├── new-feature.md              # /new-feature command
     │       └── readme.md                   # /readme command
     ├── pwsh/
     │   └── Microsoft.PowerShell_profile.ps1  # Enhanced PowerShell profile

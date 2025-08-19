@@ -4,6 +4,10 @@
     "actions": 
     [
         {
+            "command": "find",
+            "id": "User.find"
+        },
+        {
             "command": 
             {
                 "action": "splitPane",
@@ -11,10 +15,6 @@
                 "splitMode": "duplicate"
             },
             "id": "User.splitPane.A6751878"
-        },
-        {
-            "command": "find",
-            "id": "User.find"
         },
         {
             "command": "paste",
@@ -56,20 +56,20 @@
             "keys": "alt+shift+d"
         },
         {
-            "id": "Terminal.OpenNewTab",
-            "keys": "ctrl+t"
-        },
-        {
-            "id": "Terminal.NextTab",
-            "keys": "ctrl+tab"
-        },
-        {
             "id": "User.copy.644BA8F2",
             "keys": "ctrl+c"
         },
         {
             "id": "Terminal.PrevTab",
             "keys": "ctrl+shift+tab"
+        },
+        {
+            "id": "Terminal.NextTab",
+            "keys": "ctrl+tab"
+        },
+        {
+            "id": "Terminal.OpenNewTab",
+            "keys": "ctrl+t"
         },
         {
             "id": "User.closeTab.0",
@@ -131,6 +131,12 @@
                 "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
                 "hidden": true,
                 "name": "Windows PowerShell"
+            },
+            {
+                "guid": "{16208362-94fc-5b1f-a491-5b2624d5ab56}",
+                "hidden": true,
+                "name": "Visual Studio Debug Console",
+                "source": "VSDebugConsole"
             }
         ]
     },
