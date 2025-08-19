@@ -266,42 +266,6 @@ For detailed information about agent capabilities, workflow integration patterns
 | **Symbolic Link Creation** | Configuration linking fails | Ensure target files exist in `settings/` directory |
 | **Path Not Found** | Scripts can't find components | Run scripts from repository root directory |
 
-### Manual Recovery
-
-**If Automatic Elevation Fails**:
-```powershell
-# Open PowerShell as Administrator manually, then navigate to repository:
-cd "C:\path\to\new-windows-dev-pc"
-.\install.ps1
-.\configure.ps1
-```
-
-**If WinGet Installation Fails**:
-```powershell
-# Try installing WinGet manually first:
-.\installs\install-winget.ps1
-# Then run main installation:
-.\install.ps1
-```
-
-### Getting Help
-
-**Documentation Resources**:
-- **[CLAUDE.md](CLAUDE.md)** - Comprehensive project documentation and architecture
-- **Component Documentation** - Detailed README files for each major component:
-  - [Claude Code Configuration](settings/claude/README.md) - Complete agent documentation and workflow integration
-  - [Installation Scripts](installs/README.md) - Detailed installation component documentation
-  - [VSCode Settings](settings/vscode/README.md) - VSCode configuration and extension management
-  - [PowerShell Profile](settings/pwsh/README.md) - Enhanced PowerShell profile features
-  - [Windows Terminal](settings/windows-terminal/README.md) - Terminal configuration details
-- **Script Comments** - Individual script files contain inline documentation
-- **PowerShell Help** - Use `Get-Help .\script-name.ps1` for parameter information
-- **Claude Code Agents** - Use `/readme` command for documentation assistance
-
-**Log Analysis**:
-- Scripts provide timestamped output for troubleshooting
-- Check error messages for specific package or configuration failures
-- Verify Administrator privileges are granted when prompted
 
 ## Repository Structure
 
