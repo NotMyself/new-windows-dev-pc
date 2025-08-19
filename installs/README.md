@@ -2,6 +2,20 @@
 
 This directory contains modular PowerShell scripts that handle the installation of development tools, IDEs, and environments for Windows developers. These scripts are designed to work together as part of the automated setup process but can also be executed independently.
 
+## Table of Contents
+
+- [Scripts Overview](#scripts-overview)
+- [Prerequisites](#prerequisites)
+- [Main Scripts Detailed Usage](#main-scripts-detailed-usage)
+- [Component Scripts](#component-scripts)
+- [Execution Order and Dependencies](#execution-order-and-dependencies)
+- [Symbolic Link Management](#symbolic-link-management)
+- [Configuration Files](#configuration-files)
+- [Error Handling and Logging](#error-handling-and-logging)
+- [Advanced Usage and Parameter Reference](#advanced-usage-and-parameter-reference)
+- [Best Practices](#best-practices)
+- [Troubleshooting](#troubleshooting)
+
 ## Scripts Overview
 
 | Script | Purpose | Dependencies |
@@ -15,6 +29,62 @@ This directory contains modular PowerShell scripts that handle the installation 
 - **Administrator privileges**: Required for `install-winget.ps1` and `winget.ps1`
 - **PowerShell execution policy**: Must allow script execution
 - **Internet connection**: Required for downloading packages and dependencies
+
+## Main Scripts Detailed Usage
+
+The main scripts (`install.ps1` and `configure.ps1`) orchestrate the entire setup process and call the component scripts in this directory. These scripts are designed to be run from the repository root.
+
+### install.ps1 - Development Tools Installation
+
+**Purpose**: Installs all development tools, fonts, and VSCode extensions
+
+**Parameters**:
+- `-SkipWinGet` - Skip WinGet package manager and package installation
+- `-SkipExtensions` - Skip VSCode extension installation
+
+**Process**:
+1. **WinGet Installation**: Automatically installs WinGet if not present
+2. **Tool Installation**: Runs WinGet package installation with progress tracking
+3. **Font Installation**: Installs Cascadia Code fonts from `fonts/CascadiaCode.zip`
+4. **Extension Installation**: Installs VSCode extensions from curated extensions list
+
+**Example Usage**:
+```powershell
+# Full installation
+.\install.ps1
+
+# Skip package installation, only install extensions
+.\install.ps1 -SkipWinGet
+
+# Skip extensions, only install packages
+.\install.ps1 -SkipExtensions
+```
+
+### configure.ps1 - Configuration Environment Setup
+
+**Purpose**: Creates symbolic links for all configuration files
+
+**Parameters**:
+- `-Force` - Overwrite existing configuration files and directories
+
+**Process**:
+1. **Path Validation**: Validates all target paths before creating links
+2. **Symbolic Link Creation**: Creates links for VSCode, Windows Terminal, PowerShell, Claude Code
+3. **Multi-Path Support**: Handles multiple installation locations (e.g., Windows Terminal standard vs. Store)
+4. **System Configuration**: Links hosts file and other system-level configurations
+
+**Example Usage**:
+```powershell
+# Standard configuration setup
+.\configure.ps1
+
+# Force overwrite existing configurations
+.\configure.ps1 -Force
+```
+
+## Component Scripts
+
+The following scripts handle specific installation components and are typically called by the main scripts:
 
 ## install-winget.ps1
 
@@ -39,6 +109,12 @@ Installs the latest WinGet (Windows Package Manager) with all required dependenc
 # Run as Administrator
 .\installs\install-winget.ps1
 ```
+
+**Features**:
+- Multiple installation methods with automatic fallback
+- Comprehensive error handling and progress tracking
+- Automatic cleanup of temporary installation files
+- Validation of WinGet installation success
 
 ### Requirements
 - Administrator privileges (mandatory)
@@ -103,20 +179,27 @@ Installs a comprehensive set of development tools using WinGet package manager. 
 - **Azure Data Studio Insiders**: Modern database tool
 - **JetBrains Toolbox**: Manager for JetBrains IDEs
 
-### Usage
+### Enhanced Usage Examples
 ```powershell
-# Basic installation (skip browsers)
+# Install all packages
 .\installs\winget.ps1
 
-# Include browsers
+# Install packages with optional browsers
 .\installs\winget.ps1 -IncludeBrowsers
 
 # Skip specific packages
-.\installs\winget.ps1 -SkipPackages @('Microsoft.PowerToys', 'JetBrains.Toolbox')
+.\installs\winget.ps1 -SkipPackages @("Microsoft.VisualStudio.2022.Professional")
 
-# Combine options
+# Combine options - install browsers but skip specific packages
 .\installs\winget.ps1 -IncludeBrowsers -SkipPackages @('Mozilla.Firefox.DeveloperEdition')
 ```
+
+**Tool Categories**:
+- **Core Development Tools**: .NET SDK, Fast Node Manager (fnm), Azure CLI, Git, Claude AI
+- **IDEs and Editors**: Visual Studio 2022 Professional, VSCode, JetBrains Toolbox
+- **Database Tools**: SQL Server Management Studio, Azure Data Studio Insiders
+- **Windows Tools**: PowerToys, Windows Terminal, PowerShell 7+, Oh My Posh
+- **Optional Browsers**: Available with `-IncludeBrowsers` parameter
 
 ### Requirements
 - Administrator privileges (mandatory)
@@ -172,14 +255,20 @@ Installs all extensions listed in the extensions file, including:
 - **Markdown Preview Enhanced**: Advanced markdown preview
 - **Import Cost**: Display package import sizes
 
-### Usage
+### Enhanced Usage Examples
 ```powershell
 # Install extensions from default list
 .\installs\vscode.ps1
 
 # Use custom extensions file
-.\installs\vscode.ps1 -ExtensionsFile "C:\path\to\custom\extensions"
+.\installs\vscode.ps1 -ExtensionsFile "custom-extensions.txt"
 ```
+
+**Features**:
+- Supports comments in extensions file (lines starting with `#`)
+- Progress tracking and error handling per extension
+- Automatic retry logic for failed installations
+- Integration with `backup-vs` PowerShell function for extension management
 
 ### Requirements
 - VSCode installed and `code` command available in PATH
@@ -285,6 +374,75 @@ All scripts implement comprehensive error handling:
 - **Detailed error messages**: Specific information about failures
 - **Exit codes**: Non-zero exit codes on critical failures
 - **Progress tracking**: Clear indication of current operation
+
+## Advanced Usage and Parameter Reference
+
+### Complete Script Parameter Options
+
+**Main Installation Script**:
+```powershell
+# Complete installation with all components
+.\install.ps1
+
+# Selective installation options
+.\install.ps1 -SkipWinGet          # Skip package installation, only fonts and extensions
+.\install.ps1 -SkipExtensions      # Skip VSCode extensions, only packages and fonts
+```
+
+**Configuration Script**:
+```powershell
+# Standard configuration setup
+.\configure.ps1
+
+# Force overwrite existing configurations
+.\configure.ps1 -Force             # Overwrites existing symlinks and directories
+```
+
+**Component Script Advanced Options**:
+```powershell
+# WinGet package installation with options
+.\installs\winget.ps1 -IncludeBrowsers                    # Include optional browser packages
+.\installs\winget.ps1 -SkipPackages @("Microsoft.VisualStudio.2022.Professional")  # Skip specific packages
+
+# VSCode extension installation with custom list
+.\installs\vscode.ps1 -ExtensionsFile "custom-extensions.txt"
+```
+
+### Symbolic Link Reference
+
+The `configure.ps1` script creates symbolic links from system locations to repository files:
+
+| Component | System Location | Repository Location |
+|-----------|-----------------|---------------------|
+| **VSCode Settings** | `%APPDATA%\Code\User\settings.json` | `settings/vscode/settings.json` |
+| **VSCode Keybindings** | `%APPDATA%\Code\User\keybindings.json` | `settings/vscode/keybindings.json` |
+| **Windows Terminal** | `%LOCALAPPDATA%\Microsoft\Windows Terminal\settings.json` | `settings/windows-terminal/settings.json` |
+| **Windows Terminal (Store)** | `%LOCALAPPDATA%\Packages\Microsoft.WindowsTerminal*\LocalState\settings.json` | `settings/windows-terminal/settings.json` |
+| **PowerShell Profile** | `$PROFILE` | `settings/pwsh/Microsoft.PowerShell_profile.ps1` |
+| **Claude Settings** | `~/.claude/settings.json` | `settings/claude/settings.json` |
+| **Claude Agents** | `~/.claude/agents/` | `settings/claude/agents/` |
+| **Claude Commands** | `~/.claude/commands/` | `settings/claude/commands/` |
+| **System Hosts** | `C:\Windows\System32\drivers\etc\hosts` | `settings/etc/hosts` |
+
+**Multi-Path Support**: The script automatically detects and creates links for multiple installation paths (e.g., Windows Terminal standard vs. Microsoft Store versions).
+
+### VSCode Extension Management
+
+**Adding/Removing Extensions**:
+1. **Manual Edit**: Update `settings/vscode/extensions` file (supports comments with `#`)
+2. **Backup Current**: Use `backup-vs` PowerShell function to sync from installed extensions
+3. **Install New**: Run `.\installs\vscode.ps1` to install newly added extensions
+
+**Extension File Format**:
+```
+# Core Extensions
+ms-vscode.vscode-typescript-next
+ms-vscode.vscode-json
+
+# C# Development
+ms-dotnettools.csharp
+ms-dotnettools.vscode-dotnet-runtime
+```
 
 ## Best Practices
 
