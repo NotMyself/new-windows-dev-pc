@@ -23,7 +23,6 @@ A comprehensive Windows developer setup automation repository containing PowerSh
 - [Installed Packages](#installed-packages)
 - [Configuration Management](#configuration-management)
 - [Claude Code Integration](#claude-code-integration)
-- [Documentation Structure](#documentation-structure)
 - [Usage](#usage)
 - [PowerShell Profile Features](#powershell-profile-features)
 - [Troubleshooting](#troubleshooting)
@@ -252,25 +251,6 @@ After running `.\configure.ps1`, use slash commands for direct access to special
 ```
 
 For detailed information about agent capabilities, workflow integration patterns, and advanced usage, see the [complete Claude Code documentation](settings/claude/README.md).
-
-## Documentation Structure
-
-This repository uses a modular documentation approach with component-specific README files:
-
-### Main Documentation
-- **[README.md](README.md)** (this file) - Main project overview and quick start guide
-- **[CLAUDE.md](CLAUDE.md)** - Comprehensive project architecture and development notes
-
-### Component Documentation
-- **[Claude Code Setup](settings/claude/README.md)** - Complete documentation for the 7 specialized agents, workflow integration, and Claude Code configuration
-- **[Installation Scripts](installs/README.md)** - Detailed documentation for all installation components and options  
-- **[VSCode Configuration](settings/vscode/README.md)** - VSCode settings, extensions, and customization details
-- **[PowerShell Profile](settings/pwsh/README.md)** - Enhanced PowerShell profile features and customizations
-- **[Windows Terminal](settings/windows-terminal/README.md)** - Terminal configuration and appearance settings
-- **[Git Configuration](settings/git/README.md)** - Git setup and configuration details
-- **[System Configuration](settings/etc/README.md)** - System-level configuration and hosts file management
-
-Each component README provides detailed setup instructions, configuration options, and usage examples specific to that component. This modular approach ensures you can find detailed information without overwhelming the main README with implementation details.
 
 
 ## Troubleshooting
