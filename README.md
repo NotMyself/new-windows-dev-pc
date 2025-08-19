@@ -20,13 +20,14 @@ A comprehensive Windows developer setup automation repository containing PowerSh
 
 - [Quick Start](#quick-start)
 - [Installed Packages](#installed-packages)
-- [Configuration Files](#configuration-files)
+- [Configuration Management](#configuration-management)
 - [Claude Code Integration](#claude-code-integration)
+- [Documentation Structure](#documentation-structure)
 - [Prerequisites](#prerequisites)
 - [Detailed Usage](#detailed-usage)
 - [PowerShell Profile Features](#powershell-profile-features)
 - [Troubleshooting](#troubleshooting)
-- [File Structure](#file-structure)
+- [Repository Structure](#repository-structure)
 
 ## Quick Start
 
@@ -290,103 +291,62 @@ work      # Navigate to work projects
 
 ## Claude Code Integration
 
-The setup includes comprehensive Claude Code configuration optimized for Windows development workflows. Located in `settings/claude/`, this configuration provides 7 specialized agents with intelligent delegation capabilities and seamless development tool integration.
+The setup includes comprehensive Claude Code configuration optimized for Windows development workflows with **7 specialized agents** that provide intelligent delegation capabilities and seamless development tool integration.
 
-### Global Configuration
+### Key Features
 
-**PowerShell Integration** (`settings/claude/settings.json`):
-- **Default Shell**: Configures Claude Code to use PowerShell instead of bash for Windows compatibility
-- **Environment Variables**: Sets `SHELL` and `CLAUDE_SHELL` to PowerShell for consistent shell experience
-- **Permissions**: Pre-configured permissions for common development operations
-
-### Agent Architecture
-
-The system includes **7 specialized agents** designed for intelligent collaboration and workflow automation:
+- **7 Specialized Agents**: Expert agents for Azure DevOps, C# development, testing, documentation, and agent creation
+- **Intelligent Delegation**: Sophisticated decision-making frameworks for optimal collaboration between agents
+- **PowerShell Integration**: Optimized for Windows development workflows with PowerShell as the default shell
+- **Quick Access Commands**: Slash commands (`/readme`, `/csharp`, `/devops`, etc.) for direct agent invocation
+- **Workflow Automation**: Seamless integration patterns that prevent duplication and maximize efficiency
 
 ### Available Agents
 
-| Agent | Command | Purpose | Key Capabilities |
-|-------|---------|---------|------------------|
-| **🔧 Claude Agent Specialist** | `/new-agent` | Meta-agent for creating specialized agents | Agent design, validation, delegation patterns |
-| **☁️ Azure DevOps Specialist** | `/devops` | Azure DevOps and CI/CD operations | Pipeline management, builds, releases |
-| **📝 README Maintainer** | `/readme` | Documentation hierarchy management | Bottom-up processing, content extraction |
-| **💻 C# Specialist** | `/csharp` | Modern C# development | Latest language features, frameworks |
-| **🧪 MSTest Specialist** | `/mstest` | .NET unit testing | MSTest.Sdk, NSubstitute, test automation |
-| **📋 Feature Prompt Specialist** | `/new-feature` | Feature specification creation | Requirements analysis, structured prompts |
-| **📝 Markdown Specialist** | `/markdown` | Markdown formatting and linting | CommonMark, GitHub Flavored Markdown |
+| Agent | Command | Purpose |
+|-------|---------|---------|
+| **README Maintainer** | `/readme` | Documentation hierarchy management with bottom-up processing |
+| **C# Specialist** | `/csharp` | Modern C# development with latest language features |
+| **MSTest Specialist** | `/mstest` | .NET unit testing with MSTest.Sdk and NSubstitute |
+| **Azure DevOps Specialist** | `/devops` | CI/CD pipelines and Azure DevOps operations |
+| **Feature Prompt Specialist** | `/new-feature` | Comprehensive feature specification creation |
+| **Markdown Specialist** | `/markdown` | Markdown formatting and linting compliance |
+| **Claude Agent Specialist** | `/new-agent` | Meta-agent for creating specialized agents |
 
-### Agent Capabilities
+### Setup and Usage
 
-**Intelligent Delegation**: Each agent includes sophisticated decision-making frameworks for optimal collaboration:
-- **Domain Expertise**: Specialized knowledge for specific development areas
-- **Cross-Agent Collaboration**: Automatic delegation to other agents when needed
-- **Quality Assurance**: Built-in validation and formatting standards
-- **Workflow Integration**: Seamless integration with Windows development tools
-
-### Quick Access Commands
-
-After running `.\configure.ps1`, these slash commands provide direct access to specialized agents:
+After running `.\configure.ps1`, use slash commands for direct access to specialized agents:
 
 ```powershell
-# Documentation and content management
 /readme          # Update README hierarchy with intelligent processing
-/markdown        # Format and lint markdown documents
-/new-feature     # Create comprehensive feature specifications
-
-# Development and testing
-/csharp          # Modern C# development assistance
+/csharp          # Modern C# development assistance  
 /mstest          # .NET unit testing and test generation
 /devops          # Azure DevOps and CI/CD operations
-
-# Agent management
+/new-feature     # Create comprehensive feature specifications
+/markdown        # Format and lint markdown documents
 /new-agent       # Create or improve specialized agents
 ```
 
-### Agent Integration Benefits
+For detailed information about agent capabilities, workflow integration patterns, and advanced usage, see the [complete Claude Code documentation](settings/claude/README.md).
 
-- **Consistent Workflows**: Standardized approaches across all development tasks
-- **Quality Assurance**: Built-in validation and formatting standards
-- **Time Efficiency**: Automated delegation reduces manual coordination
-- **Knowledge Sharing**: Cross-agent collaboration ensures comprehensive solutions
-- **Windows Optimization**: All agents configured for Windows development workflows
+## Documentation Structure
 
-> **Setup Note**: Run `.\configure.ps1` to activate Claude Code integration. All agents include intelligent delegation capabilities and will automatically collaborate with other specialists when needed for optimal results.
+This repository uses a modular documentation approach with component-specific README files:
 
-### Workflow Integration Patterns
+### Main Documentation
+- **[README.md](README.md)** (this file) - Main project overview and quick start guide
+- **[CLAUDE.md](CLAUDE.md)** - Comprehensive project architecture and development notes
 
-The agents work together through intelligent delegation patterns:
+### Component Documentation
+- **[Claude Code Setup](settings/claude/README.md)** - Complete documentation for the 7 specialized agents, workflow integration, and Claude Code configuration
+- **[Installation Scripts](installs/README.md)** - Detailed documentation for all installation components and options  
+- **[VSCode Configuration](settings/vscode/README.md)** - VSCode settings, extensions, and customization details
+- **[PowerShell Profile](settings/pwsh/README.md)** - Enhanced PowerShell profile features and customizations
+- **[Windows Terminal](settings/windows-terminal/README.md)** - Terminal configuration and appearance settings
+- **[Git Configuration](settings/git/README.md)** - Git setup and configuration details
+- **[System Configuration](settings/etc/README.md)** - System-level configuration and hosts file management
 
-**Documentation Workflows**:
-```
-readme-maintainer → markdown-specialist
-├─ Hierarchical README processing
-└─ Automatic formatting and linting
-
-feature-prompt-specialist → markdown-specialist  
-├─ Requirements documentation
-└─ Structured specification formatting
-```
-
-**Development Workflows**:
-```
-csharp-specialist → mstest-specialist
-├─ Modern C# implementation  
-└─ Comprehensive unit testing
-
-azure-devops-specialist → csharp-specialist → mstest-specialist
-├─ CI/CD pipeline setup
-├─ .NET application integration
-└─ Automated testing workflows
-```
-
-**Meta Workflows**:
-```
-claude-agent-specialist → readme-maintainer → markdown-specialist
-├─ New agent creation
-├─ Documentation updates
-└─ Quality assurance formatting
-```
-
+Each component README provides detailed setup instructions, configuration options, and usage examples specific to that component. This modular approach ensures you can find detailed information without overwhelming the main README with implementation details.
 
 ## Advanced Usage
 
@@ -491,7 +451,13 @@ cd "C:\path\to\new-windows-dev-pc"
 ### Getting Help
 
 **Documentation Resources**:
-- **[CLAUDE.md](C:\Users\bobby\src\new-windows-dev-pc\CLAUDE.md)** - Comprehensive project documentation and architecture
+- **[CLAUDE.md](CLAUDE.md)** - Comprehensive project documentation and architecture
+- **Component Documentation** - Detailed README files for each major component:
+  - [Claude Code Configuration](settings/claude/README.md) - Complete agent documentation and workflow integration
+  - [Installation Scripts](installs/README.md) - Detailed installation component documentation
+  - [VSCode Settings](settings/vscode/README.md) - VSCode configuration and extension management
+  - [PowerShell Profile](settings/pwsh/README.md) - Enhanced PowerShell profile features
+  - [Windows Terminal](settings/windows-terminal/README.md) - Terminal configuration details
 - **Script Comments** - Individual script files contain inline documentation
 - **PowerShell Help** - Use `Get-Help .\script-name.ps1` for parameter information
 - **Claude Code Agents** - Use `/readme` command for documentation assistance
@@ -514,17 +480,20 @@ new-windows-dev-pc/
 │   └── 📦 CascadiaCode.zip           # Developer fonts for installation
 │
 ├── 📁 installs/                      # Modular installation scripts
-│   ├── 📄 winget.ps1                 # WinGet package installations with browser options
-│   ├── 📄 vscode.ps1                 # VSCode extension installer with progress tracking
-│   └── 📄 install-winget.ps1         # WinGet installer with error handling and fallback
+│   ├── 📄 README.md               # Installation components documentation
+│   ├── 📄 winget.ps1              # WinGet package installations with browser options
+│   ├── 📄 vscode.ps1              # VSCode extension installer with progress tracking
+│   └── 📄 install-winget.ps1      # WinGet installer with error handling and fallback
 │
 └── 📁 settings/                      # Configuration files (symlinked to system locations)
     ├── 📁 vscode/
+    │   ├── 📄 README.md              # VSCode configuration documentation
     │   ├── 📄 settings.json          # VSCode settings optimized for development
     │   ├── 📄 keybindings.json       # VSCode keybindings and shortcuts
     │   └── 📄 extensions             # Curated VSCode extension list
     │
     ├── 📁 windows-terminal/
+    │   ├── 📄 README.md              # Windows Terminal configuration documentation
     │   └── 📄 settings.json          # Windows Terminal configuration
     │
     ├── 📁 claude/                    # Claude Code configuration (7 agents + commands)
@@ -547,10 +516,15 @@ new-windows-dev-pc/
     │       ├── 📄 new-feature.md     # /new-feature command
     │       └── 📄 readme.md          # /readme command
     │
+    ├── 📁 git/
+    │   └── 📄 README.md              # Git configuration documentation
+    │
     ├── 📁 pwsh/
+    │   ├── 📄 README.md              # PowerShell profile documentation
     │   └── 📄 Microsoft.PowerShell_profile.ps1   # Enhanced PowerShell profile
     │
     └── 📁 etc/
+        ├── 📄 README.md              # System configuration documentation
         └── 📄 hosts                  # Custom hosts file entries
 ```
 
