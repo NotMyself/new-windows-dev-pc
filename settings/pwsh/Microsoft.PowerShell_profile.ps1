@@ -95,6 +95,56 @@ function backup-vs {
     }
 }
 
+function backup-npm {
+    <#
+    .SYNOPSIS
+    Backs up currently installed global npm packages to the global packages file.
+    #>
+    try {
+        if (-not (Get-Command npm -ErrorAction SilentlyContinue)) {
+            Write-Error "npm not found. Please ensure Node.js/npm is installed and in PATH."
+            return
+        }
+        
+        $ProfilePath = Get-Item $profile | Select-Object -ExpandProperty Target
+        $PackageFile = Join-Path (Split-Path $ProfilePath -Parent) "..\npm\global-packages"
+        
+        if (-not (Test-Path (Split-Path $PackageFile -Parent))) {
+            Write-Error "npm settings directory not found: $(Split-Path $PackageFile -Parent)"
+            return
+        }
+        
+        # Get list of globally installed packages (excluding npm itself)
+        $packages = npm list -g --depth=0 --parseable 2>$null | ForEach-Object {
+            if ($_ -match 'node_modules[\\\/](.+)$') {
+                $matches[1]
+            }
+        } | Where-Object { $_ -ne 'npm' } | Sort-Object
+        
+        if ($packages) {
+            # Create header comment
+            $header = @(
+                "# Global npm packages"
+                "# Generated on $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
+                "# Use 'npm install -g <package>' to install manually"
+                ""
+            )
+            
+            # Combine header and packages
+            $content = $header + $packages
+            $content | Out-File -FilePath $PackageFile -Encoding UTF8
+            
+            Write-Host "Global npm packages backed up to: $PackageFile" -ForegroundColor Green
+            Write-Host "Found $($packages.Count) packages" -ForegroundColor Cyan
+        } else {
+            Write-Warning "No global npm packages found to backup"
+        }
+    }
+    catch {
+        Write-Error "Failed to backup global npm packages: $($_.Exception.Message)"
+    }
+}
+
 function sln {
     <#
     .SYNOPSIS

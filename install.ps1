@@ -1,6 +1,7 @@
 ﻿[CmdletBinding()]
 param(
     [switch]$SkipWinGet,
+    [switch]$SkipNpmPackages,
     [switch]$SkipExtensions
 )
 
@@ -132,6 +133,17 @@ try {
     Write-Step "Installing developer fonts..."
     $fontZipPath = Join-Path $PSScriptRoot "fonts\CascadiaCode.zip"
     Install-Fonts -FontZipPath $fontZipPath
+    
+    # Install global npm packages
+    if (-not $SkipNpmPackages -and (Test-Command 'fnm')) {
+        Write-Step "Installing global npm packages..."
+        & "$PSScriptRoot\installs\npm-global.ps1"
+        if ($LASTEXITCODE -ne 0) {
+            Write-Warning "Some npm packages may have failed to install. Check the output above."
+        }
+    } elseif (-not $SkipNpmPackages) {
+        Write-Warning "fnm not found. Skipping npm packages installation. Install fnm and run './installs/npm-global.ps1' manually."
+    }
     
     # Install VSCode Extensions
     if (-not $SkipExtensions -and (Test-Command 'code')) {

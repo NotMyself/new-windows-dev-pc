@@ -1,0 +1,31 @@
+# Essential development tools
+typescript
+eslint
+prettier
+nodemon
+http-server
+
+# Build tools
+webpack-cli
+vite
+
+# Testing
+jest
+
+# Development servers
+lite-server
+browser-sync
+
+# Package management
+npm-check-updates
+
+# Optional but useful
+@angular/cli
+create-react-app
+@vue/cli
+gatsby-cli
+vercel
+netlify-cli
+
+# PM2 for process management
+pm2

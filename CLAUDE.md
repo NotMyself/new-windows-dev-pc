@@ -8,11 +8,12 @@ This is a Windows developer setup automation repository containing PowerShell sc
 ## Key Commands
 
 ### Main Setup Commands
-- `.\install.ps1` - Main installation script that installs WinGet (if needed), runs tool installation, and installs VSCode extensions
+- `.\install.ps1` - Main installation script that installs WinGet (if needed), runs tool installation, installs global npm packages, and installs VSCode extensions
 - `.\configure.ps1` - Creates symbolic links for configuration files (Git, VSCode, PowerShell)
 
 ### Component Scripts
 - `.\installs\winget.ps1` - Installs development tools via WinGet package manager
+- `.\installs\npm-global.ps1` - Installs global npm packages from the packages list
 - `.\installs\vscode.ps1` - Installs VSCode extensions from the extensions list
 - `.\installs\install-winget.ps1` - Installs WinGet if not present
 
@@ -35,6 +36,7 @@ The system uses symbolic links to centralize configuration:
 - VSCode keybindings: `settings/vscode/keybindings.json` → `$env:APPDATA\Code\User\keybindings.json`
 - PowerShell profile: `settings/pwsh/Microsoft.PowerShell_profile.ps1` → `$profile`
 - Oh My Posh theme: `settings/pwsh/.theme.omp.json` → `~/.theme.omp.json`
+- Global npm packages: `settings/npm/global-packages` (installed directly, not symlinked)
 
 ### Tool Categories
 The setup installs tools in these categories:
@@ -52,11 +54,15 @@ The included PowerShell profile provides:
 - Unix-like aliases and helper functions
 - Project navigation shortcuts (`oss`, `work` functions)
 - VSCode extension backup function (`backup-vs`)
+- Global npm packages backup function (`backup-npm`)
 
 ## Development Notes
 
 ### VSCode Extensions
 Extensions are managed via the `settings/vscode/extensions` file. The `backup-vs` function in the PowerShell profile can update this list from currently installed extensions.
+
+### Global npm Packages
+Global npm packages are managed via the `settings/npm/global-packages` file. The `backup-npm` function in the PowerShell profile can update this list from currently installed global packages. The installation process ensures fnm installs Node.js LTS before attempting package installation.
 
 ### Git Configuration
 The Git config includes VSCode as the default editor and merge/diff tool, with helpful aliases like `cm` for add-all-and-commit.
