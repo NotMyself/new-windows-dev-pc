@@ -41,9 +41,36 @@ function Test-Command {
     return [bool](Get-Command -Name $CommandName -ErrorAction SilentlyContinue)
 }
 
+function Write-Header {
+    param([string]$Message)
+    Write-Host ""
+    Write-Host $Message -ForegroundColor White -BackgroundColor DarkBlue
+    Write-Host ""
+}
+
 function Write-Step {
     param([string]$Message)
-    Write-Host "[$(Get-Date -Format 'HH:mm:ss')] $Message" -ForegroundColor Cyan
+    Write-Host "• $Message" -ForegroundColor Cyan
+}
+
+function Write-Success {
+    param([string]$Message)
+    Write-Host "  ✓ $Message" -ForegroundColor Green
+}
+
+function Write-Warning {
+    param([string]$Message)
+    Write-Host "  ⚠ $Message" -ForegroundColor Yellow
+}
+
+function Write-Error {
+    param([string]$Message)
+    Write-Host "  ✗ $Message" -ForegroundColor Red
+}
+
+function Write-Skipped {
+    param([string]$Message)
+    Write-Host "  - $Message" -ForegroundColor DarkGray
 }
 
 function Install-Fonts {
@@ -55,7 +82,7 @@ function Install-Fonts {
             return
         }
         
-        Write-Host "  Installing fonts from $FontZipPath..." -ForegroundColor Green
+        # Silent installation - output handled by main script
         
         # Create temporary directory for extraction
         $tempDir = Join-Path $env:TEMP "CascadiaCodeFonts"
@@ -98,7 +125,7 @@ function Install-Fonts {
             }
         }
         
-        Write-Host "  ✓ Installed $fontsInstalled fonts" -ForegroundColor Green
+        # Silent installation - status reported by main script
         
         # Cleanup
         Remove-Item $tempDir -Recurse -Force -ErrorAction SilentlyContinue
@@ -109,57 +136,168 @@ function Install-Fonts {
 }
 
 try {
-    Write-Step "Starting developer setup installation..."
+    Write-Header " Developer Setup Installation "
+    Write-Host "Automated installation of development tools and configurations" -ForegroundColor Gray
     
-    # Install WinGet if not present and not skipped
+    $totalSteps = 5
+    $currentStep = 0
+    
+    # Step 1: WinGet
+    $currentStep++
+    Write-Header " Step ${currentStep}/${totalSteps}: Package Manager "
     if (-not $SkipWinGet -and -not (Test-Command 'winget')) {
-        Write-Step "Installing WinGet package manager..."
-        & "$PSScriptRoot\installs\install-winget.ps1"
-        if ($LASTEXITCODE -ne 0) {
+        Write-Step "Installing WinGet package manager"
+        & "$PSScriptRoot\installs\install-winget.ps1" | Out-Null
+        if ($LASTEXITCODE -eq 0) {
+            Write-Success "WinGet installed"
+        } else {
+            Write-Error "WinGet installation failed"
             throw "Failed to install WinGet"
         }
+    } elseif (-not $SkipWinGet) {
+        Write-Success "WinGet already available"
+    } else {
+        Write-Skipped "WinGet installation skipped"
     }
     
-    # Install Tools via WinGet
+    # Step 2: Development Tools
+    $currentStep++
+    Write-Header " Step ${currentStep}/${totalSteps}: Development Tools "
     if (-not $SkipWinGet) {
-        Write-Step "Installing development tools via WinGet..."
-        & "$PSScriptRoot\installs\winget.ps1"
-        if ($LASTEXITCODE -ne 0) {
-            Write-Warning "Some WinGet installations may have failed. Check the output above."
+        Write-Step "Installing development tools via WinGet"
+        
+        # Run WinGet script silently and show only clean progress
+        Write-Host "  This may take several minutes..." -ForegroundColor Gray
+        
+        # Capture all output but don't display the messy parts
+        $wingetResult = & "$PSScriptRoot\installs\winget.ps1" *>&1 | Out-String
+        
+        # Parse the output for meaningful information
+        $installCount = 0
+        $skipCount = 0
+        $errorCount = 0
+        
+        # Count successful installations, skips, and errors from the final result
+        if ($wingetResult -match "✓") {
+            $installCount = ([regex]::Matches($wingetResult, "✓")).Count
         }
+        if ($wingetResult -match "Skipping") {
+            $skipCount = ([regex]::Matches($wingetResult, "Skipping")).Count  
+        }
+        if ($wingetResult -match "✗|Failed") {
+            $errorCount = ([regex]::Matches($wingetResult, "✗|Failed")).Count
+        }
+        
+        # Show clean summary
+        if ($installCount -gt 0) {
+            Write-Host "  ✓ $installCount tools installed" -ForegroundColor Green
+        }
+        if ($skipCount -gt 0) {
+            Write-Host "  - $skipCount tools skipped (already current)" -ForegroundColor Gray
+        }
+        if ($errorCount -gt 0) {
+            Write-Host "  ⚠ $errorCount tools had issues" -ForegroundColor Yellow
+        }
+        
+        if ($LASTEXITCODE -eq 0) {
+            Write-Success "Development tools installation completed"
+        } else {
+            Write-Warning "Some tools may have failed (see details above)"
+        }
+    } else {
+        Write-Skipped "Development tools installation skipped"
     }
     
-    # Install Fonts
-    Write-Step "Installing developer fonts..."
+    # Step 3: Fonts
+    $currentStep++
+    Write-Header " Step ${currentStep}/${totalSteps}: Developer Fonts "
+    Write-Step "Installing Cascadia Code fonts"
     $fontZipPath = Join-Path $PSScriptRoot "fonts\CascadiaCode.zip"
-    Install-Fonts -FontZipPath $fontZipPath
-    
-    # Install global npm packages
-    if (-not $SkipNpmPackages -and (Test-Command 'fnm')) {
-        Write-Step "Installing global npm packages..."
-        & "$PSScriptRoot\installs\npm-global.ps1"
-        if ($LASTEXITCODE -ne 0) {
-            Write-Warning "Some npm packages may have failed to install. Check the output above."
-        }
-    } elseif (-not $SkipNpmPackages) {
-        Write-Warning "fnm not found. Skipping npm packages installation. Install fnm and run './installs/npm-global.ps1' manually."
+    try {
+        Install-Fonts -FontZipPath $fontZipPath
+        Write-Success "Cascadia Code fonts installed"
+    }
+    catch {
+        Write-Warning "Font installation failed"
     }
     
-    # Install VSCode Extensions
-    if (-not $SkipExtensions -and (Test-Command 'code')) {
-        Write-Step "Installing VSCode extensions..."
-        & "$PSScriptRoot\installs\vscode.ps1"
-        if ($LASTEXITCODE -ne 0) {
-            Write-Warning "Some VSCode extensions may have failed to install. Check the output above."
+    # Step 4: NPM Packages
+    $currentStep++
+    Write-Header " Step ${currentStep}/${totalSteps}: Global NPM Packages "
+    if (-not $SkipNpmPackages) {
+        if (Test-Command 'fnm') {
+            Write-Step "Installing global npm packages"
+            
+            # Run npm script with filtered output to show progress
+            $npmOutput = & "$PSScriptRoot\installs\npm-global.ps1" 2>&1
+            $npmOutput | ForEach-Object {
+                $line = $_.ToString().Trim()
+                # Show installation progress and results
+                if ($line -match "Initializing|Installing|✓|✗|already|Failed|Error") {
+                    Write-Host $line
+                }
+            }
+            
+            if ($LASTEXITCODE -eq 0) {
+                Write-Success "NPM packages installation completed"
+            } else {
+                Write-Warning "Some npm packages may have failed (see details above)"
+            }
+        } else {
+            Write-Warning "Fast Node Manager (fnm) not found"
+            Write-Host "  Install fnm first, then run: .\installs\npm-global.ps1" -ForegroundColor Gray
         }
-    } elseif (-not $SkipExtensions) {
-        Write-Warning "VSCode not found. Skipping extension installation. Install VSCode and run './installs/vscode.ps1' manually."
+    } else {
+        Write-Skipped "NPM packages installation skipped"
     }
     
-    Write-Step "Installation completed successfully!"
-    Write-Host "Next step: Run './configure.ps1' to set up configuration files." -ForegroundColor Green
+    # Step 5: VSCode Extensions
+    $currentStep++
+    Write-Header " Step ${currentStep}/${totalSteps}: VSCode Extensions "
+    if (-not $SkipExtensions) {
+        if (Test-Command 'code') {
+            Write-Step "Installing VSCode extensions"
+            
+            # Run VSCode script with filtered output to show progress
+            $vscodeOutput = & "$PSScriptRoot\installs\vscode.ps1" 2>&1
+            $vscodeOutput | ForEach-Object {
+                $line = $_.ToString().Trim()
+                # Filter out the main header but keep progress info
+                if ($line -match "^Installing VSCode extensions from:" -or $line -match "^Found \d+ extensions") {
+                    return
+                }
+                # Show installation progress and results
+                elseif ($line -match "Installing|✓|✗|already|Failed|Error") {
+                    Write-Host $line
+                }
+            }
+            
+            if ($LASTEXITCODE -eq 0) {
+                Write-Success "VSCode extensions installation completed"
+            } else {
+                Write-Warning "Some extensions may have failed (see details above)"
+            }
+        } else {
+            Write-Warning "VSCode not found"
+            Write-Host "  Install VSCode first, then run: .\installs\vscode.ps1" -ForegroundColor Gray
+        }
+    } else {
+        Write-Skipped "VSCode extensions installation skipped"
+    }
+    
+    # Completion
+    Write-Header " Installation Complete "
+    Write-Host "✓ Setup process finished!" -ForegroundColor Green
+    Write-Host ""
+    Write-Host "Next Step:" -ForegroundColor Cyan
+    Write-Host "  Run .\configure.ps1 to set up configuration files" -ForegroundColor White
 }
 catch {
-    Write-Error "Installation failed: $($_.Exception.Message)"
+    Write-Host ""
+    Write-Host " Installation Failed " -ForegroundColor White -BackgroundColor Red
+    Write-Host ""
+    Write-Host "Error: $($_.Exception.Message)" -ForegroundColor Red
+    Write-Host ""
+    Write-Host "Check the error details above and try running the script again." -ForegroundColor Gray
     exit 1
 }

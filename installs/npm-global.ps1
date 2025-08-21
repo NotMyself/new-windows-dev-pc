@@ -12,7 +12,7 @@ function Install-GlobalNpmPackage {
     param([string]$PackageName)
     
     if ([string]::IsNullOrWhiteSpace($PackageName) -or $PackageName.StartsWith('#')) {
-        return # Skip empty lines and comments
+        return
     }
     
     Write-Host "  Installing package: $PackageName" -ForegroundColor Cyan
@@ -34,14 +34,12 @@ function Install-GlobalNpmPackage {
 function Initialize-NodeEnvironment {
     Write-Host "Initializing Node.js environment..." -ForegroundColor Green
     
-    # Check if fnm is available
     if (-not (Test-Command 'fnm')) {
         Write-Error "fnm (Fast Node Manager) not found. Please ensure fnm is installed first."
         exit 1
     }
     
     try {
-        # Install and use LTS Node.js
         Write-Host "  Installing Node.js LTS via fnm..." -ForegroundColor Cyan
         & fnm install --lts 2>&1 | Out-Null
         
@@ -51,7 +49,6 @@ function Initialize-NodeEnvironment {
             Write-Warning "    ✗ Failed to install Node.js LTS"
         }
         
-        # Use LTS as default
         Write-Host "  Setting Node.js LTS as default..." -ForegroundColor Cyan
         & fnm use --install-if-missing lts-latest 2>&1 | Out-Null
         & fnm default lts-latest 2>&1 | Out-Null
@@ -62,10 +59,8 @@ function Initialize-NodeEnvironment {
             Write-Warning "    ✗ Failed to set Node.js LTS as default"
         }
         
-        # Refresh environment for current session
         & fnm env --use-on-cd | Out-String | Invoke-Expression
         
-        # Verify npm is available
         if (-not (Test-Command 'npm')) {
             Write-Error "npm not found after Node.js initialization. Check fnm configuration."
             exit 1
@@ -82,10 +77,8 @@ function Initialize-NodeEnvironment {
 }
 
 try {
-    # Initialize Node.js environment
     Initialize-NodeEnvironment
     
-    # Check if packages file exists
     if (-not (Test-Path $PackagesFile)) {
         Write-Error "Packages file not found: $PackagesFile"
         exit 1

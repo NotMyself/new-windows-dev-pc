@@ -1,31 +1,13 @@
-# Essential development tools
+# Global Package Installs
+
+## Essential development tools
+
+@anthropic-ai/claude-code
+markdownlint-cli
 typescript
 eslint
 prettier
-nodemon
-http-server
 
-# Build tools
-webpack-cli
-vite
+## Package management
 
-# Testing
-jest
-
-# Development servers
-lite-server
-browser-sync
-
-# Package management
 npm-check-updates
-
-# Optional but useful
-@angular/cli
-create-react-app
-@vue/cli
-gatsby-cli
-vercel
-netlify-cli
-
-# PM2 for process management
-pm2

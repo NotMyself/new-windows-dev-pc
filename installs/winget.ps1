@@ -82,9 +82,9 @@ try {
     # Check if VS config exists before installing VS
     $vsConfigPath = "$PSScriptRoot\..\settings\visual-studio\.vsconfig"
     if (Test-Path $vsConfigPath) {
-        Install-WinGetPackage "Microsoft.VisualStudio.2022.Professional" "Visual Studio 2022 Professional" "--passive --config `"$vsConfigPath`""
+        Install-WinGetPackage "Microsoft.VisualStudio.2022.Community" "Visual Studio 2022 Community" "--passive --config `"$vsConfigPath`""
     } else {
-        Install-WinGetPackage "Microsoft.VisualStudio.2022.Professional" "Visual Studio 2022 Professional"
+        Install-WinGetPackage "Microsoft.VisualStudio.2022.Community" "Visual Studio 2022 Community"
     }
     
     Install-WinGetPackage "Microsoft.VisualStudioCode" "Visual Studio Code"
