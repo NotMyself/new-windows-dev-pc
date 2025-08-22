@@ -90,7 +90,6 @@ try {
     Install-WinGetPackage "Microsoft.VisualStudioCode" "Visual Studio Code"
     Install-WinGetPackage "Microsoft.VisualStudioCode.CLI" "VSCode CLI"
     Install-WinGetPackage "Microsoft.SQLServerManagementStudio" "SQL Server Management Studio"
-    Install-WinGetPackage "Microsoft.AzureDataStudio.Insiders" "Azure Data Studio Insiders"
     Install-WinGetPackage "JetBrains.Toolbox" "JetBrains Toolbox"
     
     Write-Host "`nWinGet package installation completed!" -ForegroundColor Green
