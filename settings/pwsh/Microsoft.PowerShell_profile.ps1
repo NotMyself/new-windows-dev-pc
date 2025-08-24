@@ -1,6 +1,20 @@
 # enable oh my posh prompt
 oh-my-posh init pwsh --config ~/.theme.omp.json | Invoke-Expression
 
+# Load environment variables from 1Password
+$profileTarget = Get-Item $profile | Select-Object -ExpandProperty Target
+if ($profileTarget) {
+    $envVarsScript = Join-Path (Split-Path $profileTarget -Parent) "1p-env-vars.ps1"
+    if (Test-Path $envVarsScript) {
+        . $envVarsScript
+    }
+}
+# Login to Azure if environment variables are set
+if ($env:AZURE_CLIENT_ID -and $env:AZURE_CLIENT_SECRET -and $env:AZURE_TENANT_ID) {
+    az login --service-principal -u $env:AZURE_CLIENT_ID -p $env:AZURE_CLIENT_SECRET --tenant $env:AZURE_TENANT_ID | Out-Null
+}
+
+
 # enable fnm fast node manager
 fnm completions --shell powershell | Out-String | Invoke-Expression
 fnm env --use-on-cd | Out-String | Invoke-Expression
@@ -331,5 +345,121 @@ function Set-GitUser {
     }
     catch {
         Write-Error "Failed to update Git configuration: $($_.Exception.Message)"
+    }
+}
+
+function Set-1PEnvVar {
+    <#
+    .SYNOPSIS
+    Stores an environment variable key-value pair in 1Password secure note.
+    
+    .DESCRIPTION
+    This function adds or updates an environment variable in the "Environment Variables" 
+    secure note in 1Password. The variable is stored in KEY:value format.
+    
+    .PARAMETER Key
+    The environment variable name/key.
+    
+    .PARAMETER Value
+    The environment variable value.
+    
+    .PARAMETER Vault
+    The 1Password vault containing the Environment Variables note. If not specified, uses default vault.
+    
+    .EXAMPLE
+    Set-1PEnvVar -Key "API_KEY" -Value "secret123"
+    
+    .EXAMPLE
+    Set-1PEnvVar -Key "DATABASE_URL" -Value "postgres://user:pass@host:5432/db" -Vault "Development"
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [string]$Key,
+        
+        [Parameter(Mandatory)]
+        [string]$Value,
+        
+        [string]$Vault
+    )
+    
+    try {
+        # Check if op cli is available
+        if (-not (Get-Command op -ErrorAction SilentlyContinue)) {
+            Write-Error "1Password CLI (op) not found. Please install and authenticate with 1Password CLI."
+            return
+        }
+        
+        $noteTitle = "Local Environment Variables"
+        
+        # Get current note content
+        try {
+            if ($Vault) {
+                $currentNote = op item get $noteTitle --vault $Vault --format json | ConvertFrom-Json
+            } else {
+                $currentNote = op item get $noteTitle --format json | ConvertFrom-Json
+            }
+            $currentContent = $currentNote.fields | Where-Object { $_.label -eq "notesPlain" } | Select-Object -ExpandProperty value
+        } catch {
+            # Note doesn't exist, we'll create it
+            $currentContent = ""
+        }
+        
+        # Parse existing content into lines
+        $lines = if ($currentContent) { $currentContent -split "`n" } else { @() }
+        
+        # Remove any existing entry for this key
+        $lines = $lines | Where-Object { $_ -notmatch "^$([regex]::Escape($Key)):" }
+        
+        # Add the new key-value pair
+        $lines += "$Key`:$Value"
+        
+        # Sort the lines for better organization
+        $lines = $lines | Sort-Object
+        
+        # Join back into content
+        $newContent = $lines -join "`n"
+        
+        # Create or update the note
+        if ($currentNote) {
+            # Update existing note
+            $opArgs = @(
+                "item", "edit", $noteTitle,
+                "notesPlain=$newContent"
+            )
+            if ($Vault) {
+                $opArgs += "--vault=$Vault"
+            }
+            
+            Write-Host "Updating environment variable '$Key' in 1Password..." -ForegroundColor Yellow
+        } else {
+            # Create new note
+            $opArgs = @(
+                "item", "create",
+                "--category=secure note",
+                "--title=$noteTitle",
+                "notesPlain=$newContent"
+            )
+            if ($Vault) {
+                $opArgs += "--vault=$Vault"
+            }
+            
+            Write-Host "Creating Environment Variables note and adding '$Key'..." -ForegroundColor Yellow
+        }
+        
+        $result = & op @opArgs 2>&1
+        
+        if ($LASTEXITCODE -eq 0) {
+            Write-Host "✓ Environment variable '$Key' stored successfully in 1Password" -ForegroundColor Green
+            if ($Vault) {
+                Write-Host "  Vault: $Vault" -ForegroundColor Gray
+            }
+            Write-Host "  Note: $noteTitle" -ForegroundColor Gray
+        } else {
+            Write-Error "Failed to store environment variable in 1Password: $result"
+        }
+    }
+    catch {
+        Write-Error "Failed to store environment variable in 1Password: $($_.Exception.Message)"
     }
 }

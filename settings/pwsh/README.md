@@ -8,7 +8,8 @@ The PowerShell configuration provides:
 
 - **Modern Prompt Theme**: A feature-rich Oh My Posh theme with development context awareness
 - **Enhanced Profile**: Unix-like aliases, developer utilities, and productivity functions
-- **Tool Integration**: Seamless integration with Node.js (fnm), Git, and development workflows
+- **1Password Integration**: Secure environment variable management with automatic loading from 1Password secure notes
+- **Tool Integration**: Seamless integration with Node.js (fnm), Git, Azure CLI, and development workflows
 - **Cross-Platform Compatibility**: Works across Windows, WSL, and other PowerShell environments
 
 ## File Structure
@@ -16,6 +17,7 @@ The PowerShell configuration provides:
 ```
 settings/pwsh/
 ├── Microsoft.PowerShell_profile.ps1    # PowerShell profile with functions and aliases
+├── 1p-env-vars.ps1                     # 1Password environment variable loader
 ├── .theme.omp.json                     # Oh My Posh theme configuration
 └── README.md                           # This documentation
 ```
@@ -64,6 +66,23 @@ oh-my-posh init pwsh --config ~/.theme.omp.json | Invoke-Expression
 # Automatic Node.js version management with directory switching
 fnm completions --shell powershell | Out-String | Invoke-Expression
 fnm env --use-on-cd | Out-String | Invoke-Expression
+```
+
+#### 1Password Environment Variables Integration
+```powershell
+# Automatically loads environment variables from 1Password secure note
+$profileTarget = Get-Item $profile | Select-Object -ExpandProperty Target
+if ($profileTarget) {
+    $envVarsScript = Join-Path (Split-Path $profileTarget -Parent) "1p-env-vars.ps1"
+    if (Test-Path $envVarsScript) {
+        . $envVarsScript
+    }
+}
+
+# Auto-login to Azure if environment variables are set
+if ($env:AZURE_CLIENT_ID -and $env:AZURE_CLIENT_SECRET -and $env:AZURE_TENANT_ID) {
+    az login --service-principal -u $env:AZURE_CLIENT_ID -p $env:AZURE_CLIENT_SECRET --tenant $env:AZURE_TENANT_ID | Out-Null
+}
 ```
 
 #### Enhanced PSReadLine
@@ -127,6 +146,35 @@ backup-vs                 # Backup currently installed VSCode extensions
                          # - Automatically sorts extensions
                          # - Validates VSCode CLI availability
                          # - Shows extension count and file location
+```
+
+### 1Password Environment Variable Management
+
+The profile includes a comprehensive `Set-1PEnvVar` function for securely storing environment variables:
+
+#### Basic Usage
+```powershell
+Set-1PEnvVar -Key "API_KEY" -Value "secret123"                    # Store in default vault
+Set-1PEnvVar -Key "DATABASE_URL" -Value "postgres://user:pass@host:5432/db" -Vault "Development"  # Store in specific vault
+```
+
+#### Features
+- **Secure Storage**: Environment variables stored in 1Password secure notes
+- **Automatic Organization**: Variables are sorted alphabetically in the note
+- **Vault Support**: Can specify target vault for organization
+- **Update Capability**: Automatically updates existing variables
+- **Note Management**: Creates or updates the "Local Environment Variables" note
+- **Error Handling**: Comprehensive error handling with helpful messages
+
+#### File Structure
+The 1Password integration includes an additional file:
+
+```
+settings/pwsh/
+├── Microsoft.PowerShell_profile.ps1    # PowerShell profile with functions and aliases
+├── 1p-env-vars.ps1                     # 1Password environment variable loader
+├── .theme.omp.json                     # Oh My Posh theme configuration
+└── README.md                           # This documentation
 ```
 
 ### Git Configuration Management
@@ -386,6 +434,7 @@ If the profile loads slowly:
 - **fnm**: Fast Node Manager for Node.js version management
 - **Git**: Version control system for Git segment functionality
 - **VSCode**: For `backup-vs` function and `sln` function integration
+- **1Password CLI (op)**: For secure environment variable management via `Set-1PEnvVar` function
 
 ### Development Tools
 The theme automatically detects and displays versions for:

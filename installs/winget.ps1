@@ -60,6 +60,8 @@ try {
     Write-Category "Windows & CLI Tools"
     Install-WinGetPackage "Microsoft.PowerToys" "PowerToys"
     Install-WinGetPackage "Microsoft.WindowsTerminal" "Windows Terminal"
+    Install-WinGetPackage "AgileBits.1Password" "1Password"
+    Install-WinGetPackage "AgileBits.1Password.CLI" "1Password CLI"
     Install-WinGetPackage "Microsoft.PowerShell" "PowerShell 7+"
     Install-WinGetPackage "JanDeDobbeleer.OhMyPosh" "Oh My Posh"
     

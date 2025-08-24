@@ -123,7 +123,7 @@ The setup uses **symbolic links** to centralize configuration management, keepin
 |-----------|---------------|-----------------|
 | **VSCode** | Settings and keybindings | `%APPDATA%\Code\User\` |
 | **Windows Terminal** | Terminal configuration | `%LOCALAPPDATA%\Microsoft\Windows Terminal\` |
-| **PowerShell** | Enhanced profile with Oh My Posh | `$PROFILE` |
+| **PowerShell** | Enhanced profile with Oh My Posh and 1Password integration | `$PROFILE` |
 | **System Hosts** | Custom hosts file entries | `C:\Windows\System32\drivers\etc\hosts` |
 
 ### Configuration Benefits
@@ -194,7 +194,8 @@ new-windows-dev-pc/
     │
     ├── 📁 pwsh/
     │   ├── 📄 README.md              # PowerShell profile documentation
-    │   └── 📄 Microsoft.PowerShell_profile.ps1   # Enhanced PowerShell profile
+    │   ├── 📄 Microsoft.PowerShell_profile.ps1   # Enhanced PowerShell profile with 1Password integration
+    │   └── 📄 1p-env-vars.ps1        # 1Password environment variable loader
     │
     └── 📁 etc/
         ├── 📄 README.md              # System configuration documentation
