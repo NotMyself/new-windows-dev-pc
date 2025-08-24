@@ -20,6 +20,8 @@ A comprehensive Windows developer setup automation repository containing PowerSh
 - [Quick Start](#quick-start)
 - [Installed Packages](#installed-packages)
 - [Configuration Management](#configuration-management)
+- [Directory Structure](#directory-structure)
+- [Detailed Documentation](#detailed-documentation)
 - [Troubleshooting](#troubleshooting)
 - [Repository Structure](#repository-structure)
 
@@ -138,6 +140,116 @@ For detailed information about the symbolic link creation process, path validati
 
 > **Note**: Git and Visual Studio configurations are referenced in configure.ps1 but the actual configuration files are not included in the repository to avoid overwriting personal settings.
 
+## Directory Structure
+
+The repository is organized into logical directories with specialized functionality:
+
+```
+new-windows-dev-pc/
+├── README.md                     # This documentation file
+├── install.ps1                  # Main installation script
+├── configure.ps1                # Configuration setup script
+├── installs/                    # Modular installation scripts
+│   ├── README.md               # Installation scripts documentation
+│   ├── install-winget.ps1      # WinGet package manager installation
+│   ├── winget.ps1              # Development tools installation
+│   └── vscode.ps1              # VSCode extensions installation
+├── settings/                   # Configuration files for symbolic linking
+│   ├── claude/                 # Claude Code AI configuration
+│   ├── git/                    # Git configuration
+│   ├── vscode/                 # VSCode settings and extensions
+│   ├── windows-terminal/       # Terminal configuration
+│   ├── pwsh/                   # PowerShell profile and themes
+│   └── etc/                    # System configuration files
+└── fonts/                      # Developer fonts
+    └── CascadiaCode.zip        # Cascadia Code font package
+```
+
+### Key Directory Summaries
+
+#### Installation Scripts (`installs/`)
+
+Modular PowerShell scripts that handle installation of development tools, IDEs, and environments. Features **3 specialized scripts** with comprehensive error handling and progress tracking:
+
+- **install-winget.ps1**: Installs WinGet package manager with dependencies
+- **winget.ps1**: Installs development tools via WinGet (Core Development Tools, IDEs, Database Tools, Windows Tools, Optional Browsers)
+- **vscode.ps1**: Installs VSCode extensions from centralized list
+
+**Key Features**: Modular design, individual failure isolation, color-coded output, symbolic link management, multi-path support.
+
+#### Settings Directory (`settings/`)
+
+Centralized configuration files that get symlinked to system locations, providing version-controlled settings management:
+
+##### Claude Code Configuration (`settings/claude/`)
+
+Complete Claude Code configuration with **7 specialized agents** and **7 slash commands** for Windows development workflows:
+
+- **Specialized Agents**: claude-agent-specialist (meta-agent creation), azure-devops-specialist (CI/CD pipelines), csharp-specialist (modern C# development), mstest-specialist (.NET unit testing), feature-prompt-specialist (requirements engineering), markdown-specialist (formatting/linting), readme-maintainer (hierarchical README processing)
+- **Integration**: PowerShell as default shell, sophisticated delegation intelligence between agents, integrated workflow patterns
+- **Commands**: Direct slash command access (`/readme`, `/csharp`, `/devops`, `/mstest`, `/new-agent`, `/new-feature`, `/markdown`)
+
+##### Git Configuration (`settings/git/`)
+
+Centralized Git configuration with VSCode integration, helpful aliases, and modern Git workflow defaults:
+
+- **Key Features**: VSCode as default editor and merge/diff tool, Git LFS support, GitHub CLI authentication, `cm` alias for quick commits
+- **Integration**: Seamless VSCode integration for editing, merging, and diffing operations
+
+##### VSCode Configuration (`settings/vscode/`)
+
+Comprehensive Visual Studio Code configuration with **31 extensions** optimized for modern development:
+
+- **Visual Experience**: Cascadia Code fonts with ligatures, optimized sizing, enhanced readability
+- **Extension Categories**: Development Core (8), Git & Version Control (4), Microsoft Development (6), Cloud & Containers (5), Documentation & Markdown (3), AI & Productivity (2), Utilities (3)
+- **Key Tools**: Prettier for formatting, GitLens for Git visualization, GitHub Copilot for AI assistance, PowerShell 7 integration
+
+##### Windows Terminal Configuration (`settings/windows-terminal/`)
+
+Optimized terminal settings with enhanced themes, typography, and productivity-focused keybindings:
+
+- **Visual Design**: CaskaydiaCove Nerd Font for programming ligatures, One Half Dark theme, enhanced productivity keybindings
+- **Performance**: 95% opacity, disabled acrylic effects for better performance
+- **Profiles**: PowerShell (default), Azure Cloud Shell, Command Prompt visible; legacy profiles hidden
+
+##### PowerShell Configuration (`settings/pwsh/`)
+
+Comprehensive PowerShell configuration with modern tooling and developer productivity features:
+
+- **Core Features**: Oh My Posh theme with development context awareness, Unix-like aliases, 1Password integration for secure environment variable management
+- **Developer Functions**: Project navigation (`oss`/`work`), Visual Studio integration (`sln`), VSCode extension backup (`backup-vs`), Git configuration (`Set-GitUser`), 1Password env vars (`Set-1PEnvVar`)
+- **Integration**: Tool integration with Node.js/fnm/Git/Azure CLI, cross-platform compatibility
+
+##### System Configuration (`settings/etc/`)
+
+Windows hosts file management for local development, testing, and network configuration:
+
+- **Use Cases**: Local development environments, staging testing, website blocking, internal network services, container/VM development
+- **Best Practices**: Organized commenting, consistent naming conventions (`.local`, `.dev.local`, `.staging.local`), DNS cache management
+
+## Detailed Documentation
+
+Each directory contains comprehensive README documentation with detailed setup instructions, usage examples, and troubleshooting guides:
+
+| Directory | Documentation | Key Topics |
+|-----------|---------------|------------|
+| **installs/** | [Installation Scripts README](installs/README.md) | Modular installation scripts, execution order, error handling, symbolic link management |
+| **settings/claude/** | [Claude Configuration README](settings/claude/README.md) | 7 specialized agents, slash commands, delegation intelligence, workflow integration |
+| **settings/git/** | [Git Configuration README](settings/git/README.md) | VSCode integration, aliases, workflow best practices, troubleshooting |
+| **settings/vscode/** | [VSCode Configuration README](settings/vscode/README.md) | 31 extensions, productivity features, customization, troubleshooting |
+| **settings/windows-terminal/** | [Terminal Configuration README](settings/windows-terminal/README.md) | Theme configuration, keybindings, profile management, integration |
+| **settings/pwsh/** | [PowerShell Configuration README](settings/pwsh/README.md) | Oh My Posh themes, 1Password integration, developer functions, customization |
+| **settings/etc/** | [Hosts File Management README](settings/etc/README.md) | Hosts file syntax, use cases, best practices, security considerations |
+
+### Claude Code Integration
+
+This repository includes a complete Claude Code configuration with sophisticated agent delegation patterns:
+
+- **Quick README Updates**: Use `/readme` for hierarchical documentation processing with intelligent summarization
+- **Agent Creation**: Use `/new-agent` for creating new specialized agents with delegation intelligence
+- **Development Workflows**: Use `/csharp`, `/devops`, `/mstest` for modern development tasks with automatic sub-agent collaboration
+- **Documentation**: Use `/markdown` and `/new-feature` for comprehensive documentation and requirements engineering
+
 
 
 ## Troubleshooting
@@ -152,53 +264,3 @@ For detailed information about the symbolic link creation process, path validati
 | **VSCode Extensions** | Extensions fail to install | Verify VSCode is installed and `code` command is in PATH |
 | **Symbolic Link Creation** | Configuration linking fails | Ensure target files exist in `settings/` directory |
 | **Path Not Found** | Scripts can't find components | Run scripts from repository root directory |
-
-
-## Repository Structure
-
-```
-new-windows-dev-pc/
-├── 📄 install.ps1                    # Main installation script (auto-elevates)
-├── 📄 configure.ps1                  # Configuration symbolic links (auto-elevates)  
-├── 📄 README.md                      # This documentation file
-├── 📄 CLAUDE.md                      # Claude Code project documentation
-│
-├── 📁 fonts/
-│   └── 📦 CascadiaCode.zip           # Developer fonts for installation
-│
-├── 📁 installs/                      # Modular installation scripts
-│   ├── 📄 README.md               # Installation components documentation
-│   ├── 📄 winget.ps1              # WinGet package installations with browser options
-│   ├── 📄 vscode.ps1              # VSCode extension installer with progress tracking
-│   └── 📄 install-winget.ps1      # WinGet installer with error handling and fallback
-│
-└── 📁 settings/                      # Configuration files (symlinked to system locations)
-    ├── 📁 vscode/
-    │   ├── 📄 README.md              # VSCode configuration documentation
-    │   ├── 📄 settings.json          # VSCode settings optimized for development
-    │   ├── 📄 keybindings.json       # VSCode keybindings and shortcuts
-    │   └── 📄 extensions             # Curated VSCode extension list
-    │
-    ├── 📁 windows-terminal/
-    │   ├── 📄 README.md              # Windows Terminal configuration documentation
-    │   └── 📄 settings.json          # Windows Terminal configuration
-    │
-    ├── 📁 claude/                    # Claude Code configuration
-    │   ├── 📄 README.md              # Claude Code configuration documentation
-    │   ├── 📄 settings.json          # Global settings with PowerShell shell configuration
-    │   ├── 📁 agents/                # Specialized agent definitions
-    │   └── 📁 commands/              # Quick access slash commands
-    │
-    ├── 📁 git/
-    │   └── 📄 README.md              # Git configuration documentation
-    │
-    ├── 📁 pwsh/
-    │   ├── 📄 README.md              # PowerShell profile documentation
-    │   ├── 📄 Microsoft.PowerShell_profile.ps1   # Enhanced PowerShell profile with 1Password integration
-    │   └── 📄 1p-env-vars.ps1        # 1Password environment variable loader
-    │
-    └── 📁 etc/
-        ├── 📄 README.md              # System configuration documentation
-        └── 📄 hosts                  # Custom hosts file entries
-```
-

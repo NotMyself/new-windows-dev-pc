@@ -1,14 +1,37 @@
 {
   "env": {
-    "SHELL": "powershell",
-    "CLAUDE_SHELL": "powershell",
-    "CLAUDE_AGENTS_PATH": ".claude/agents"
+    "SHELL": "pwsh",
+    "CLAUDE_SHELL": "pwsh",
+    "CLAUDE_AGENTS_PATH": ".claude/agents",
+    "PAGER": "less",
+    "TERM": "xterm-256color",
+    "DOTNET_CLI_TELEMETRY_OPTOUT": "1",
+    "DOTNET_SKIP_FIRST_TIME_EXPERIENCE": "1",
+    "NPM_CONFIG_LOGLEVEL": "warn",
+    "NPM_CONFIG_COLOR": "always",
+    "PYTHONUNBUFFERED": "1",
+    "PIP_DISABLE_PIP_VERSION_CHECK": "1",
+    "GIT_PAGER": "less",
+    "GIT_ASKPASS": "echo",
+    "PATH": "C:\\Program Files\\PowerShell\\7;C:\\Program Files\\dotnet;C:\\Program Files\\nodejs;C:\\Python311;C:\\Program Files\\Git\\bin;%PATH%"
+  },
+  "terminal": {
+    "shell": "pwsh",
+    "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-Command"]
   },
   "permissions": {
     "allow": [
       "WebFetch(domain:docs.anthropic.com)",
-      "Bash(powershell:*)",
-      "Bash(mkdir:*)"
+      "Bash(pwsh:*)",
+      "Bash(mkdir:*)",
+      "Bash(dotnet:*)",
+      "Bash(node:*)",
+      "Bash(npm:*)",
+      "Bash(python:*)",
+      "Bash(pip:*)",
+      "Bash(git:*)",
+      "Bash(prettier:*)",
+      "Bash(markdownlint:*)"
     ],
     "deny": [],
     "ask": []

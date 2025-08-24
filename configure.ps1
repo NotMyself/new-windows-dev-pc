@@ -107,6 +107,10 @@ try {
     New-ConfigLink -LinkPath "$claudeConfigDir\agents" -TargetPath "$PSScriptRoot\settings\claude\agents" -Description "Claude agents directory"
     New-ConfigLink -LinkPath "$claudeConfigDir\commands" -TargetPath "$PSScriptRoot\settings\claude\commands" -Description "Claude commands directory"
     
+    # Markdownlint Configuration
+    Write-Host "Configuring Markdownlint..."
+    New-ConfigLink -LinkPath "$HOME\.markdownlint.json" -TargetPath "$PSScriptRoot\settings\markdownlint\.markdownlint.json" -Description "Markdownlint configuration"
+    
     Write-Step "Configuration completed successfully!"
     Write-Host "Restart your terminal and VSCode to apply the new settings." -ForegroundColor Green
 }

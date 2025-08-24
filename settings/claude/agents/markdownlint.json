@@ -1,0 +1,13 @@
+{
+  "name": "markdownlint",
+  "description": "Lints Markdown files using markdownlint-cli",
+  "command": "markdownlint",
+  "args": ["--fix", "--config", ".markdownlint.json", "."],
+  "permissions": {
+    "allow": ["Bash(markdownlint:*)"]
+  },
+  "triggers": {
+    "file_patterns": ["**/*.md"],
+    "on_save": true
+  }
+}

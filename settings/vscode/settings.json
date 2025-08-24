@@ -49,5 +49,26 @@
   },
   "github.copilot.nextEditSuggestions.enabled": true,
   "workbench.startupEditor": "none",
-  "git.confirmSync": false
+  "git.confirmSync": false,
+  "workbench.panel.showLabels": false,
+  "terminal.integrated.defaultProfile.windows": "PowerShell",
+  "terminal.integrated.profiles.windows": {
+
+    "PowerShell": {
+      "source": "PowerShell",
+      "icon": "terminal-powershell",
+      "path": "C:\\Program Files\\PowerShell\\7\\pwsh.exe"
+    },
+    "Command Prompt": {
+      "path": [
+        "${env:windir}\\Sysnative\\cmd.exe",
+        "${env:windir}\\System32\\cmd.exe"
+      ],
+      "args": [],
+      "icon": "terminal-cmd"
+    },
+    "Git Bash": {
+      "source": "Git Bash"
+    }
+  }
 }

@@ -1,0 +1,19 @@
+{
+  "name": "markdown-style",
+  "description": "Format and lint Markdown files using Prettier + markdownlint-cli",
+  "command": "pwsh",
+  "args": [
+    "-NoProfile",
+    "-ExecutionPolicy",
+    "Bypass",
+    "-Command",
+    "prettier --write ./**/*.md; markdownlint --fix --config $HOME/.markdownlint.json ."
+  ],
+  "permissions": {
+    "allow": ["Bash(prettier:*)", "Bash(markdownlint:*)"]
+  },
+  "triggers": {
+    "file_patterns": ["**/*.md"],
+    "on_save": true
+  }
+}
