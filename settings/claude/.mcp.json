@@ -26,15 +26,41 @@
     },
     "azure-devops": {
       "command": "npx",
-      "args": ["-y", "@microsoft/azure-devops-mcp"]
+      "args": ["-y", "@microsoft/azure-devops-mcp"],
+      "env": {
+        "AZURE_DEVOPS_PAT": "${AZURE_DEVOPS_PAT}",
+        "AZURE_DEVOPS_ORG": "${AZURE_DEVOPS_ORG}"
+      }
     },
     "azure-cli": {
       "command": "npx",
-      "args": ["-y", "@azure/mcp-server"]
+      "args": ["-y", "@azure/mcp-server"],
+      "env": {
+        "AZURE_SUBSCRIPTION_ID": "${AZURE_SUBSCRIPTION_ID}",
+        "AZURE_TENANT_ID": "${AZURE_TENANT_ID}"
+      }
     },
     "mssql": {
       "command": "npx",
-      "args": ["-y", "@microsoft/mcp-server-mssql"]
+      "args": ["-y", "@microsoft/mcp-server-mssql"],
+      "env": {
+        "MSSQL_CONNECTION_STRING": "${MSSQL_CONNECTION_STRING}"
+      }
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_PERSONAL_ACCESS_TOKEN}"
+      }
+    },
+    "powershell": {
+      "command": "npx",
+      "args": ["-y", "@microsoft/powershell-mcp"]
+    },
+    "windows-registry": {
+      "command": "npx",
+      "args": ["-y", "@microsoft/windows-registry-mcp"]
     }
   }
 }

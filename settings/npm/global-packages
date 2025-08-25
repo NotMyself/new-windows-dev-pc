@@ -11,3 +11,12 @@ prettier
 ## Package management
 
 npm-check-updates
+
+## MCP (Model Context Protocol) servers
+
+@modelcontextprotocol/server-filesystem
+@modelcontextprotocol/server-git
+@azure/mcp-server-azure-devops
+@modelcontextprotocol/server-sqlite
+@modelcontextprotocol/server-fetch
+@microsoft/mcp-server-registry

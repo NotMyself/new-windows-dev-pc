@@ -27,6 +27,7 @@
       "Bash(dotnet:*)",
       "Bash(node:*)",
       "Bash(npm:*)",
+      "Bash(npx:*)",
       "Bash(python:*)",
       "Bash(pip:*)",
       "Bash(git:*)",
