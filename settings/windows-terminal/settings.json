@@ -133,22 +133,11 @@
                 "name": "Windows PowerShell"
             },
             {
-                "guid": "{16208362-94fc-5b1f-a491-5b2624d5ab56}",
-                "hidden": true,
-                "name": "Visual Studio Debug Console",
-                "source": "VSDebugConsole"
-            },
-            {
-                "guid": "{418336f4-6edb-522e-a8a0-c41f56039519}",
+                "guid": "{8b8b8b8b-8b8b-8b8b-8b8b-8b8b8b8b8b8b}",
                 "hidden": false,
                 "name": "Developer Command Prompt for VS 2022",
-                "source": "Windows.Terminal.VisualStudio"
-            },
-            {
-                "guid": "{5a37a850-3c14-58a9-979a-36795fccfd69}",
-                "hidden": false,
-                "name": "Developer PowerShell for VS 2022",
-                "source": "Windows.Terminal.VisualStudio"
+                "commandline": "cmd.exe /k \"C:\\Program Files\\Microsoft Visual Studio\\2022\\Professional\\Common7\\Tools\\VsDevCmd.bat\"",
+                "icon": "ms-appx:///ProfileIcons/developer-command-prompt.png"
             }
         ]
     },

@@ -9,32 +9,81 @@
     "DOTNET_SKIP_FIRST_TIME_EXPERIENCE": "1",
     "NPM_CONFIG_LOGLEVEL": "warn",
     "NPM_CONFIG_COLOR": "always",
-    "PYTHONUNBUFFERED": "1",
-    "PIP_DISABLE_PIP_VERSION_CHECK": "1",
     "GIT_PAGER": "less",
     "GIT_ASKPASS": "echo",
-    "PATH": "C:\\Program Files\\PowerShell\\7;C:\\Program Files\\dotnet;C:\\Program Files\\nodejs;C:\\Python311;C:\\Program Files\\Git\\bin;%PATH%"
+    "AZURE_SUBSCRIPTION_ID": "${AZURE_SUBSCRIPTION_ID}",
+    "AZURE_TENANT_ID": "${AZURE_TENANT_ID}",
+    "AZURE_CLIENT_ID": "${AZURE_CLIENT_ID}",
+    "AZURE_CLIENT_SECRET": "${AZURE_CLIENT_SECRET}",
+    "OP_SERVICE_ACCOUNT_TOKEN": "${OP_SERVICE_ACCOUNT_TOKEN}",
+    "PATH": "C:\\Program Files\\PowerShell\\7;C:\\Program Files\\dotnet;C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\;%LOCALAPPDATA%\\Microsoft\\WinGet\\Links\\"
   },
   "terminal": {
     "shell": "pwsh",
-    "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-Command"]
+    "args": [
+      "-ExecutionPolicy",
+      "Bypass",
+      "-Command"
+    ]
   },
   "permissions": {
     "allow": [
       "WebFetch(domain:docs.anthropic.com)",
+      "Bash(winget:*)",
+      "Bash(code:*)",
       "Bash(pwsh:*)",
       "Bash(mkdir:*)",
       "Bash(dotnet:*)",
       "Bash(node:*)",
       "Bash(npm:*)",
       "Bash(npx:*)",
-      "Bash(python:*)",
-      "Bash(pip:*)",
       "Bash(git:*)",
       "Bash(prettier:*)",
-      "Bash(markdownlint:*)"
+      "Bash(markdownlint:*)",
+      "Bash(op:*)",
+      "Bash(az:*)"
     ],
     "deny": [],
     "ask": []
+  },
+  "hooks": {
+    "bash": {
+      "pre": [
+        {
+          "command": "pwsh -Command \"if (Get-Command refresh-env -ErrorAction SilentlyContinue) { refresh-env }\"",
+          "condition": "command.startsWith('pwsh')"
+        }
+      ]
+    }
+  },
+  "mcpServers": {
+    "git": {
+      "command": "npx",
+      "args": [
+        "@modelcontextprotocol/server-git"
+      ],
+      "env": {
+        "GIT_ALLOWED_REPOS": "C:\\Users\\BobbyJohnson\\src"
+      }
+    },
+    "powershell": {
+      "command": "pwsh",
+      "args": [
+        "-Command",
+        "npx @modelcontextprotocol/server-shell"
+      ],
+      "env": {
+        "ALLOWED_COMMANDS": "git;dotnet;npm;node;code;pwsh;wsl"
+      }
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "@modelcontextprotocol/server-filesystem"
+      ],
+      "env": {
+        "ALLOWED_DIRECTORIES": ""
+      }
+    }
   }
 }

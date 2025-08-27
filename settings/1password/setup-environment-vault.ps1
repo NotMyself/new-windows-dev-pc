@@ -35,24 +35,125 @@ if (-not (Get-Command op -ErrorAction SilentlyContinue)) {
     exit 1
 }
 
+# Step 1: Authenticate with 1Password
+Write-Host "Step 1: 1Password Authentication" -ForegroundColor Blue
+Write-Host "========================================" -ForegroundColor Blue
+Write-Host ""
+
 # Check if we're signed in
 try {
     $accounts = op account list 2>&1
     if ($LASTEXITCODE -ne 0) {
-        Write-Host "Not signed into 1Password. Please sign in first:" -ForegroundColor Yellow
-        Write-Host "  op signin" -ForegroundColor Cyan
-        exit 1
+        Write-Host "❌ Not signed into 1Password. Authentication required." -ForegroundColor Red
+        Write-Host ""
+        Write-Host "🔑 How to find your authentication details:" -ForegroundColor Yellow
+        Write-Host ""
+        Write-Host "1. Open the 1Password desktop application" -ForegroundColor White
+        Write-Host "2. Click on your profile picture in the top-right corner" -ForegroundColor White
+        Write-Host "3. Select 'Account Settings' or 'Preferences'" -ForegroundColor White
+        Write-Host "4. Look for 'Account Details' or 'Sign-In Address'" -ForegroundColor White
+        Write-Host "5. Note your:" -ForegroundColor White
+        Write-Host "   • Sign-in address (e.g., my.1password.com or company.1password.com)" -ForegroundColor Cyan
+        Write-Host "   • Email address" -ForegroundColor Cyan
+        Write-Host "   • Secret Key (starts with A3-...)" -ForegroundColor Cyan
+        Write-Host ""
+        Write-Host "📱 Alternative - Find details in mobile app:" -ForegroundColor Yellow
+        Write-Host "1. Open 1Password mobile app" -ForegroundColor White
+        Write-Host "2. Go to Settings → Account → [Your Account Name]" -ForegroundColor White
+        Write-Host "3. View 'Sign-In Address' and 'Email'" -ForegroundColor White
+        Write-Host ""
+        Write-Host "💡 Tips:" -ForegroundColor Yellow
+        Write-Host "• You'll be prompted for your Master Password and Secret Key" -ForegroundColor White
+        Write-Host "• The Secret Key can be found in your Emergency Kit PDF" -ForegroundColor White
+        Write-Host "• Press Enter for default options when prompted" -ForegroundColor White
+        Write-Host ""
+        
+        # Attempt interactive authentication
+        Write-Host "🚀 Starting interactive authentication..." -ForegroundColor Green
+        Write-Host ""
+        
+        try {
+            # Try interactive sign-in first
+            Write-Host "Running: op signin" -ForegroundColor Gray
+            Write-Host ""
+            
+            # Use cmd to properly handle interactive input
+            $signinResult = cmd /c "op signin 2>&1"
+            
+            if ($LASTEXITCODE -eq 0) {
+                Write-Host ""
+                Write-Host "✅ Authentication successful!" -ForegroundColor Green
+                
+                # Verify authentication worked
+                $accounts = op account list 2>&1
+                if ($LASTEXITCODE -eq 0) {
+                    Write-Host "✅ Verified: Successfully authenticated with 1Password" -ForegroundColor Green
+                    
+                    # Display current account info
+                    $accountInfo = op account get --format=json 2>$null | ConvertFrom-Json
+                    if ($accountInfo) {
+                        Write-Host "   Account: $($accountInfo.name) ($($accountInfo.email))" -ForegroundColor Gray
+                        Write-Host "   URL: $($accountInfo.url)" -ForegroundColor Gray
+                    }
+                    Write-Host ""
+                } else {
+                    throw "Authentication verification failed"
+                }
+            } else {
+                Write-Host ""
+                Write-Host "❌ Interactive authentication failed." -ForegroundColor Red
+                Write-Host ""
+                Write-Host "Manual authentication options:" -ForegroundColor Yellow
+                Write-Host ""
+                Write-Host "Option 1 - Specify sign-in address:" -ForegroundColor White
+                Write-Host "  op signin --account your-signin-address.1password.com" -ForegroundColor Cyan
+                Write-Host ""
+                Write-Host "Option 2 - Full command with details:" -ForegroundColor White
+                Write-Host "  op signin your-signin-address.1password.com your-email@example.com" -ForegroundColor Cyan
+                Write-Host ""
+                Write-Host "Option 3 - Get help:" -ForegroundColor White
+                Write-Host "  op signin --help" -ForegroundColor Cyan
+                Write-Host ""
+                Write-Host "After authenticating manually, run this script again." -ForegroundColor Green
+                exit 1
+            }
+        } catch {
+            Write-Host ""
+            Write-Host "❌ Authentication process failed: $($_.Exception.Message)" -ForegroundColor Red
+            Write-Host ""
+            Write-Host "Please try manual authentication:" -ForegroundColor Yellow
+            Write-Host "  op signin" -ForegroundColor Cyan
+            Write-Host ""
+            Write-Host "Then run this script again." -ForegroundColor Green
+            exit 1
+        }
+    } else {
+        Write-Host "✅ Already authenticated with 1Password" -ForegroundColor Green
+        
+        # Display current account info
+        $accountInfo = op account get --format=json 2>$null | ConvertFrom-Json
+        if ($accountInfo) {
+            Write-Host "   Account: $($accountInfo.name) ($($accountInfo.email))" -ForegroundColor Gray
+            Write-Host "   URL: $($accountInfo.url)" -ForegroundColor Gray
+        }
+        Write-Host ""
     }
 } catch {
-    Write-Error "Failed to check 1Password authentication status. Please sign in with 'op signin'"
+    Write-Host "❌ Failed to check 1Password authentication status." -ForegroundColor Red
+    Write-Host ""
+    Write-Host "This might indicate:" -ForegroundColor Yellow
+    Write-Host "• 1Password CLI is not properly installed" -ForegroundColor White
+    Write-Host "• Network connectivity issues" -ForegroundColor White
+    Write-Host "• CLI version compatibility issues" -ForegroundColor White
+    Write-Host ""
+    Write-Host "Try running: op signin --help" -ForegroundColor Cyan
+    Write-Host ""
     exit 1
 }
 
-Write-Host "Setting up 1Password Environment vault and service account..." -ForegroundColor Green
-Write-Host ""
-
-# Step 1: Create Environment vault
-Write-Host "1. Creating Environment vault..." -ForegroundColor Yellow
+# Step 2: Create Environment vault
+Write-Host "Step 2: Creating Environment Vault" -ForegroundColor Blue
+Write-Host "========================================" -ForegroundColor Blue
 try {
     # Check if vault already exists
     $existingVault = op vault get Environment 2>$null
@@ -74,8 +175,11 @@ try {
     exit 1
 }
 
-# Step 2: Create service account
-Write-Host "2. Creating service account..." -ForegroundColor Yellow
+Write-Host ""
+
+# Step 3: Create service account
+Write-Host "Step 3: Creating Service Account" -ForegroundColor Blue
+Write-Host "========================================" -ForegroundColor Blue
 $serviceAccountName = "Environment Service Account"
 
 try {
@@ -102,8 +206,9 @@ try {
             $token = $tokenMatches.Matches[0].Value  # Get only the first match
             
             if ($token) {
-                # Step 3: Store token as persistent environment variable
-                Write-Host "3. Storing service account token..." -ForegroundColor Yellow
+                # Step 4: Store token as persistent environment variable
+                Write-Host "Step 4: Storing Service Account Token" -ForegroundColor Blue
+                Write-Host "========================================" -ForegroundColor Blue
                 try {
                     [Environment]::SetEnvironmentVariable("OP_SERVICE_ACCOUNT_TOKEN", $token, "User")
                     Write-Host "   ✓ Service account token stored as OP_SERVICE_ACCOUNT_TOKEN" -ForegroundColor Green
@@ -142,8 +247,11 @@ try {
     exit 1
 }
 
-# Step 4: Test the setup
-Write-Host "4. Testing service account access..." -ForegroundColor Yellow
+Write-Host ""
+
+# Step 5: Test the setup
+Write-Host "Step 5: Testing Service Account Access" -ForegroundColor Blue
+Write-Host "========================================" -ForegroundColor Blue
 try {
     # Remove any existing session variables to test service account
     Get-Variable -Name "OP_SESSION_*" -ErrorAction SilentlyContinue | Remove-Variable -ErrorAction SilentlyContinue
@@ -152,7 +260,7 @@ try {
     $testResult = op vault list 2>&1
     if ($LASTEXITCODE -eq 0) {
         Write-Host "   ✓ Service account authentication working" -ForegroundColor Green
-        
+
         # Check if Environment vault is accessible
         $environmentVault = op vault get Environment 2>&1
         if ($LASTEXITCODE -eq 0) {
@@ -171,6 +279,6 @@ try {
 
 Write-Host ""
 Write-Host "Next steps:" -ForegroundColor Cyan
-Write-Host "1. Restart PowerShell or run: refreshenv" -ForegroundColor White
+Write-Host "1. Restart PowerShell" -ForegroundColor White
 Write-Host "2. Test with: op vault list" -ForegroundColor White
 Write-Host "3. Create environment variables with: Set-1PEnvVar -Key 'TEST' -Value 'value' -Vault 'Environment'" -ForegroundColor White

@@ -20,7 +20,7 @@ This command helps you perform common Git operations following best practices fo
 2. **Suggests best practices** for commits and branches
 3. **Helps with conflict resolution** and merging
 4. **Provides templates** for commit messages
-5. **Manages branching strategies** (Git Flow, GitHub Flow)
+5. **Manages branching strategies** (Git Flow)
 
 ## Common Workflows
 
@@ -45,7 +45,7 @@ git commit -m "feat: add user authentication system
 # Push feature branch
 git push -u origin feature/user-authentication
 
-# Create pull request (via GitHub/GitLab interface)
+# Create pull request (via Azure DevOps CLI (az))
 ```
 
 ### Hotfix Workflow
