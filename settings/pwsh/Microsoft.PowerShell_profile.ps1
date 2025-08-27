@@ -1,29 +1,56 @@
-# enable oh my posh prompt
-oh-my-posh init pwsh --config ~/.theme.omp.json | Invoke-Expression
-
-# Load environment variables from 1Password
-$profileTarget = Get-Item $profile | Select-Object -ExpandProperty Target
-if ($profileTarget) {
-    $envVarsScript = Join-Path (Split-Path $profileTarget -Parent) "1p-env-vars.ps1"
-    if (Test-Path $envVarsScript) {
-        . $envVarsScript
+# enable oh my posh prompt (only if available and interactive)
+if ((Get-Command oh-my-posh -ErrorAction SilentlyContinue) -and $Host.Name -eq 'ConsoleHost' -and [Environment]::UserInteractive) {
+    try {
+        oh-my-posh init pwsh --config ~/.theme.omp.json | Invoke-Expression
+    } catch {
+        Write-Warning "Failed to initialize oh-my-posh: $($_.Exception.Message)"
     }
 }
-# Login to Azure if environment variables are set
-if ($env:AZURE_CLIENT_ID -and $env:AZURE_CLIENT_SECRET -and $env:AZURE_TENANT_ID) {
-    az login --service-principal -u $env:AZURE_CLIENT_ID -p $env:AZURE_CLIENT_SECRET --tenant $env:AZURE_TENANT_ID | Out-Null
+
+# enable fnm fast node manager (only if available and interactive)
+if ((Get-Command fnm -ErrorAction SilentlyContinue) -and $Host.Name -eq 'ConsoleHost' -and [Environment]::UserInteractive) {
+    try {
+        fnm completions --shell powershell | Out-String | Invoke-Expression
+        fnm env --use-on-cd | Out-String | Invoke-Expression
+    } catch {
+        Write-Warning "Failed to initialize fnm: $($_.Exception.Message)"
+    }
+}
+# Load environment variables from 1Password (only if op CLI available)
+if (Get-Command op -ErrorAction SilentlyContinue) {
+    try {
+        $profileTarget = Get-Item $profile | Select-Object -ExpandProperty Target
+        if ($profileTarget) {
+            $envVarsScript = Join-Path (Split-Path $profileTarget -Parent) "1p-env-vars.ps1"
+            if (Test-Path $envVarsScript) {
+                . $envVarsScript
+            }
+        }
+    } catch {
+        Write-Warning "Failed to load environment variables from 1Password: $($_.Exception.Message)"
+    }
 }
 
-
-# enable fnm fast node manager
-fnm completions --shell powershell | Out-String | Invoke-Expression
-fnm env --use-on-cd | Out-String | Invoke-Expression
-
-# History
- 
-Set-PSReadLineOption -PredictionSource History
-Set-PSReadLineOption -PredictionViewStyle ListView
-Set-PSReadLineOption -EditMode Windows
+# Login to Azure if environment variables are set (only if valid and az CLI available)
+if ((Get-Command az -ErrorAction SilentlyContinue) -and 
+    $env:AZURE_CLIENT_ID -and $env:AZURE_CLIENT_SECRET -and $env:AZURE_TENANT_ID -and
+    $env:AZURE_CLIENT_ID -ne '${AZURE_CLIENT_ID}' -and $env:AZURE_TENANT_ID -ne '${AZURE_TENANT_ID}') {
+    try {
+        az login --service-principal -u $env:AZURE_CLIENT_ID -p $env:AZURE_CLIENT_SECRET --tenant $env:AZURE_TENANT_ID | Out-Null
+    } catch {
+        Write-Warning "Failed to login to Azure: $($_.Exception.Message)"
+    }
+}
+# History (only in interactive sessions)
+if ($Host.Name -eq 'ConsoleHost' -and [Environment]::UserInteractive) {
+    try {
+        Set-PSReadLineOption -PredictionSource History -WarningAction SilentlyContinue
+        Set-PSReadLineOption -PredictionViewStyle ListView -WarningAction SilentlyContinue
+        Set-PSReadLineOption -EditMode Windows -WarningAction SilentlyContinue
+    } catch {
+        # Silently ignore PSReadLine errors in non-compatible terminals
+    }
+}
  
 # Alias
  
@@ -348,6 +375,106 @@ function Set-GitUser {
     }
 }
 
+function refresh-env {
+    <#
+    .SYNOPSIS
+    Refreshes environment variables and reinitializes development tools.
+    
+    .DESCRIPTION
+    This function refreshes the current session's environment variables from the system,
+    reloads PATH, and reinitializes development tools like fnm and 1Password environment variables.
+    Use this after installing new tools or when CLI commands aren't found.
+    
+    .EXAMPLE
+    refresh-env
+    # Refreshes all environment variables and tool configurations
+    #>
+    
+    Write-Host "Refreshing environment variables and tools..." -ForegroundColor Cyan
+    
+    try {
+        # Refresh environment variables from registry
+        Write-Host "• Updating environment variables..." -ForegroundColor Yellow
+        
+        # Get machine and user environment variables
+        $machineEnv = [Environment]::GetEnvironmentVariables([EnvironmentVariableTarget]::Machine)
+        $userEnv = [Environment]::GetEnvironmentVariables([EnvironmentVariableTarget]::User)
+        
+        # Update PATH specifically
+        $machinePath = $machineEnv["PATH"]
+        $userPath = $userEnv["PATH"]
+        $combinedPath = @($machinePath, $userPath) -join ";"
+        $env:PATH = $combinedPath
+        
+        # Update other important environment variables
+        foreach ($key in $machineEnv.Keys) {
+            [Environment]::SetEnvironmentVariable($key, $machineEnv[$key])
+        }
+        foreach ($key in $userEnv.Keys) {
+            [Environment]::SetEnvironmentVariable($key, $userEnv[$key])
+        }
+        
+        Write-Host "  ✓ Environment variables updated" -ForegroundColor Green
+        
+        # Reinitialize fnm if available
+        if (Get-Command fnm -ErrorAction SilentlyContinue) {
+            Write-Host "• Reinitializing fnm (Fast Node Manager)..." -ForegroundColor Yellow
+            try {
+                fnm completions --shell powershell | Out-String | Invoke-Expression
+                fnm env --use-on-cd | Out-String | Invoke-Expression
+                Write-Host "  ✓ fnm reinitialized" -ForegroundColor Green
+            } catch {
+                Write-Warning "Failed to reinitialize fnm: $($_.Exception.Message)"
+            }
+        }
+        
+        # Reload 1Password environment variables if available
+        if (Get-Command op -ErrorAction SilentlyContinue) {
+            Write-Host "• Reloading 1Password environment variables..." -ForegroundColor Yellow
+            try {
+                $profileTarget = Get-Item $profile | Select-Object -ExpandProperty Target
+                if ($profileTarget) {
+                    $envVarsScript = Join-Path (Split-Path $profileTarget -Parent) "1p-env-vars.ps1"
+                    if (Test-Path $envVarsScript) {
+                        . $envVarsScript
+                        Write-Host "  ✓ 1Password environment variables reloaded" -ForegroundColor Green
+                    } else {
+                        Write-Host "  ! 1Password env vars script not found" -ForegroundColor Yellow
+                    }
+                }
+            } catch {
+                Write-Warning "Failed to reload 1Password environment variables: $($_.Exception.Message)"
+            }
+        }
+        
+        # Test common CLI tools
+        Write-Host "• Testing CLI tool availability..." -ForegroundColor Yellow
+        $tools = @("winget", "code", "node", "npm", "gh", "wt", "git", "dotnet", "az")
+        $available = @()
+        $missing = @()
+        
+        foreach ($tool in $tools) {
+            if (Get-Command $tool -ErrorAction SilentlyContinue) {
+                $available += $tool
+            } else {
+                $missing += $tool
+            }
+        }
+        
+        if ($available.Count -gt 0) {
+            Write-Host "  ✓ Available: $($available -join ', ')" -ForegroundColor Green
+        }
+        if ($missing.Count -gt 0) {
+            Write-Host "  ! Missing: $($missing -join ', ')" -ForegroundColor Yellow
+        }
+        
+        Write-Host "Environment refresh complete!" -ForegroundColor Cyan
+        
+    } catch {
+        Write-Error "Failed to refresh environment: $($_.Exception.Message)"
+    }
+}
+
 function Set-1PEnvVar {
     <#
     .SYNOPSIS
@@ -418,7 +545,7 @@ function Set-1PEnvVar {
         $lines = $lines | Sort-Object
         
         # Join back into content
-        $newContent = $lines -join "`n"
+        $newContent = $lines -join [Environment]::NewLine
         
         # Create or update the note
         if ($currentNote) {

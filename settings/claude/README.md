@@ -10,6 +10,7 @@ The `settings/claude/` directory contains:
 settings/claude/
 ├── README.md                        # This documentation file
 ├── settings.json                    # Claude Code global configuration
+├── configure-claude-windows-11.ps1  # Windows 11 automated setup script
 ├── agents/                          # Specialized agent definitions
 │   ├── azure-devops-specialist.md
 │   ├── claude-agent-specialist.md
@@ -33,6 +34,7 @@ settings/claude/
 The Claude Code setup includes:
 - **7 Specialized Agents**: Expert agents for Azure DevOps, C# development, testing, documentation, and agent creation with sophisticated delegation intelligence
 - **7 Slash Commands**: Quick access commands that directly invoke the specialized agents
+- **Windows 11 Configuration Script**: Automated PowerShell 7+ setup script for optimal Claude Code integration on Windows 11
 - **PowerShell Integration**: Optimized for Windows development workflows with PowerShell as the default shell
 - **Global Settings**: Shell configuration, permissions management, and web access controls
 - **Intelligent Delegation Framework**: Each agent includes sophisticated decision-making capabilities for optimal sub-agent collaboration
@@ -351,6 +353,85 @@ Each agent has a corresponding command file in `commands/` that creates slash co
 - **Quick Access**: Use `/command-name` for rapid agent invocation
 - **Tool Documentation**: Each command file documents available tools and capabilities
 - **Usage Examples**: Real-world scenarios for each agent
+
+## Windows 11 Setup Script
+
+### configure-claude-windows-11.ps1
+
+This PowerShell 7+ script provides automated Claude Code configuration optimized for Windows 11 development environments.
+
+#### Features
+
+- **PowerShell 7+ Integration**: Enhanced predictive IntelliSense, cross-platform compatibility, and Windows 11 terminal optimization
+- **Flexible Configuration Types**: Support for Native, WSL, or Hybrid Claude Code installations
+- **Windows Terminal Integration**: Custom fragments, color schemes, and optimized terminal profiles
+- **Environment Variable Management**: Automated setup of Claude-specific environment variables and PATH configuration
+- **MCP Server Configuration**: Model Context Protocol server setup for filesystem, git, and PowerShell integration
+- **VS Code Integration**: Optimized settings for Claude Code development workflows
+- **WSL2 Bridge Functionality**: Seamless Windows/Linux development environment integration
+- **Configuration Validation**: Automated testing and verification of setup completion
+
+#### Usage
+
+**Basic Setup (Recommended)**:
+```powershell
+# Run with Administrator privileges - configures both native and WSL support
+.\settings\claude\configure-claude-windows-11.ps1
+```
+
+**Native Windows Only**:
+```powershell
+# Skip WSL integration, use only native Windows Claude Code
+.\settings\claude\configure-claude-windows-11.ps1 -SkipWSL -ConfigurationType Native
+```
+
+**WSL Only**:
+```powershell
+# Traditional WSL2-based setup only
+.\settings\claude\configure-claude-windows-11.ps1 -ConfigurationType WSL
+```
+
+**Custom Configuration**:
+```powershell
+# Override existing settings, skip MCP servers
+.\settings\claude\configure-claude-windows-11.ps1 -Force -SkipMCP
+```
+
+#### Configuration Types
+
+| Type | Description | Use Case |
+|------|-------------|----------|
+| **Native** | Pure Windows installation | Modern Windows 11 development, VS Code integration |
+| **WSL** | Traditional WSL2 setup | Linux-based development workflows |
+| **Hybrid** | Both native and WSL configured | Maximum flexibility, cross-platform development |
+
+#### Requirements
+
+- **PowerShell 7+** (required)
+- **Windows 11** version 21H2 or later (recommended)
+- **Administrator privileges** (required for system-level configuration)
+- **Windows Terminal** (recommended for best experience)
+- **Node.js 18+** and **npm 10+** (for Claude Code installation)
+
+#### What the Script Configures
+
+1. **Claude Code Installation**: Via npm or native Windows installation
+2. **Environment Variables**: CLAUDE_SHELL, CLAUDE_EDITOR, PATH optimization
+3. **PowerShell Profile**: Enhanced with Claude Code shortcuts and optimizations
+4. **Windows Terminal**: Custom fragments with Claude Code color scheme
+5. **VS Code Settings**: Integration settings for Claude Code extension
+6. **MCP Servers**: Filesystem, git, and PowerShell protocol servers
+7. **WSL Integration**: Bridge scripts for seamless Windows/Linux workflows (if enabled)
+
+#### Post-Installation
+
+After running the script:
+1. Restart your terminal to apply environment changes
+2. Run `claude --version` to verify installation
+3. Set your `ANTHROPIC_API_KEY` environment variable
+4. Try `claude .` in a project directory to start coding
+
+For WSL integration, use `claude-wsl` command in WSL for Windows path integration.
 
 ## Usage Instructions
 

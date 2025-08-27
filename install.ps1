@@ -23,8 +23,18 @@ if (-NOT ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdenti
     }
     
     try {
+        # Determine which PowerShell to use - prefer PowerShell 7+
+        $pwshPath = Get-Command "pwsh.exe" -ErrorAction SilentlyContinue
+        if ($pwshPath) {
+            $powershellExe = "pwsh.exe"
+            Write-Host "Using PowerShell 7+ for elevation..." -ForegroundColor Green
+        } else {
+            $powershellExe = "powershell.exe"
+            Write-Host "PowerShell 7+ not found, using Windows PowerShell..." -ForegroundColor Yellow
+        }
+        
         # Start elevated process
-        $process = Start-Process -FilePath "powershell.exe" -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$scriptPath`"$arguments" -Verb RunAs -Wait -PassThru
+        $process = Start-Process -FilePath $powershellExe -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$scriptPath`"$arguments" -Verb RunAs -Wait -PassThru
         
         # Exit with the same code as the elevated process
         exit $process.ExitCode
