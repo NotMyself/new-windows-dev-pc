@@ -20,11 +20,7 @@
   },
   "terminal": {
     "shell": "pwsh",
-    "args": [
-      "-ExecutionPolicy",
-      "Bypass",
-      "-Command"
-    ]
+    "args": ["-ExecutionPolicy", "Bypass", "-Command"]
   },
   "permissions": {
     "allow": [
@@ -36,6 +32,7 @@
       "Bash(dotnet:*)",
       "Bash(node:*)",
       "Bash(npm:*)",
+      "Bash(npm search:*)",
       "Bash(npx:*)",
       "Bash(git:*)",
       "Bash(prettier:*)",
@@ -58,32 +55,54 @@
   },
   "mcpServers": {
     "git": {
-      "command": "npx",
-      "args": [
-        "@modelcontextprotocol/server-git"
-      ],
+      "command": "pwsh",
+      "args": ["-File", ".claude\\wrap-call.ps1", "npx", "-y", "@cyanheads/git-mcp-server"],
       "env": {
-        "GIT_ALLOWED_REPOS": "C:\\Users\\BobbyJohnson\\src"
+        "GIT_ALLOWED_REPOS": "C:\\Users\\bobby\\src"
       }
     },
-    "powershell": {
+    "nuget": {
       "command": "pwsh",
-      "args": [
-        "-Command",
-        "npx @modelcontextprotocol/server-shell"
-      ],
-      "env": {
-        "ALLOWED_COMMANDS": "git;dotnet;npm;node;code;pwsh;wsl"
-      }
+      "args": ["-File", ".claude\\wrap-call.ps1", "npx", "-y", "@microsoft/nuget-mcp-server"]
     },
     "filesystem": {
-      "command": "npx",
-      "args": [
-        "@modelcontextprotocol/server-filesystem"
-      ],
+      "command": "pwsh",
+      "args": ["-File", ".claude\\wrap-call.ps1", "npx", "-y", "@modelcontextprotocol/server-filesystem"],
       "env": {
-        "ALLOWED_DIRECTORIES": ""
+        "ALLOWED_DIRECTORIES": "C:\\Users\\bobby\\src;C:\\Users\\bobby\\Documents;C:\\Users\\bobby\\Desktop"
       }
+    },
+    "context7": {
+      "command": "pwsh",
+      "args": ["-File", ".claude\\wrap-call.ps1", "npx", "-y", "@upstash/context7-mcp"]
+    },
+    "package-search": {
+      "command": "pwsh",
+      "args": ["-File", ".claude\\wrap-call.ps1", "npx", "-y", "@wong2/package-registry-search"]
+    },
+    "dotnet-cli": {
+      "command": "pwsh",
+      "args": ["-File", ".claude\\wrap-call.ps1", "npx", "-y", "@dotnet/mcp-dotnet-cli"]
+    },
+    "azure-devops": {
+      "command": "pwsh",
+      "args": ["-File", ".claude\\wrap-call.ps1", "npx", "-y", "@microsoft/azure-devops-mcp"]
+    },
+    "azure-cli": {
+      "command": "pwsh",
+      "args": ["-File", ".claude\\wrap-call.ps1", "npx", "-y", "@azure/mcp-server"]
+    },
+    "mssql": {
+      "command": "pwsh",
+      "args": ["-File", ".claude\\wrap-call.ps1", "npx", "-y", "@microsoft/mcp-server-mssql"]
+    },
+    "github": {
+      "command": "pwsh",
+      "args": ["-File", ".claude\\wrap-call.ps1", "npx", "-y", "@modelcontextprotocol/server-github"]
+    },
+    "windows-registry": {
+      "command": "pwsh",
+      "args": ["-File", ".claude\\wrap-call.ps1", "npx", "-y", "@microsoft/windows-registry-mcp"]
     }
   }
 }

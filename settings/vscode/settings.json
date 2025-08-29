@@ -17,7 +17,6 @@
   "editor.guides.bracketPairs": true,
   "editor.inlineSuggest.enabled": true,
   "editor.formatOnSave": false,
-  // Enable per-language
   "[javascript]": {
     "editor.formatOnSave": true
   },
@@ -53,22 +52,20 @@
   "workbench.panel.showLabels": false,
   "terminal.integrated.defaultProfile.windows": "PowerShell",
   "terminal.integrated.profiles.windows": {
-
     "PowerShell": {
       "source": "PowerShell",
-      "icon": "terminal-powershell",
-      "path": "C:\\Program Files\\PowerShell\\7\\pwsh.exe"
-    },
-    "Command Prompt": {
-      "path": [
-        "${env:windir}\\Sysnative\\cmd.exe",
-        "${env:windir}\\System32\\cmd.exe"
-      ],
-      "args": [],
-      "icon": "terminal-cmd"
-    },
-    "Git Bash": {
-      "source": "Git Bash"
+      "args": [
+        "-NoLogo"
+      ]
     }
+  },
+  "claude-code.theme": "dark",
+  "claude-code.autoStart": true,
+  "claude-code.fontFamily": "Cascadia Code, Consolas, monospace",
+  "claude-code.shell": "pwsh",
+  "claude-code.enableWindowsTerminal": true,
+  "claude-code.fontSize": 12,
+  "[powershell]": {
+    "editor.defaultFormatter": "ms-vscode.powershell"
   }
 }
