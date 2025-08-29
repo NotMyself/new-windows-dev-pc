@@ -1,0 +1,82 @@
+# Azure DevOps Pipeline for GitHub Sync
+# This pipeline automatically pushes changes from Azure DevOps main branch to GitHub
+
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  - group: GitHub-Integration  # Variable group containing GitHubPAT
+  - name: githubRepository
+    value: 'NotMyself/new-windows-dev-pc'
+  - name: targetBranch
+    value: 'main'
+
+steps:
+- checkout: self
+  persistCredentials: true
+  clean: true
+
+- task: GitHubRelease@1
+  displayName: 'Setup GitHub Connection'
+  inputs:
+    gitHubConnection: '$(githubServiceConnection)'
+    repositoryName: '$(githubRepository)'
+    action: 'create'
+    target: '$(Build.SourceVersion)'
+    tagSource: 'userSpecifiedTag'
+    tag: 'pipeline-test'
+    title: 'Pipeline Connection Test'
+    releaseNotesSource: 'inline'
+    releaseNotesInline: 'Testing pipeline connection'
+    isDraft: true
+    isPreRelease: true
+  condition: false  # This step is disabled - only for reference
+
+- script: |
+    echo "Configuring git for push to GitHub..."
+    git config --global user.email "pipeline@notmyself.dev"
+    git config --global user.name "Azure DevOps Pipeline"
+    
+    echo "Current remotes:"
+    git remote -v
+    
+    echo "Adding GitHub remote if not exists..."
+    if ! git remote get-url github > /dev/null 2>&1; then
+      git remote add github https://$(GITHUB_PAT)@github.com/$(githubRepository).git
+    else
+      git remote set-url github https://$(GITHUB_PAT)@github.com/$(githubRepository).git
+    fi
+    
+    echo "Updated remotes:"
+    git remote -v
+    
+    echo "Fetching from GitHub..."
+    git fetch github
+    
+    echo "Current branch and status:"
+    git branch -a
+    git status
+    
+    echo "Pushing to GitHub..."
+    git push github HEAD:$(targetBranch) --force-with-lease
+    
+    echo "✅ Successfully pushed to GitHub repository: $(githubRepository)"
+  displayName: 'Push to GitHub'
+  env:
+    GITHUB_PAT: $(GitHubPAT)  # This variable needs to be set in Azure DevOps
+
+- script: |
+    echo "=== Pipeline Summary ==="
+    echo "Source Branch: $(Build.SourceBranch)"
+    echo "Source Version: $(Build.SourceVersion)"
+    echo "Target Repository: https://github.com/$(githubRepository)"
+    echo "Target Branch: $(targetBranch)"
+    echo "Build ID: $(Build.BuildId)"
+    echo "Build Number: $(Build.BuildNumber)"
+  displayName: 'Pipeline Summary'
+  condition: always()
