@@ -519,17 +519,32 @@ function Set-1PEnvVar {
         
         $noteTitle = "Local Environment Variables"
         
-        # Get current note content
+        # Get current note content - first check if note exists
+        $currentNote = $null
+        $currentContent = ""
+        
         try {
+            # Search for existing note first to avoid creating duplicates
             if ($Vault) {
-                $currentNote = op item get $noteTitle --vault $Vault --format json | ConvertFrom-Json
+                $searchResult = op item list --categories="Secure Note" --vault $Vault --format json | ConvertFrom-Json
             } else {
-                $currentNote = op item get $noteTitle --format json | ConvertFrom-Json
+                $searchResult = op item list --categories="Secure Note" --format json | ConvertFrom-Json
             }
-            $currentContent = $currentNote.fields | Where-Object { $_.label -eq "notesPlain" } | Select-Object -ExpandProperty value
+            
+            $existingNote = $searchResult | Where-Object { $_.title -eq $noteTitle }
+            
+            if ($existingNote) {
+                # Note exists, get its content
+                if ($Vault) {
+                    $currentNote = op item get $existingNote.id --vault $Vault --format json | ConvertFrom-Json
+                } else {
+                    $currentNote = op item get $existingNote.id --format json | ConvertFrom-Json
+                }
+                $currentContent = $currentNote.fields | Where-Object { $_.label -eq "notesPlain" } | Select-Object -ExpandProperty value
+            }
         } catch {
-            # Note doesn't exist, we'll create it
-            $currentContent = ""
+            # If search fails, note doesn't exist or there's an authentication issue
+            Write-Verbose "Could not find existing note or search failed: $($_.Exception.Message)"
         }
         
         # Parse existing content into lines
@@ -549,9 +564,9 @@ function Set-1PEnvVar {
         
         # Create or update the note
         if ($currentNote) {
-            # Update existing note
+            # Update existing note using its ID to avoid ambiguity
             $opArgs = @(
-                "item", "edit", $noteTitle,
+                "item", "edit", $currentNote.id,
                 "notesPlain=$newContent"
             )
             if ($Vault) {
