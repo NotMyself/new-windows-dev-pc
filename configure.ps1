@@ -1,7 +1,8 @@
 [CmdletBinding()]
 param(
     [switch]$Force,
-    [switch]$SkipConfirmation
+    [switch]$SkipConfirmation,
+    [string]$WSLDistro = "Ubuntu-22.04"
 )
 
 # Check PowerShell version - require PowerShell 7+
@@ -218,6 +219,78 @@ function Invoke-ConfigurationScript {
 }
 
 try {
+    # WSL Mode Configuration - Always performed
+    Write-Step "Configuring Claude Code for WSL development..."
+    
+    # Verify WSL is available
+    if (-not (Get-Command "wsl" -ErrorAction SilentlyContinue)) {
+        Write-Error "WSL not found. Please run .\install.ps1 first"
+        exit 1
+    }
+    
+    # Check if specified distro exists
+    $installedDistros = wsl --list --quiet 2>$null | ForEach-Object { $_.Trim() }
+    if ($WSLDistro -notin $installedDistros) {
+        Write-Error "$WSLDistro not found. Please run .\install.ps1 first"
+        exit 1
+    }
+    
+    # Set up Claude Code WSL configuration
+    Write-Host "🔧 Configuring Claude Code for WSL environment..." -ForegroundColor Yellow
+    
+    $claudeSettingsPath = "$env:USERPROFILE\.claude\settings.json"
+    $wslSettingsPath = "$PSScriptRoot\settings\claude\settings-wsl.json"
+    
+    if (Test-Path $wslSettingsPath) {
+        # Create .claude directory if it doesn't exist
+        $claudeDir = Split-Path $claudeSettingsPath
+        if (-not (Test-Path $claudeDir)) {
+            New-Item -ItemType Directory -Path $claudeDir -Force | Out-Null
+        }
+        
+        # Backup existing settings if they exist
+        if (Test-Path $claudeSettingsPath) {
+            $backupPath = "$claudeSettingsPath.backup.$(Get-Date -Format 'yyyyMMdd-HHmmss')"
+            Copy-Item $claudeSettingsPath $backupPath
+            Write-Host "  ✓ Backed up existing settings to: $backupPath" -ForegroundColor Green
+        }
+        
+        # Copy WSL settings
+        Copy-Item $wslSettingsPath $claudeSettingsPath -Force
+        Write-Host "  ✓ Claude Code configured for WSL ($WSLDistro)" -ForegroundColor Green
+    } else {
+        Write-Error "WSL settings file not found: $wslSettingsPath"
+        exit 1
+    }
+    
+    # Set up 1Password in WSL
+    Write-Host "🔑 Setting up 1Password integration in WSL..." -ForegroundColor Yellow
+    $wsl1pScript = "$PSScriptRoot\settings\wsl\configure-1password-wsl.sh"
+    if (Test-Path $wsl1pScript) {
+        # Make script executable
+        wsl -d $WSLDistro -- chmod +x "/mnt/c$($wsl1pScript.Replace('C:', '').Replace('\', '/'))"
+        # Run 1Password setup
+        wsl -d $WSLDistro -- bash "/mnt/c$($wsl1pScript.Replace('C:', '').Replace('\', '/'))"
+        Write-Host "  ✓ 1Password integration configured in WSL" -ForegroundColor Green
+    } else {
+        Write-Warning "1Password WSL setup script not found: $wsl1pScript"
+    }
+    
+    Write-Host ""
+    Write-Host "✅ WSL configuration completed!" -ForegroundColor Green
+    Write-Host ""
+    Write-Host "Claude Code is now configured to use:" -ForegroundColor Cyan
+    Write-Host "  • WSL ($WSLDistro) for tool execution" -ForegroundColor White
+    Write-Host "  • bash shell instead of PowerShell" -ForegroundColor White  
+    Write-Host "  • prettier and markdownlint tools" -ForegroundColor White
+    Write-Host "  • 1Password integration for secure environment variables" -ForegroundColor White
+    Write-Host "  • Separate Git identity for Claude Code commits" -ForegroundColor White
+    Write-Host ""
+    Write-Host "Test WSL setup:" -ForegroundColor Yellow
+    Write-Host "  wsl -d $WSLDistro -- prettier --version" -ForegroundColor Gray
+    Write-Host "  wsl -d $WSLDistro -- markdownlint --version" -ForegroundColor Gray
+    Write-Host ""
+    
     Write-Step "Configuring development environment..."
     
     # Ask for Windows 11 features permission upfront

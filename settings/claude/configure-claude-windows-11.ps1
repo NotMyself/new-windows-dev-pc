@@ -9,7 +9,7 @@
     This script configures Claude Code for Windows 11 with PowerShell 7+ features including:
     - Enhanced terminal integration with Windows Terminal
     - Advanced PowerShell 7+ features (predictive IntelliSense, cross-platform compatibility)
-    - Windows 11 specific optimizations (WSL2 integration, native Windows support)
+    - Windows 11 specific optimizations and WSL2 integration
     - Environment variable configuration and security
     - MCP (Model Context Protocol) server setup
     - Performance optimizations and best practices
@@ -18,29 +18,17 @@
 .PARAMETER Force
     Overwrite existing configurations without prompting
 
-.PARAMETER SkipWSL
-    Skip WSL2 configuration and setup
-
 .PARAMETER SkipMCP
     Skip MCP server configuration
 
 .PARAMETER SkipEnvironmentSetup
     Skip environment variable and PATH configuration
 
-.PARAMETER ConfigurationType
-    Choose between 'Native', 'WSL', or 'Hybrid' configuration
-    - Native: Pure Windows installation (requires Claude Code native Windows support)
-    - WSL: Traditional WSL2-based setup
-    - Hybrid: Both native and WSL configurations
-
 .EXAMPLE
     .\configure-claude-windows-11.ps1
     
 .EXAMPLE
-    .\configure-claude-windows-11.ps1 -Force -ConfigurationType Hybrid
-
-.EXAMPLE
-    .\configure-claude-windows-11.ps1 -SkipWSL -ConfigurationType Native
+    .\configure-claude-windows-11.ps1 -Force
 
 .NOTES
     Author: Generated for Windows 11 development environment
@@ -51,11 +39,8 @@
 [CmdletBinding()]
 param(
     [switch]$Force,
-    [switch]$SkipWSL,
     [switch]$SkipMCP,
-    [switch]$SkipEnvironmentSetup,
-    [ValidateSet('Native', 'WSL', 'Hybrid')]
-    [string]$ConfigurationType = 'Hybrid'
+    [switch]$SkipEnvironmentSetup
 )
 
 # Windows 11 and PowerShell 7+ feature detection
@@ -273,14 +258,12 @@ function prompt {
 }
 
 function Set-ClaudeEnvironmentVariables {
-    param([string]$ConfigType)
-    
     if ($SkipEnvironmentSetup) {
         Write-Step "Skipping environment variable setup" 'Skipped'
         return
     }
     
-    Write-Step "Configuring Claude Code environment variables for $ConfigType"
+    Write-Step "Configuring Claude Code environment variables"
     
     # Windows 11 optimized environment variables
     $envVars = @{
@@ -430,11 +413,6 @@ function Install-ClaudeCodeNative {
 }
 
 function Set-WSLIntegration {
-    if ($SkipWSL) {
-        Write-Step "Skipping WSL integration" 'Skipped'
-        return
-    }
-    
     if (-not (Test-WSLInstalled)) {
         Write-Step "WSL not installed, skipping WSL integration" 'Warning'
         Write-Step "To install WSL: Run 'wsl --install' in an elevated PowerShell" 'Info'
@@ -623,17 +601,14 @@ try {
     Write-Step "  OS: $(if($IsWindows11){'Windows 11'}else{'Windows 10 or older'})" 'Info'
     Write-Step "  PowerShell: $($PSVersionTable.PSVersion)" 'Info'
     Write-Step "  Terminal: $(if($IsWindowsTerminal){'Windows Terminal'}else{'Legacy Console'})" 'Info'
-    Write-Step "  Configuration Type: $ConfigurationType" 'Info'
     
-    # Step 1: Install Claude Code based on configuration type
+    # Step 1: Install Claude Code
     Write-Header "Step 1: Claude Code Installation"
-    if ($ConfigurationType -in @('Native', 'Hybrid')) {
-        Install-ClaudeCodeNative
-    }
+    Install-ClaudeCodeNative
     
     # Step 2: Environment Setup
     Write-Header "Step 2: Environment Configuration"
-    Set-ClaudeEnvironmentVariables -ConfigType $ConfigurationType
+    Set-ClaudeEnvironmentVariables
     Set-PowerShellOptimizations
     
     # Step 3: Windows 11 Specific Features
@@ -643,11 +618,9 @@ try {
     }
     Set-VSCodeIntegration
     
-    # Step 4: WSL Integration (if requested)
-    if ($ConfigurationType -in @('WSL', 'Hybrid')) {
-        Write-Header "Step 4: WSL Integration"
-        Set-WSLIntegration
-    }
+    # Step 4: WSL Integration
+    Write-Header "Step 4: WSL Integration"
+    Set-WSLIntegration
     
     # Step 5: MCP Server Configuration
     Write-Header "Step 5: MCP Server Configuration"
@@ -666,9 +639,7 @@ try {
     Write-Step "  3. Set your ANTHROPIC_API_KEY environment variable" 'Info'
     Write-Step "  4. Try 'claude .' in a project directory to start coding!" 'Info'
     
-    if ($ConfigurationType -eq 'WSL' -or $ConfigurationType -eq 'Hybrid') {
-        Write-Step "  5. In WSL, use 'claude-wsl' for Windows integration" 'Info'
-    }
+    Write-Step "  5. In WSL, use 'claude-wsl' for Windows integration" 'Info'
     
 } catch {
     Write-Step "Configuration failed: $($_.Exception.Message)" 'Error'

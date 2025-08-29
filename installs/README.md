@@ -22,7 +22,9 @@ This directory contains modular PowerShell scripts that handle the installation 
 |--------|---------|-------------|
 | [`install-winget.ps1`](#install-wingetps1) | Installs WinGet package manager with dependencies | Administrator privileges |
 | [`winget.ps1`](#wingetps1) | Installs development tools via WinGet | WinGet, Administrator privileges |
+| [`npm-global.ps1`](#npm-globalps1) | Installs global npm packages using fnm | fnm (Fast Node Manager) |
 | [`vscode.ps1`](#vscodeps1) | Installs VSCode extensions from list | VSCode, VSCode CLI |
+| [`wsl-tools.sh`](#wsl-toolssh) | Sets up WSL development environment | WSL with Ubuntu |
 
 ## Prerequisites
 
@@ -36,50 +38,63 @@ The main scripts (`install.ps1` and `configure.ps1`) orchestrate the entire setu
 
 ### install.ps1 - Development Tools Installation
 
-**Purpose**: Installs all development tools, fonts, and VSCode extensions
+**Purpose**: Installs all development tools, fonts, VSCode extensions, and sets up WSL environment
 
 **Parameters**:
 - `-SkipWinGet` - Skip WinGet package manager and package installation
+- `-SkipNpmPackages` - Skip global npm package installation
 - `-SkipExtensions` - Skip VSCode extension installation
+- `-WSLDistro` - Specify WSL distribution (default: Ubuntu-22.04)
 
 **Process**:
 1. **WinGet Installation**: Automatically installs WinGet if not present
 2. **Tool Installation**: Runs WinGet package installation with progress tracking
 3. **Font Installation**: Installs Cascadia Code fonts from `fonts/CascadiaCode.zip`
-4. **Extension Installation**: Installs VSCode extensions from curated extensions list
+4. **NPM Packages**: Installs global npm packages using fnm
+5. **Extension Installation**: Installs VSCode extensions from curated extensions list
+6. **WSL Setup**: Installs and configures WSL with development tools
 
 **Example Usage**:
 ```powershell
 # Full installation
 .\install.ps1
 
-# Skip package installation, only install extensions
+# Skip package installation, only install extensions and WSL
 .\install.ps1 -SkipWinGet
 
-# Skip extensions, only install packages
+# Skip extensions, only install packages and WSL
 .\install.ps1 -SkipExtensions
+
+# Use different WSL distribution
+.\install.ps1 -WSLDistro "Ubuntu-20.04"
 ```
 
 ### configure.ps1 - Configuration Environment Setup
 
-**Purpose**: Creates symbolic links for all configuration files
+**Purpose**: Configures development environment with WSL and Windows tool integration
 
 **Parameters**:
 - `-Force` - Overwrite existing configuration files and directories
+- `-SkipConfirmation` - Skip interactive confirmations for automated deployment
+- `-WSLDistro` - Specify WSL distribution (default: Ubuntu-22.04)
 
 **Process**:
-1. **Path Validation**: Validates all target paths before creating links
-2. **Symbolic Link Creation**: Creates links for VSCode, Windows Terminal, PowerShell, Claude Code
-3. **Multi-Path Support**: Handles multiple installation locations (e.g., Windows Terminal standard vs. Store)
-4. **System Configuration**: Links hosts file and other system-level configurations
+1. **WSL Configuration**: Sets up Claude Code for WSL with bash shell
+2. **1Password Integration**: Configures secure environment variables in WSL
+3. **Git Configuration**: Sets up separate Git identity for Claude Code
+4. **Windows Configuration**: Creates symbolic links for Windows tools
+5. **Path Validation**: Validates all target paths before creating links
 
 **Example Usage**:
 ```powershell
-# Standard configuration setup
+# Interactive configuration setup
 .\configure.ps1
 
 # Force overwrite existing configurations
 .\configure.ps1 -Force
+
+# Automated deployment without prompts
+.\configure.ps1 -SkipConfirmation
 ```
 
 ## Component Scripts
@@ -295,25 +310,128 @@ backup-vs  # Updates the extensions file with current VSCode extensions
 - Detailed reporting for each extension installation
 - Graceful handling of already-installed extensions
 
+## npm-global.ps1
+
+### Purpose
+Installs essential global npm packages using Fast Node Manager (fnm). This ensures a consistent set of Node.js development tools across all environments.
+
+### Prerequisites
+- **fnm (Fast Node Manager)** must be installed and available in PATH
+- **Node.js** must be installed (handled by fnm)
+- **npm** must be available (comes with Node.js)
+
+### What It Installs
+Global npm packages from `../settings/npm/global-packages` including:
+
+#### Development Tools
+- **TypeScript**: TypeScript compiler and language service
+- **ESLint**: JavaScript and TypeScript linting
+- **Prettier**: Code formatting
+- **Markdownlint-CLI**: Markdown linting for documentation
+- **Live Server**: Development server with live reload
+
+#### Build Tools
+- **Webpack CLI**: Module bundler command line interface
+- **Vite**: Next generation frontend tooling
+- **Nodemon**: Development server with auto-restart
+
+### Usage Examples
+```powershell
+# Install all global packages from default list
+.\installs\npm-global.ps1
+
+# Check installed packages after completion
+npm list -g --depth=0
+```
+
+### Features
+- Reads package list from centralized file
+- Progress tracking for each package installation
+- Error handling for individual package failures
+- Automatic fnm environment initialization
+
+### Error Handling
+- Validates fnm and npm availability before proceeding
+- Individual package failures don't stop the process
+- Detailed status reporting for each package
+- Graceful handling of already-installed packages
+
+## wsl-tools.sh
+
+### Purpose
+Sets up a comprehensive WSL development environment with all necessary tools for Claude Code integration and modern development workflows.
+
+### Prerequisites
+- **WSL 2** installed and configured
+- **Ubuntu 22.04** (or compatible distribution)
+- **Internet connection** for package downloads
+
+### What It Installs
+
+#### System Updates
+- Updates package manager (apt)
+- Installs essential build tools and dependencies
+
+#### Development Environment
+- **Node.js LTS**: Latest stable Node.js version via NodeSource repository
+- **.NET SDK**: Microsoft .NET development platform
+- **Azure CLI**: Command-line tools for Azure development
+- **1Password CLI**: Secure credential management
+
+#### Development Tools
+- **Git**: Version control (if not already installed)
+- **Essential npm packages**: prettier, markdownlint-cli, typescript, eslint
+- **Build tools**: make, build-essential, curl, wget
+
+### Usage Examples
+```bash
+# Run from WSL (called automatically by install.ps1)
+./installs/wsl-tools.sh
+
+# Or run from Windows PowerShell
+wsl bash ./installs/wsl-tools.sh
+```
+
+### Key Features
+- **Automatic environment setup**: Configures PATH and environment variables
+- **Package verification**: Checks installation success for each component
+- **Error resilience**: Continues with other installations if one fails
+- **Progress reporting**: Clear status updates throughout the process
+
+### Integration with Claude Code
+- Installs tools specifically needed for Claude Code WSL integration
+- Configures environment for seamless Windows-WSL development
+- Sets up npm packages used by Claude Code for formatting and linting
+
+### Error Handling
+- Validates WSL environment before proceeding
+- Individual tool failures don't stop the entire process
+- Detailed error reporting for troubleshooting
+- Automatic retry logic for network-dependent installations
+
 ## Execution Order and Dependencies
 
 ### Recommended Execution Order
 1. **`install-winget.ps1`** - Ensures WinGet is available
-2. **`winget.ps1`** - Installs development tools (includes VSCode)
-3. **`vscode.ps1`** - Installs VSCode extensions
+2. **`winget.ps1`** - Installs development tools (includes VSCode and fnm)
+3. **`npm-global.ps1`** - Installs global npm packages
+4. **`vscode.ps1`** - Installs VSCode extensions
+5. **`wsl-tools.sh`** - Sets up WSL development environment
 
 ### Dependency Chain
 ```
 install-winget.ps1
     ↓
 winget.ps1 (requires WinGet)
-    ↓ (installs VSCode)
-vscode.ps1 (requires VSCode CLI)
+    ↓ (installs fnm and VSCode)
+npm-global.ps1 (requires fnm) | vscode.ps1 (requires VSCode CLI)
+    ↓
+wsl-tools.sh (requires WSL)
 ```
 
 ### Integration with Main Scripts
 These scripts are typically called by the main setup scripts:
-- **`install.ps1`**: Calls `install-winget.ps1`, then `winget.ps1`, then `vscode.ps1`
+- **`install.ps1`**: Calls all scripts in order with WSL setup
 - **Individual execution**: Each script can be run independently if prerequisites are met
 
 ## Symbolic Link Management

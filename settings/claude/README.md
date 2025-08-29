@@ -1,6 +1,6 @@
 # Claude Code Configuration
 
-This directory contains the complete Claude Code configuration for the Windows development setup automation repository. It includes 7 specialized agents with sophisticated delegation intelligence and contextual decision-making frameworks, 7 corresponding slash commands, and global settings that provide domain-specific expertise for Windows development workflows following modern best practices and intelligent collaboration patterns.
+This directory contains the complete Claude Code configuration for the Windows development setup automation repository. It includes 9 specialized agents with sophisticated delegation intelligence and contextual decision-making frameworks, corresponding slash commands, and global settings that provide domain-specific expertise for Windows and WSL development workflows following modern best practices and intelligent collaboration patterns.
 
 ## Directory Structure
 
@@ -12,11 +12,13 @@ settings/claude/
 ├── settings.json                    # Claude Code global configuration
 ├── configure-claude-windows-11.ps1  # Windows 11 automated setup script
 ├── agents/                          # Specialized agent definitions
+│   ├── agent-expert.md
 │   ├── azure-devops-specialist.md
-│   ├── claude-agent-specialist.md
+│   ├── command-expert.md
 │   ├── csharp-specialist.md
 │   ├── feature-prompt-specialist.md
 │   ├── markdown-specialist.md
+│   ├── mcp-expert.md
 │   ├── mstest-specialist.md
 │   └── readme-maintainer.md
 └── commands/                        # Slash command definitions
@@ -32,17 +34,17 @@ settings/claude/
 ## Configuration Overview
 
 The Claude Code setup includes:
-- **7 Specialized Agents**: Expert agents for Azure DevOps, C# development, testing, documentation, and agent creation with sophisticated delegation intelligence
-- **7 Slash Commands**: Quick access commands that directly invoke the specialized agents
+- **9 Specialized Agents**: Expert agents for Azure DevOps, C# development, testing, documentation, agent creation, command design, and MCP integration with sophisticated delegation intelligence
+- **Slash Commands**: Quick access commands that directly invoke the specialized agents
+- **WSL Integration**: Optimized for WSL development workflows with bash as the default shell
 - **Windows 11 Configuration Script**: Automated PowerShell 7+ setup script for optimal Claude Code integration on Windows 11
-- **PowerShell Integration**: Optimized for Windows development workflows with PowerShell as the default shell
 - **Global Settings**: Shell configuration, permissions management, and web access controls
 - **Intelligent Delegation Framework**: Each agent includes sophisticated decision-making capabilities for optimal sub-agent collaboration
 - **Multi-Agent Workflows**: Seamless integration patterns that prevent duplication and maximize ecosystem efficiency
 
 ## Available Agents
 
-### 🔧 claude-agent-specialist
+### 🔧 agent-expert
 
 **Purpose**: Meta-agent that designs and creates other specialized agents with proper structure, validation, sophisticated delegation intelligence, and best practices for optimal ecosystem integration.
 
@@ -66,6 +68,36 @@ The Claude Code setup includes:
 /new-agent "Design an agent specialized in React component testing" 
 /new-agent "Validate the structure of existing agents in the repository"
 ```
+
+### ⚙️ command-expert
+
+**Purpose**: CLI command creation specialist for designing and implementing development workflow automation commands.
+
+**Tools**: All available tools (*)
+**Command**: Available through agent-expert workflows
+
+**Key Capabilities**:
+
+- Command design and argument parsing patterns with intelligent delegation to implementation specialists
+- CLI workflow automation and best practices with context-aware sub-agent integration
+- Task automation patterns and command orchestration using sophisticated delegation frameworks
+- Integration with development tool ecosystems through specialist collaboration
+- Command validation and testing strategies with automated quality assurance
+
+### 🔗 mcp-expert
+
+**Purpose**: Model Context Protocol (MCP) integration specialist for creating and configuring MCP servers and protocol implementations.
+
+**Tools**: All available tools (*)
+**Command**: Available through agent-expert workflows
+
+**Key Capabilities**:
+
+- MCP server configuration and protocol specification with intelligent delegation patterns
+- Integration pattern design for development tool ecosystems using contextual decision-making
+- Protocol implementation best practices with automated quality assurance through specialist collaboration
+- Server configuration and deployment strategies with sophisticated sub-agent integration
+- MCP client integration and workflow optimization through expert delegation frameworks
 
 ### ☁️ azure-devops-specialist
 
@@ -310,29 +342,34 @@ The Claude Code configuration includes:
 
 ```json
 {
+  "shell": "/bin/bash",
   "env": {
-    "SHELL": "powershell",
-    "CLAUDE_SHELL": "powershell",
-    "CLAUDE_AGENTS_PATH": ".claude/agents"
+    "SHELL": "/bin/bash",
+    "CLAUDE_SHELL": "/bin/bash",
+    "WSL_DISTRO_NAME": "Ubuntu-22.04"
+  },
+  "terminal": {
+    "shell": "wsl",
+    "args": ["-d", "Ubuntu-22.04", "bash", "-l"]
   },
   "permissions": {
     "allow": [
-      "WebFetch(domain:docs.anthropic.com)",
-      "Bash(powershell:*)",
-      "Bash(mkdir:*)"
-    ],
-    "deny": [],
-    "ask": []
+      "Bash(prettier:*)",
+      "Bash(markdownlint:*)",
+      "Bash(git:*)",
+      "Bash(dotnet:*)",
+      "Bash(npm:*)"
+    ]
   }
 }
 ```
 
 **Key Configuration Elements**:
 
-- **Shell Integration**: PowerShell as the default shell for Windows compatibility
-- **Agent Path**: `.claude/agents` for agent discovery
-- **Permissions**: Controlled access to PowerShell execution and documentation domains
-- **Web Access**: Allows fetching documentation from Anthropic's domain
+- **Shell Integration**: Bash as the default shell for WSL compatibility
+- **WSL Environment**: Ubuntu-22.04 distribution with proper environment setup
+- **Tool Permissions**: Controlled access to development tools (prettier, markdownlint, git, dotnet, npm)
+- **Terminal Integration**: WSL terminal configuration for seamless development
 
 ### Command Integration
 
@@ -344,7 +381,7 @@ Each agent has a corresponding command file in `commands/` that creates slash co
 | `devops.md`       | `/devops`       | `azure-devops-specialist`    | Azure DevOps operations with CI/CD integration          |
 | `markdown.md`     | `/markdown`     | `markdown-specialist`        | Markdown formatting and linting compliance              |
 | `mstest.md`       | `/mstest`       | `mstest-specialist`          | .NET unit testing with framework integration            |
-| `new-agent.md`    | `/new-agent`    | `claude-agent-specialist`    | Meta-agent creation with delegation intelligence        |
+| `new-agent.md`    | `/new-agent`    | `agent-expert`               | Meta-agent creation with delegation intelligence        |
 | `new-feature.md`  | `/new-feature`  | `feature-prompt-specialist`  | Feature specification with contextual decision-making   |
 | `readme.md`       | `/readme`       | `readme-maintainer`          | Bottom-up hierarchical processing with intelligent summarization and automated content extraction |
 
@@ -373,37 +410,20 @@ This PowerShell 7+ script provides automated Claude Code configuration optimized
 
 #### Usage
 
-**Basic Setup (Recommended)**:
+**Basic Setup**:
 ```powershell
-# Run with Administrator privileges - configures both native and WSL support
+# Run with Administrator privileges - configures Claude Code with WSL integration
 .\settings\claude\configure-claude-windows-11.ps1
-```
-
-**Native Windows Only**:
-```powershell
-# Skip WSL integration, use only native Windows Claude Code
-.\settings\claude\configure-claude-windows-11.ps1 -SkipWSL -ConfigurationType Native
-```
-
-**WSL Only**:
-```powershell
-# Traditional WSL2-based setup only
-.\settings\claude\configure-claude-windows-11.ps1 -ConfigurationType WSL
 ```
 
 **Custom Configuration**:
 ```powershell
 # Override existing settings, skip MCP servers
 .\settings\claude\configure-claude-windows-11.ps1 -Force -SkipMCP
+
+# Skip environment variable setup
+.\settings\claude\configure-claude-windows-11.ps1 -SkipEnvironmentSetup
 ```
-
-#### Configuration Types
-
-| Type | Description | Use Case |
-|------|-------------|----------|
-| **Native** | Pure Windows installation | Modern Windows 11 development, VS Code integration |
-| **WSL** | Traditional WSL2 setup | Linux-based development workflows |
-| **Hybrid** | Both native and WSL configured | Maximum flexibility, cross-platform development |
 
 #### Requirements
 

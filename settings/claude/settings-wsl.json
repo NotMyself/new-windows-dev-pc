@@ -1,0 +1,93 @@
+{
+  "shell": "/bin/bash",
+  "env": {
+    "SHELL": "/bin/bash",
+    "CLAUDE_SHELL": "/bin/bash",
+    "WSL_DISTRO_NAME": "Ubuntu-22.04",
+    "TERM": "xterm-256color"
+  },
+  "terminal": {
+    "shell": "wsl",
+    "args": ["-d", "Ubuntu-22.04", "bash", "-l"]
+  },
+  "permissions": {
+    "allow": [
+      "Bash(prettier:*)",
+      "Bash(markdownlint:*)",
+      "Bash(git:*)",
+      "Bash(dotnet:*)",
+      "Bash(npm:*)",
+      "Bash(node:*)",
+      "Bash(az:*)",
+      "Bash(op:*)",
+      "Bash(curl:*)",
+      "Bash(wget:*)",
+      "Bash(cat:*)",
+      "Bash(echo:*)",
+      "Bash(ls:*)",
+      "Bash(cd:*)",
+      "Bash(pwd:*)",
+      "Bash(mkdir:*)",
+      "Bash(rm:*)",
+      "Bash(cp:*)",
+      "Bash(mv:*)",
+      "Bash(find:*)",
+      "Bash(grep:*)",
+      "Bash(which:*)",
+      "Bash(wsl:*)"
+    ]
+  },
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/mnt/c/Users/bobby/src"],
+      "env": {
+        "WSL_FILESYSTEM_ROOT": "/mnt/c/Users/bobby/src"
+      }
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_PERSONAL_ACCESS_TOKEN}"
+      }
+    },
+    "git": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-git", "--repository", "/mnt/c/Users/bobby/src"]
+    },
+    "memory": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"]
+    }
+  },
+  "tools": {
+    "prettier": {
+      "enabled": true,
+      "extensions": [".js", ".ts", ".json", ".md", ".css", ".scss", ".html"],
+      "command": "prettier",
+      "args": ["--write"]
+    },
+    "markdownlint": {
+      "enabled": true,
+      "extensions": [".md"],
+      "command": "markdownlint",
+      "args": ["--fix"]
+    }
+  },
+  "workspace": {
+    "defaultPath": "/root/src/new-windows-dev-pc",
+    "windowsPath": "C:\\Users\\bobby\\src\\new-windows-dev-pc"
+  },
+  "integration": {
+    "1password": {
+      "enabled": true,
+      "tokenSource": "windows-environment",
+      "vaultAccess": true
+    },
+    "git": {
+      "identity": "claude-code",
+      "separateFromUser": true
+    }
+  }
+}

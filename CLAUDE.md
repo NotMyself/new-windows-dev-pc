@@ -8,11 +8,21 @@ This is a Windows developer setup automation repository containing PowerShell sc
 ## Key Commands
 
 ### Main Setup Commands
-- `.\install.ps1` - Main installation script that installs WinGet (if needed), runs tool installation, and installs VSCode extensions
-  - Optional parameters: `-SkipWinGet`, `-SkipExtensions`
-  - Installs Cascadia Code fonts from `fonts/CascadiaCode.zip`
-- `.\configure.ps1` - Creates symbolic links for configuration files (Git, VSCode, PowerShell, Claude Code)
-  - Optional parameter: `-Force` (overwrite existing configurations)
+- `.\install.ps1` - Main installation script with PowerShell 7+ detection and WSL setup
+  - **Requires Administrator privileges** (automatically elevates with proper error handling)
+  - Optional parameters: `-SkipWinGet`, `-SkipNpmPackages`, `-SkipExtensions`
+  - Installs 30+ development tools via WinGet package manager
+  - **Always installs and configures WSL** (Ubuntu-22.04) with development environment
+  - Installs Cascadia Code fonts with registry integration from `fonts/CascadiaCode.zip`
+  - Installs global npm packages and 38+ VSCode extensions
+- `pwsh .\configure.ps1` - **Interactive configuration wizard** for complete development environment setup
+  - **Requires PowerShell 7+** (displays clear upgrade instructions if older version detected)
+  - **Always configures Claude Code for WSL** with bash shell and formatting tools
+  - **Interactive mode**: Step-by-step configuration with explanations and user confirmations
+  - **Fast mode**: Use `-SkipConfirmation` to bypass all prompts for automated deployment
+  - **Force mode**: Use `-Force` to overwrite existing configurations
+  - **Windows 11 optimizations**: Opt-in enhanced features during configuration
+  - **Developer Mode detection**: Uses symbolic links without Administrator privileges when enabled
 
 ### Component Scripts
 - `.\installs\winget.ps1` - Installs development tools via WinGet package manager

@@ -2,7 +2,8 @@
 param(
     [switch]$SkipWinGet,
     [switch]$SkipNpmPackages,
-    [switch]$SkipExtensions
+    [switch]$SkipExtensions,
+    [string]$WSLDistro = "Ubuntu-22.04"
 )
 
 # Check if running as Administrator
@@ -295,12 +296,63 @@ try {
         Write-Skipped "VSCode extensions installation skipped"
     }
     
+    # WSL Setup - Always performed
+    Write-Header " WSL Development Environment Setup "
+        
+    Write-Step "Setting up WSL for Claude Code development"
+    
+    # Check if WSL is enabled
+    if (-not (Get-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux).State -eq "Enabled") {
+        Write-Host "  Enabling WSL feature..." -ForegroundColor Yellow
+        Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux -NoRestart
+        Enable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform -NoRestart
+        Write-Warning "WSL features enabled. Please restart your computer and run this script again."
+        return
+    }
+    
+    # Check if the specified distro is installed
+    $installedDistros = wsl --list --quiet 2>$null | ForEach-Object { $_.Trim() }
+    if ($WSLDistro -notin $installedDistros) {
+        Write-Host "  Installing $WSLDistro..." -ForegroundColor Yellow
+        wsl --install -d $WSLDistro
+        if ($LASTEXITCODE -ne 0) {
+            Write-Warning "Failed to install $WSLDistro. Please install manually."
+            return
+        }
+    } else {
+        Write-Host "  ✓ $WSLDistro already installed" -ForegroundColor Green
+    }
+    
+    # Run WSL tools setup
+    Write-Host "  Setting up development tools in WSL..." -ForegroundColor Yellow
+    $wslToolsScript = Join-Path $PSScriptRoot "installs\wsl-tools.sh"
+    if (Test-Path $wslToolsScript) {
+        # Make script executable and run it
+        wsl -d $WSLDistro -- chmod +x "/mnt/c$($wslToolsScript.Replace('C:', '').Replace('\', '/'))"
+        wsl -d $WSLDistro -- bash "/mnt/c$($wslToolsScript.Replace('C:', '').Replace('\', '/'))"
+        
+        if ($LASTEXITCODE -eq 0) {
+            Write-Success "WSL development environment setup completed"
+        } else {
+            Write-Warning "WSL tools setup encountered some issues (see details above)"
+        }
+    } else {
+        Write-Warning "WSL tools script not found: $wslToolsScript"
+    }
+    
     # Completion
     Write-Header " Installation Complete "
     Write-Host "✓ Setup process finished!" -ForegroundColor Green
     Write-Host ""
-    Write-Host "Next Step:" -ForegroundColor Cyan
-    Write-Host "  Run .\configure.ps1 to set up configuration files" -ForegroundColor White
+    
+    Write-Host "WSL Setup Complete:" -ForegroundColor Cyan
+    Write-Host "  • $WSLDistro installed with development tools" -ForegroundColor White
+    Write-Host "  • Node.js, .NET SDK, Azure CLI, 1Password CLI ready" -ForegroundColor White
+    Write-Host "  • prettier and markdownlint available for Claude Code" -ForegroundColor White
+    Write-Host ""
+    Write-Host "Next Steps:" -ForegroundColor Cyan
+    Write-Host "  1. Run .\configure.ps1 to configure Claude Code and development tools" -ForegroundColor White
+    Write-Host "  2. Test WSL setup: wsl -d $WSLDistro" -ForegroundColor White
 }
 catch {
     Write-Host ""

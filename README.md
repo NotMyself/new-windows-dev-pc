@@ -2,6 +2,7 @@
 
 [![PowerShell](https://img.shields.io/badge/PowerShell-7%2B-5391FE.svg?logo=powershell&logoColor=white)](https://github.com/PowerShell/PowerShell)
 [![Windows](https://img.shields.io/badge/Windows-10%2F11-0078d4.svg?logo=windows&logoColor=white)](https://www.microsoft.com/windows)
+[![WSL](https://img.shields.io/badge/WSL-Ubuntu%2022.04-FF7F00.svg?logo=ubuntu&logoColor=white)](https://docs.microsoft.com/en-us/windows/wsl/)
 [![WinGet](https://img.shields.io/badge/WinGet-Package%20Manager-0078d4.svg?logo=microsoft&logoColor=white)](https://github.com/microsoft/winget-cli)
 [![Visual Studio Code](https://img.shields.io/badge/VSCode-Extensions%20Included-007ACC.svg?logo=visual-studio-code&logoColor=white)](https://code.visualstudio.com/)
 [![Git](https://img.shields.io/badge/Git-Configuration%20Included-F05032.svg?logo=git&logoColor=white)](https://git-scm.com/)
@@ -12,29 +13,28 @@
 [![License](https://img.shields.io/badge/License-MIT-green.svg?logo=open-source-initiative&logoColor=white)](LICENSE)
 
 
-A comprehensive Windows developer setup automation repository with **PowerShell 7+** and **Windows 11** optimizations. Features modular configuration scripts, interactive setup wizards, and Claude Code integration for AI-powered development.
+A comprehensive Windows developer setup automation repository with **PowerShell 7+**, **Windows 11** optimizations, and **mandatory WSL integration**. Features streamlined configuration scripts, automated tool installation, and Claude Code integration with 9+ specialized AI agents for development workflows.
 
-**🚀 New Features:**
-- **Interactive Configuration Wizard**: Step-by-step setup with user confirmations and explanations
-- **PowerShell 7+ Required**: Modern shell features with enhanced Unicode and emoji support
-- **Windows 11 Enhanced Features**: Advanced terminal themes and optimizations
-- **Developer Mode Detection**: Automatic symbolic link support without admin privileges
-- **Modular Configuration Architecture**: Individual configuration scripts for each tool
-- **Claude Code Integration**: 10+ specialized AI agents and development commands
-- **Azure Integration**: Service principal setup and secure credential management
-- **1Password Integration**: Secure environment variable management
+**🚀 Key Features:**
+- **Streamlined Two-Step Setup**: Simple installation and configuration process
+- **Mandatory WSL Integration**: WSL development environment with Ubuntu 22.04
+- **Claude Code AI Integration**: 9 specialized agents with intelligent delegation
+- **PowerShell 7+ Optimizations**: Modern shell features and cross-platform compatibility
+- **Automated Tool Installation**: 30+ development tools via WinGet package manager
+- **Secure Credential Management**: 1Password integration for environment variables
+- **Professional Development Environment**: VSCode, terminals, and productivity tools
 
-**Key Features:**
-- **Automated Tool Installation**: WinGet-based package management with enhanced progress tracking
-- **Advanced Configuration Management**: Modular symbolic link-based settings with interactive wizards
-- **Developer Fonts**: Cascadia Code font installation for optimal coding experience
-- **Professional Architecture**: Separated installation and configuration with comprehensive error handling
+**Development Stack:**
+- **Windows Tools**: PowerShell 7, Windows Terminal, PowerToys, Git, Azure CLI
+- **WSL Environment**: Ubuntu 22.04 with Node.js, .NET SDK, development tools
+- **IDEs & Editors**: Visual Studio 2022 Professional, VSCode with 31+ extensions
+- **AI-Powered Development**: Claude Code with domain-specific expert agents
 
 ## Table of Contents
 
 - [Prerequisites](#prerequisites)
 - [Quick Start](#quick-start)
-- [Enhanced Features](#enhanced-features)
+- [WSL Integration](#wsl-integration)
 - [Installed Packages](#installed-packages)
 - [Configuration Management](#configuration-management)
 - [Claude Code Integration](#claude-code-integration)
@@ -46,66 +46,80 @@ A comprehensive Windows developer setup automation repository with **PowerShell 
 ## Prerequisites
 
 - **Windows 10/11** - Windows 11 recommended for enhanced features
-- **PowerShell 7+** - Required for advanced configuration wizard (auto-installed if missing)
+- **PowerShell 7+** - Required for configuration scripts (auto-installed if missing)
 - **Developer Mode** - Recommended for symbolic links without admin privileges
 - **Administrator Access** - Scripts handle elevation automatically
 - **Internet Connection** - Required for downloading packages and tools
 
 ## Quick Start
 
-### Enhanced Two-Step Process
+### Two-Step Setup Process
 
-1. **Install Development Tools** (Enhanced with PowerShell 7+ detection)
+1. **Install Development Tools & WSL Environment** 
    ```powershell
    .\install.ps1
    ```
-   - Automatically detects and prefers PowerShell 7+ for better experience
-   - Installs WinGet package manager with improved error handling
-   - Installs development tools, IDEs, and utilities via WinGet
-   - Installs Cascadia Code developer fonts with registry integration
-   - Installs curated VSCode extensions with progress tracking
+   - Installs WinGet package manager with comprehensive error handling
+   - Installs 30+ development tools, IDEs, and utilities via WinGet
+   - **Automatically sets up WSL** (Ubuntu-22.04) with development tools
+   - Configures **WSL development environment** (Node.js, .NET, Azure CLI, 1Password CLI)
+   - Installs Cascadia Code developer fonts with system registry integration
+   - Installs 31+ curated VSCode extensions with progress tracking
+   - Sets up global npm packages using Fast Node Manager (fnm)
 
-2. **Configure Development Environment** (New Interactive Wizard)
+2. **Configure Complete Development Environment**
    ```powershell
-   pwsh .\configure.ps1
+   .\configure.ps1
    ```
-   - **Interactive Configuration Wizard** with step-by-step guidance
-   - **Developer Mode Detection** for admin-free symbolic links
-   - **Windows 11 Enhanced Features** opt-in
-   - Creates symbolic links for all configuration files
-   - Sets up Git, VSCode, Windows Terminal, PowerShell, and Claude Code
-   - **1Password Environment Vault** setup
+   - **Configures Claude Code for WSL** with bash shell and development tools
+   - **1Password integration** for secure environment variables in both Windows and WSL
+   - **Separate Git identity** for Claude Code commits with user/AI attribution
+   - **Interactive Configuration Wizard** with step-by-step guidance and explanations
+   - **Developer Mode Detection** for admin-free symbolic link creation
+   - Creates symbolic links for all configuration files (Git, VSCode, terminals)
+   - Sets up PowerShell profiles with Oh My Posh themes and productivity functions
 
-### Skip Confirmations (Fast Mode)
+### Skip Confirmations (Automated Mode)
 ```powershell
-pwsh .\configure.ps1 -SkipConfirmation
+.\configure.ps1 -SkipConfirmation
 ```
 
-## Enhanced Features
+### Force Reconfiguration
+```powershell
+.\configure.ps1 -Force
+```
 
-### 🆕 Interactive Configuration Wizard
-- **Step-by-step guidance** with explanations for each configuration
-- **What/Why descriptions** for each tool configuration
-- **Skip, Continue, or Quit** options at each step
-- **Progress tracking** with success/failure summaries
+## WSL Integration
 
-### 🆕 Windows 11 Optimizations
-- **Enhanced Terminal Themes** with Claude Code branding
-- **Advanced Color Schemes** with ligature support  
-- **Optimized Environment Variables** for modern development
-- **Terminal Fragments** with custom profiles
+### Mandatory WSL Setup
 
-### 🆕 Developer Mode Support
-- **Automatic Detection** of Windows Developer Mode
-- **Symbolic Links** without Administrator privileges
-- **Clear Instructions** for enabling Developer Mode
-- **Fallback to Admin Mode** if needed
+WSL integration is now mandatory for optimal development experience:
 
-### 🆕 PowerShell 7+ Requirements
-- **Modern Shell Features** with enhanced Unicode support
-- **Better Error Handling** and progress indicators
-- **Cross-Platform Compatibility** features
-- **Automatic Version Detection** and guidance
+- **Ubuntu 22.04**: Automatically installed and configured
+- **Development Tools**: Node.js, .NET SDK, Azure CLI, 1Password CLI
+- **Claude Code Configuration**: Bash shell with prettier, markdownlint, and git tools
+- **Cross-Platform Development**: Seamless Windows-WSL file system integration
+- **Secure Environment**: 1Password integration for credential management
+
+### WSL Development Environment
+
+The WSL environment includes:
+
+#### System Tools
+- **Node.js LTS**: Latest stable version via NodeSource repository
+- **.NET SDK**: Microsoft .NET development platform
+- **Azure CLI**: Command-line tools for Azure development
+- **1Password CLI**: Secure credential and environment variable management
+
+#### Development Tools
+- **Essential npm packages**: prettier, markdownlint-cli, typescript, eslint
+- **Build tools**: make, build-essential, curl, wget
+- **Git**: Version control with proper configuration
+
+#### Claude Code Integration
+- **Bash shell configuration**: Optimized for Claude Code development workflows
+- **Tool permissions**: Access to prettier, markdownlint, git, dotnet, npm
+- **Environment variables**: Properly configured development environment
 
 ## Installed Packages
 
@@ -124,7 +138,7 @@ The setup installs a comprehensive suite of development tools via WinGet package
 | | .NET | Microsoft development framework | Cross-platform development runtime |
 | | fnm | Fast Node.js version manager | Node.js version management with npm integration |
 | | Azure CLI | Command-line interface for Azure | **Service principal setup included** |
-| | Claude | Anthropic's AI assistant | **10+ specialized agents included** |
+| | Claude | Anthropic's AI assistant | **9+ specialized agents included** |
 | **IDEs & Editors** | Visual Studio 2022 Professional | Full-featured IDE | Comprehensive .NET development |
 | | Visual Studio Code | Lightweight code editor | **31+ curated extensions** |
 | | SQL Server Management Studio | SQL Server administration | Advanced database administration |
@@ -133,13 +147,14 @@ The setup installs a comprehensive suite of development tools via WinGet package
 
 ## Configuration Management
 
-### 🆕 Modular Configuration Architecture
+### Streamlined Configuration Architecture
 
-The setup now uses **individual configuration scripts** for each tool, providing:
-- **Granular Control**: Configure specific tools independently
-- **Better Error Handling**: Isolated failures don't affect other configurations
-- **Detailed Logging**: Clear success/failure reporting per tool
-- **Reusable Scripts**: Run individual configurations as needed
+The setup uses a **streamlined, mandatory configuration approach** that:
+- **Automatically configures WSL**: No optional WSL setup - it's mandatory for optimal development
+- **Handles both Windows and WSL**: Single configuration script manages both environments  
+- **Creates symbolic links**: Centralized configuration management through repository files
+- **Interactive guidance**: Step-by-step configuration with explanations and confirmations
+- **Error resilience**: Comprehensive error handling with clear recovery instructions
 
 ### Configuration Components
 
@@ -149,19 +164,21 @@ The setup now uses **individual configuration scripts** for each tool, providing
 | **VSCode** | `configure-vscode-windows.ps1` | `%APPDATA%\Code\User\` | Settings and keybindings |
 | **PowerShell** | `configure-pwsh-windows.ps1` | `$PROFILE` & `~/.theme.omp.json` | Enhanced profile with 1Password |
 | **Windows Terminal** | `configure-windows-terminal.ps1` | Multiple locations | **Windows 11 features** |
-| **NuGet** | `configure-nuget-windows.ps1` | `%APPDATA%\NuGet\` |  |
+| **NuGet** | `configure-nuget-windows.ps1` | `%APPDATA%\NuGet\` | Package sources configuration |
 | **Markdownlint** | `configure-markdownlint-windows.ps1` | `~/.markdownlint.json` | Documentation consistency |
+| **Claude Code** | WSL integration scripts | `~/.claude/` | **WSL-optimized configuration** |
 
-### 🆕 Advanced Features
+### Enhanced Features
 
-- **Force Mode**: `.\configure.ps1 -Force` to overwrite existing configurations
-- **Skip Confirmations**: `.\configure.ps1 -SkipConfirmation` for automated deployment
-- **Windows 11 Features**: Opt-in enhanced features for modern Windows
-- **1Password Integration**: Secure environment variable management
+- **Mandatory WSL Mode**: WSL configuration is no longer optional - it's the default and recommended approach
+- **Interactive Wizard**: Step-by-step configuration with detailed explanations
+- **Skip Confirmations**: Use `-SkipConfirmation` for automated deployment scenarios
+- **Force Mode**: Use `-Force` to overwrite existing configurations
+- **1Password Integration**: Secure environment variable management across Windows and WSL
 
 ## Claude Code Integration
 
-### 🆕 Specialized AI Agents (10+)
+### 9 Specialized AI Agents
 
 The repository includes comprehensive Claude Code configuration with specialized agents:
 
@@ -169,15 +186,15 @@ The repository includes comprehensive Claude Code configuration with specialized
 |-------|---------|--------------|
 | **agent-expert** | Creating specialized agents | Agent design patterns and best practices |
 | **azure-devops-specialist** | Azure DevOps operations | Pipelines, builds, releases, project management |
-| **command-expert** | CLI command creation | Command design and automation |
+| **command-expert** | CLI command creation | Command design and automation patterns |
 | **csharp-specialist** | Modern C# development | Latest language features and frameworks |
 | **feature-prompt-specialist** | Creating feature prompts | Well-structured development task prompts |
-| **markdown-specialist** | Markdown documentation | CommonMark and Azure DevOps standards |
+| **markdown-specialist** | Markdown documentation | CommonMark and GitHub Flavored Markdown standards |
 | **mcp-expert** | Model Context Protocol | MCP server configurations and integration |
 | **mstest-specialist** | .NET unit testing | MSTest.Sdk and NSubstitute integration |
-| **readme-maintainer** | Documentation maintenance | Hierarchical README updates |
+| **readme-maintainer** | Documentation maintenance | Hierarchical README updates with bottom-up processing |
 
-### 🆕 Development Commands (10+)
+### Development Commands
 
 Pre-configured slash commands for common development tasks:
 
@@ -185,28 +202,41 @@ Pre-configured slash commands for common development tasks:
 |---------|---------|-------|
 | `/csharp` | C# development tasks | Modern C# features and patterns |
 | `/devops` | Azure DevOps operations | Pipeline management and automation |
-| `/git-workflow` | Git workflow assistance | Branching, merging, conflict resolution |
 | `/markdown` | Markdown editing | Documentation formatting and linting |
 | `/mstest` | Unit testing | Test creation and MSTest patterns |
 | `/new-agent` | Create new agents | Agent design and implementation |
 | `/new-feature` | Feature development | Structured feature implementation |
-| `/nuget` | NuGet package management | Package operations and configuration |
 | `/readme` | README maintenance | Documentation updates and formatting |
 
-### 🆕 Claude Code Windows 11 Setup
-```powershell
-.\settings\claude\configure-claude-windows-11.ps1
+### WSL-Optimized Claude Code Setup
+
+```json
+{
+  "shell": "/bin/bash",
+  "env": {
+    "SHELL": "/bin/bash", 
+    "CLAUDE_SHELL": "/bin/bash",
+    "WSL_DISTRO_NAME": "Ubuntu-22.04"
+  },
+  "terminal": {
+    "shell": "wsl",
+    "args": ["-d", "Ubuntu-22.04", "bash", "-l"]
+  },
+  "permissions": {
+    "allow": [
+      "Bash(prettier:*)",
+      "Bash(markdownlint:*)", 
+      "Bash(git:*)",
+      "Bash(dotnet:*)",
+      "Bash(npm:*)"
+    ]
+  }
+}
 ```
-Comprehensive Claude Code optimization script with:
-- **PowerShell 7+ Integration**
-- **Windows 11 Specific Features**  
-- **MCP Server Configuration**
-- **Environment Variable Setup**
-- **WSL Integration** (optional)
 
 ## Advanced Setup Scripts
 
-### 🆕 Azure Integration
+### Azure Integration
 ```powershell
 .\settings\az\setup-azure-service-principal.ps1
 ```
@@ -215,23 +245,32 @@ Comprehensive Claude Code optimization script with:
 - **1Password credential storage**
 - **Connection testing** and validation
 
-### 🆕 1Password Environment Vault
+### 1Password Environment Vault
 ```powershell
 .\settings\1password\setup-environment-vault.ps1
 ```
 - **Secure environment variable management**
 - **CLI integration setup**
-- **Vault creation and configuration**
-- **PowerShell function integration**
+- **Vault creation and configuration** 
+- **PowerShell and WSL integration**
+
+### WSL Development Environment
+```bash
+./installs/wsl-tools.sh
+```
+- **Node.js, .NET SDK, Azure CLI installation** in WSL
+- **Development tools setup** (prettier, markdownlint, git)
+- **1Password CLI configuration** for WSL
+- **Environment optimization** for development workflows
 
 ## Directory Structure
 
 ```
 new-windows-dev-pc/
-├── install.ps1                    # Enhanced installation script (PowerShell 7+ detection)
-├── configure.ps1                  # Interactive configuration wizard (NEW)
+├── install.ps1                    # Main installation script with mandatory WSL setup
+├── configure.ps1                  # Streamlined configuration script
 ├── LICENSE                        # MIT License
-├── CLAUDE.md                      # Claude Code guidance (Updated)
+├── CLAUDE.md                      # Claude Code guidance
 ├── fonts/
 │   └── CascadiaCode.zip           # Developer fonts
 ├── installs/                     # Installation modules
@@ -239,48 +278,52 @@ new-windows-dev-pc/
 │   ├── npm-global.ps1             # Global npm packages
 │   ├── vscode.ps1                 # VSCode extensions installer
 │   ├── winget.ps1                 # WinGet package installer
+│   ├── wsl-tools.sh               # WSL development environment setup
 │   └── README.md                  # Installation documentation
 ├── prompts/                       # Development prompts
 │   └── npm-global-packages-management.md
 └── settings/                      # Configuration files and scripts
-    ├── 1password/                 # 1Password integration (NEW)
+    ├── 1password/                 # 1Password integration
     │   └── setup-environment-vault.ps1
-    ├── az/                        # Azure setup scripts (NEW)
+    ├── az/                        # Azure setup scripts
     │   └── setup-azure-service-principal.ps1
-    ├── claude/                    # Claude Code configuration (Enhanced)
-    │   ├── configure-claude-windows-11.ps1  # Windows 11 setup (NEW)
-    │   ├── settings.json          # Claude Code settings
+    ├── claude/                    # Claude Code configuration
+    │   ├── configure-claude-windows-11.ps1  # Windows 11 setup script
+    │   ├── settings-wsl.json      # WSL-optimized Claude Code settings
     │   ├── .mcp.json              # MCP configuration
-    │   ├── agents/                # 10+ specialized agents
-    │   ├── commands/              # 10+ development commands
+    │   ├── agents/                # 9 specialized agents
+    │   ├── commands/              # Development commands
     │   └── templates/             # Project templates
-    ├── git/                       # Git configuration (Enhanced)
-    │   ├── configure-git-windows.ps1        # Modular configuration (NEW)
+    ├── git/                       # Git configuration
+    │   ├── configure-git-windows.ps1        # Modular configuration
     │   ├── .gitconfig             # Git settings
     │   └── README.md
-    ├── markdownlint/              # Markdown linting (NEW)
+    ├── markdownlint/              # Markdown linting
     │   ├── configure-markdownlint-windows.ps1
     │   └── .markdownlint.json
     ├── npm/                       # NPM configuration
     │   └── global-packages        # Global package list
-    ├── nuget/                     # NuGet configuration (NEW)
+    ├── nuget/                     # NuGet configuration
     │   ├── configure-nuget-windows.ps1
-    │   └── NuGet.Config           # Package sources including TailorWell
-    ├── pwsh/                      # PowerShell configuration (Enhanced)
-    │   ├── configure-pwsh-windows.ps1       # Modular configuration (NEW)
+    │   └── NuGet.Config           # Package sources
+    ├── pwsh/                      # PowerShell configuration
+    │   ├── configure-pwsh-windows.ps1       # Modular configuration
     │   ├── Microsoft.PowerShell_profile.ps1 # Enhanced profile
     │   ├── .theme.omp.json        # Oh My Posh theme
     │   └── 1p-env-vars.ps1        # 1Password integration
-    ├── vscode/                    # VSCode configuration (Enhanced)
-    │   ├── configure-vscode-windows.ps1     # Modular configuration (NEW)
+    ├── vscode/                    # VSCode configuration
+    │   ├── configure-vscode-windows.ps1     # Modular configuration
     │   ├── settings.json          # VSCode settings
     │   ├── keybindings.json       # Key bindings
     │   ├── extensions             # Extension list
     │   └── README.md
-    ├── windows-terminal/          # Windows Terminal (Enhanced)
-    │   ├── configure-windows-terminal.ps1   # Windows 11 features (NEW)
+    ├── windows-terminal/          # Windows Terminal
+    │   ├── configure-windows-terminal.ps1   # Windows 11 features
     │   ├── settings.json          # Terminal configuration
     │   └── README.md
+    ├── wsl/                       # WSL-specific configuration
+    │   ├── configure-1password-wsl.sh       # 1Password CLI setup for WSL
+    │   └── 1p-env-vars.sh         # Environment variable loading
     ├── visual-studio/             # Visual Studio configuration
     │   └── .vsconfig              # Workload configuration
     └── etc/                       # System configuration
@@ -294,8 +337,8 @@ Each directory contains comprehensive documentation with setup instructions and 
 
 | Directory | Documentation | Key Topics |
 |-----------|---------------|------------|
-| **installs/** | [Installation Scripts README](installs/README.md) | Modular installation, execution order, error handling |
-| **settings/claude/** | [Claude Configuration README](settings/claude/README.md) | **10+ agents, commands, Windows 11 setup** |
+| **installs/** | [Installation Scripts README](installs/README.md) | Modular installation, WSL setup, execution order |
+| **settings/claude/** | [Claude Configuration README](settings/claude/README.md) | **9 agents, commands, WSL integration** |
 | **settings/git/** | [Git Configuration README](settings/git/README.md) | VSCode integration, workflows, modular configuration |
 | **settings/vscode/** | [VSCode Configuration README](settings/vscode/README.md) | **31+ extensions**, modular setup, productivity features |
 | **settings/windows-terminal/** | [Terminal README](settings/windows-terminal/README.md) | **Windows 11 features**, themes, fragments |
@@ -311,16 +354,17 @@ Each directory contains comprehensive documentation with setup instructions and 
 | **PowerShell Version** | Configuration script won't run | Install PowerShell 7+ or run: `pwsh .\configure.ps1` |
 | **Developer Mode** | Symbolic link creation fails | Enable Windows Developer Mode in Settings → For developers |
 | **UAC Elevation** | Scripts fail with permissions error | Click "Yes" when UAC prompt appears (automatic) |
+| **WSL Setup Issues** | WSL installation or configuration fails | Ensure WSL feature is enabled, restart if needed |
 | **Configuration Failures** | Individual tool setup fails | Run specific configuration script: `.\settings\[tool]\configure-*.ps1` |
-| **Windows 11 Features** | Enhanced features not available | Ensure Windows 11 and opt-in during configuration |
 | **1Password Integration** | Environment variables not working | Run: `.\settings\1password\setup-environment-vault.ps1` |
 | **Azure Setup** | Service principal creation fails | Run: `.\settings\az\setup-azure-service-principal.ps1` |
+| **Claude Code WSL Issues** | Claude Code not working in WSL | Check WSL tools installation and configuration |
 
-### 🆕 Advanced Troubleshooting
+### Advanced Troubleshooting
 
-- **Interactive Wizard Issues**: Use `.\configure.ps1 -SkipConfirmation` for automated runs
-- **Modular Configuration**: Run individual scripts in `settings/[tool]/configure-*.ps1`  
-- **Windows 11 Features**: Disable with `.\configure.ps1` and answer "N" to enhanced features
+- **WSL Environment Issues**: Use `wsl --list --verbose` to check WSL status
+- **Tool Permissions**: Verify Claude Code permissions for bash tools
+- **Configuration Validation**: Run individual configuration scripts to isolate issues
 - **Force Reconfiguration**: Use `.\configure.ps1 -Force` to overwrite existing settings
 
 ---
@@ -328,23 +372,21 @@ Each directory contains comprehensive documentation with setup instructions and 
 ## What's New
 
 ### Major Enhancements
-- ✅ **Interactive Configuration Wizard** with step-by-step guidance
-- ✅ **PowerShell 7+ Requirement** with automatic detection
-- ✅ **Windows 11 Enhanced Features** and optimizations
-- ✅ **Modular Configuration Architecture** with individual scripts
-- ✅ **Developer Mode Detection** for admin-free symbolic links
-- ✅ **Claude Code Integration** with 10+ specialized agents
-- ✅ **Azure Service Principal Setup** with 1Password integration
-- ✅ **1Password Environment Vault** for secure credential management
-- ✅ **NuGet Configuration** with TailorWell package sources
-- ✅ **Enhanced Error Handling** and user experience
+- ✅ **Mandatory WSL Integration** with Ubuntu 22.04 and comprehensive development tools
+- ✅ **Streamlined Configuration** with single-command setup for both Windows and WSL
+- ✅ **Claude Code WSL Optimization** with bash shell and development tool integration
+- ✅ **9 Specialized AI Agents** with intelligent delegation and domain expertise
+- ✅ **Enhanced 1Password Integration** for secure credential management across environments
+- ✅ **Simplified Workflow** with mandatory components for optimal development experience
+- ✅ **Cross-Platform Development** with seamless Windows-WSL integration
+- ✅ **Professional Tool Chain** with 30+ development tools and 31+ VSCode extensions
 
 ### Updated Components
-- ⬆️ **install.ps1**: PowerShell 7+ detection and better elevation
-- ⬆️ **configure.ps1**: Complete rewrite with interactive wizard
-- ⬆️ **All settings/**: Individual configuration scripts added
-- ⬆️ **Documentation**: Updated READMEs with new features
+- ⬆️ **install.ps1**: Mandatory WSL setup with comprehensive development environment
+- ⬆️ **configure.ps1**: Streamlined configuration wizard with WSL integration
+- ⬆️ **Claude Code Settings**: WSL-optimized configuration with bash shell
+- ⬆️ **All Documentation**: Updated to reflect simplified, WSL-integrated workflow
 
 ---
 
-**Ready to set up your development environment?** Run `.\install.ps1` followed by `pwsh .\configure.ps1` and follow the interactive wizard!
+**Ready to set up your development environment?** Run `.\install.ps1` followed by `.\configure.ps1` for a complete Windows + WSL development setup with Claude Code AI integration!
