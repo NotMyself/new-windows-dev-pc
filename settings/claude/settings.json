@@ -57,25 +57,6 @@
     }
   },
   "mcpServers": {
-    "git": {
-      "command": "npx",
-      "args": [
-        "@modelcontextprotocol/server-git"
-      ],
-      "env": {
-        "GIT_ALLOWED_REPOS": "C:\\Users\\BobbyJohnson\\src"
-      }
-    },
-    "powershell": {
-      "command": "pwsh",
-      "args": [
-        "-Command",
-        "npx @modelcontextprotocol/server-shell"
-      ],
-      "env": {
-        "ALLOWED_COMMANDS": "git;dotnet;npm;node;code;pwsh;wsl"
-      }
-    },
     "filesystem": {
       "command": "npx",
       "args": [
@@ -84,6 +65,20 @@
       "env": {
         "ALLOWED_DIRECTORIES": "C:\\Users\\bobby\\src"
       }
+    },
+    "memory": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-memory"
+      ]
+    },
+    "sequential-thinking": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ]
     }
   }
 }
