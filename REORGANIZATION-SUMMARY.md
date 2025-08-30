@@ -236,3 +236,36 @@ The reorganized structure directly addresses the original concerns about Azure D
 **Result**: Both Windows and WSL Claude settings files now have identical, working MCP server configurations with zero connection failures.
 
 **Status**: ✅ **COMPLETE** - All MCP connection issues resolved across both environments.
+
+### ✅ WSL Filesystem Configuration Fix (August 30, 2025 - Critical)
+
+**Issue**: WSL Claude Code settings were being placed in Windows filesystem instead of WSL filesystem
+- WSL settings copied to `$env:USERPROFILE\.claude\settings.json` (Windows)
+- Should be in `~/.claude/settings.json` (WSL filesystem)
+- Caused MCP connection errors when running Claude Code in WSL
+
+**Root Cause**: `configure.ps1` script was copying WSL settings to Windows Claude directory instead of WSL home directory
+
+**Resolution**: 
+- **Fixed configure.ps1** to place WSL settings in proper WSL filesystem location
+- **Updated WSL configuration logic** to use `wsl bash -c` commands
+- **Added WSL agents sync** to copy agents directory to WSL filesystem
+- **Maintained backup functionality** for existing WSL settings
+
+**Technical Changes**:
+```powershell
+# Before: Copied to Windows filesystem
+Copy-Item $wslSettingsPath $claudeSettingsPath -Force
+
+# After: Copied to WSL filesystem  
+wsl bash -c "cp /mnt/c/Users/bobby/src/new-windows-dev-pc/settings/claude/settings-wsl.json ~/.claude/settings.json"
+wsl bash -c "mkdir -p ~/.claude/agents && cp -r /mnt/c/Users/bobby/src/new-windows-dev-pc/settings/claude/agents/* ~/.claude/agents/"
+```
+
+**Verification**:
+- ✅ WSL settings now in `/home/bobby/.claude/settings.json`  
+- ✅ WSL agents properly synced to `/home/bobby/.claude/agents/`
+- ✅ Configure script updated to handle WSL filesystem correctly
+- ✅ MCP connection errors in WSL eliminated
+
+**Final Status**: ✅ **COMPLETE** - WSL Claude Code will now use proper filesystem locations and avoid MCP connection failures.

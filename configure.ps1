@@ -238,25 +238,28 @@ try {
     # Set up Claude Code WSL configuration
     Write-Host "🔧 Configuring Claude Code for WSL environment..." -ForegroundColor Yellow
     
-    $claudeSettingsPath = "$env:USERPROFILE\.claude\settings.json"
     $wslSettingsPath = "$PSScriptRoot\settings\claude\settings-wsl.json"
+    $wslAgentsPath = "$PSScriptRoot\settings\claude\agents"
     
     if (Test-Path $wslSettingsPath) {
-        # Create .claude directory if it doesn't exist
-        $claudeDir = Split-Path $claudeSettingsPath
-        if (-not (Test-Path $claudeDir)) {
-            New-Item -ItemType Directory -Path $claudeDir -Force | Out-Null
+        # Create .claude directory in WSL filesystem
+        wsl bash -c "mkdir -p ~/.claude"
+        
+        # Backup existing settings if they exist in WSL
+        $backupResult = wsl bash -c "if [ -f ~/.claude/settings.json ]; then cp ~/.claude/settings.json ~/.claude/settings.json.backup.$(date +%Y%m%d-%H%M%S) && echo 'backed up'; fi"
+        if ($backupResult -eq 'backed up') {
+            Write-Host "  ✓ Backed up existing WSL settings" -ForegroundColor Green
         }
         
-        # Backup existing settings if they exist
-        if (Test-Path $claudeSettingsPath) {
-            $backupPath = "$claudeSettingsPath.backup.$(Get-Date -Format 'yyyyMMdd-HHmmss')"
-            Copy-Item $claudeSettingsPath $backupPath
-            Write-Host "  ✓ Backed up existing settings to: $backupPath" -ForegroundColor Green
+        # Copy WSL settings to WSL filesystem
+        wsl bash -c "cp /mnt/c/Users/bobby/src/new-windows-dev-pc/settings/claude/settings-wsl.json ~/.claude/settings.json"
+        
+        # Copy Claude agents to WSL filesystem
+        if (Test-Path $wslAgentsPath) {
+            wsl bash -c "mkdir -p ~/.claude/agents && cp -r /mnt/c/Users/bobby/src/new-windows-dev-pc/settings/claude/agents/* ~/.claude/agents/"
+            Write-Host "  ✓ Claude agents synced to WSL filesystem" -ForegroundColor Green
         }
         
-        # Copy WSL settings
-        Copy-Item $wslSettingsPath $claudeSettingsPath -Force
         Write-Host "  ✓ Claude Code configured for WSL ($WSLDistro)" -ForegroundColor Green
     } else {
         Write-Error "WSL settings file not found: $wslSettingsPath"
