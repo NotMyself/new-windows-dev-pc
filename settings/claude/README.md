@@ -7,8 +7,8 @@ This directory contains the Claude Code configuration, agents, and documentation
 ```
 settings/claude/
 ├── README.md                           # This file - overview and usage guide
-├── settings.json                       # Main Claude settings
-├── settings-wsl.json                   # WSL-specific settings
+├── settings.json                       # Main Claude settings (Windows)
+├── settings-wsl.json                   # WSL-specific settings (Linux)
 ├── configure-claude-windows-11.ps1     # Configuration script
 ├── agents/                             # Claude Code agents
 │   ├── azure-devops.md                 # Azure DevOps workflows and API integration
@@ -197,9 +197,10 @@ The azure-devops agent provides autonomous sprint board organization:
 ### MCP Servers
 
 Configured Model Context Protocol servers:
-- **git**: Repository operations with allowed directory restrictions
-- **powershell**: Shell command execution with security boundaries  
 - **filesystem**: File operations with directory access controls
+- **memory**: Persistent memory for conversation context
+- **sequential-thinking**: Structured reasoning and problem-solving
+- **context7**: Advanced context management and retrieval
 
 ### Permissions
 
@@ -269,6 +270,6 @@ Claude Code permissions are configured for specific tool access:
 
 ---
 
-**Last Updated**: [Update when modifying this README]
+**Last Updated**: January 2025 - Updated for Claude settings reorganization
 **Maintained By**: Development Team Lead  
 **Security Review**: Quarterly
