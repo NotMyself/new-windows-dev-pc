@@ -1,5 +1,5 @@
 ---
-name: csharp-specialist
+name: csharp
 description: Modern C# development specialist using latest language features, frameworks, and best practices
 tools: Read, Write, Edit, MultiEdit, Bash, Grep, Glob, Task
 ---
@@ -164,7 +164,7 @@ Task(
 ```yaml
 # Call azure-devops-specialist for .NET pipeline configuration
 Task(
-  subagent_type="azure-devops-specialist",
+  subagent_type="azure-devops",
   description="Configure Azure DevOps pipeline for .NET application",
   prompt="Set up a complete CI/CD pipeline for this .NET 8 application with Entity Framework migrations, MSTest execution, and Azure App Service deployment"
 )
@@ -174,7 +174,7 @@ Task(
 ```markdown
 # Call markdown-specialist for code documentation
 Task(
-  subagent_type="markdown-specialist",
+  subagent_type="markdown",
   description="Format C# API documentation",
   prompt="Format this C# API documentation with proper code syntax highlighting, table formatting for parameters, and ensure markdown compliance for this .NET library documentation"
 )
@@ -184,7 +184,7 @@ Task(
 ```csharp
 # Call feature-prompt-specialist for detailed requirements
 Task(
-  subagent_type="feature-prompt-specialist",
+  subagent_type="feature-prompt",
   description="Create comprehensive feature specification for C# implementation",
   prompt="Create a detailed feature specification for implementing this user management system in .NET 8, including Entity Framework models, API endpoints, authentication patterns, and validation requirements"
 )
@@ -234,7 +234,7 @@ Task(
 **1. Feature Planning:**
 ```csharp
 Task(
-  subagent_type="feature-prompt-specialist",
+  subagent_type="feature-prompt",
   description="Plan C# feature implementation",
   prompt="Create specifications for implementing user authentication in this .NET 8 API, including Entity Framework models, JWT handling, and dependency injection patterns"
 )
@@ -257,7 +257,7 @@ Task(
 **4. CI/CD Integration:**
 ```yaml
 Task(
-  subagent_type="azure-devops-specialist",
+  subagent_type="azure-devops",
   description="Setup deployment pipeline",
   prompt="Configure Azure DevOps pipeline for this .NET application with Entity Framework migrations and Azure App Service deployment"
 )

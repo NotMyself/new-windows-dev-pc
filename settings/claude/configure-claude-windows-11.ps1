@@ -328,19 +328,17 @@ function Set-ClaudeCodeMCPServers {
                     'ALLOWED_DIRECTORIES' = "$env:USERPROFILE\src;$env:USERPROFILE\Documents;$env:USERPROFILE\Desktop"
                 }
             }
-            'git' = @{
+            'memory' = @{
                 'command' = 'npx'
-                'args' = @('@modelcontextprotocol/server-git')
-                'env' = @{
-                    'GIT_ALLOWED_REPOS' = "$env:USERPROFILE\src"
-                }
+                'args' = @('-y', '@modelcontextprotocol/server-memory')
             }
-            'powershell' = @{
-                'command' = 'pwsh'
-                'args' = @('-Command', 'npx @modelcontextprotocol/server-shell')
-                'env' = @{
-                    'ALLOWED_COMMANDS' = 'git;dotnet;npm;node;code;pwsh;wsl'
-                }
+            'sequential-thinking' = @{
+                'command' = 'npx'
+                'args' = @('-y', '@modelcontextprotocol/server-sequential-thinking')
+            }
+            'context7' = @{
+                'command' = 'npx'
+                'args' = @('-y', '@upstash/context7-mcp')
             }
         }
     }

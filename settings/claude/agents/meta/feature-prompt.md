@@ -1,5 +1,5 @@
 ---
-name: feature-prompt-specialist
+name: feature-prompt
 description: Specialized agent for creating comprehensive, well-structured feature prompts for software development tasks
 tools: Read, Write, Edit, MultiEdit, Grep, Glob, Task
 ---
@@ -184,7 +184,7 @@ Task(
 ```yaml
 # Call azure-devops-specialist for deployment considerations
 Task(
-  subagent_type="azure-devops-specialist",
+  subagent_type="azure-devops",
   description="Define CI/CD requirements for authentication feature",
   prompt="Specify the Azure DevOps pipeline changes needed for the user authentication feature, including deployment steps, environment configuration, secret management, and testing integration"
 )
@@ -194,7 +194,7 @@ Task(
 ```markdown
 # Call markdown-specialist for final formatting
 Task(
-  subagent_type="markdown-specialist",
+  subagent_type="markdown",
   description="Format feature prompt with proper markdown structure",
   prompt="Format this comprehensive feature prompt document ensuring proper header hierarchy, code syntax highlighting, table formatting, and markdown linting compliance for optimal readability"
 )

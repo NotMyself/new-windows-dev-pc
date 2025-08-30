@@ -1,5 +1,5 @@
 ---
-name: mstest-specialist
+name: mstest
 description: .NET unit testing specialist using MSTest.Sdk and NSubstitute for component testing
 tools: Read, Write, Edit, MultiEdit, Bash, Grep, Glob, Task
 ---
@@ -145,7 +145,7 @@ Task(
 ```yaml
 # Call azure-devops-specialist for test pipeline configuration
 Task(
-  subagent_type="azure-devops-specialist",
+  subagent_type="azure-devops",
   description="Configure test execution in Azure DevOps pipeline",
   prompt="Set up comprehensive test execution in Azure DevOps pipeline including MSTest execution, test coverage reporting, test result publishing, and parallel test execution for this .NET project"
 )
@@ -155,7 +155,7 @@ Task(
 ```markdown
 # Call markdown-specialist for test documentation
 Task(
-  subagent_type="markdown-specialist",
+  subagent_type="markdown",
   description="Format testing strategy documentation",
   prompt="Format this testing strategy guide with proper markdown structure, including code examples, tables for test scenarios, and ensure proper syntax highlighting for MSTest code examples"
 )
@@ -165,7 +165,7 @@ Task(
 ```csharp
 # Call feature-prompt-specialist for complex feature testing
 Task(
-  subagent_type="feature-prompt-specialist",
+  subagent_type="feature-prompt",
   description="Create comprehensive testing specifications for complex feature",
   prompt="Create detailed testing requirements and specifications for this user authentication feature, including test scenarios, edge cases, integration testing requirements, and acceptance criteria for MSTest implementation"
 )
@@ -215,7 +215,7 @@ Task(
 **1. Feature Testing Planning:**
 ```csharp
 Task(
-  subagent_type="feature-prompt-specialist",
+  subagent_type="feature-prompt",
   description="Plan comprehensive testing strategy",
   prompt="Create detailed testing specifications for this authentication feature including unit test scenarios, integration test requirements, edge cases, and acceptance criteria"
 )
@@ -238,7 +238,7 @@ Task(
 **4. Pipeline Integration:**
 ```yaml
 Task(
-  subagent_type="azure-devops-specialist",
+  subagent_type="azure-devops",
   description="Configure test pipeline",
   prompt="Set up MSTest execution, coverage reporting, and test result publishing in the Azure DevOps pipeline for this authentication feature"
 )

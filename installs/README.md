@@ -539,10 +539,11 @@ The `configure.ps1` script creates symbolic links from system locations to repos
 | **PowerShell Profile** | `$PROFILE` | `settings/pwsh/Microsoft.PowerShell_profile.ps1` |
 | **Claude Settings** | `~/.claude/settings.json` | `settings/claude/settings.json` |
 | **Claude Agents** | `~/.claude/agents/` | `settings/claude/agents/` |
-| **Claude Commands** | `~/.claude/commands/` | `settings/claude/commands/` |
 | **System Hosts** | `C:\Windows\System32\drivers\etc\hosts` | `settings/etc/hosts` |
 
 **Multi-Path Support**: The script automatically detects and creates links for multiple installation paths (e.g., Windows Terminal standard vs. Microsoft Store versions).
+
+**Recent Updates**: Claude settings structure has been reorganized - the commands directory has been removed and .mcp.json is no longer used. MCP server configuration is now embedded directly in settings.json files.
 
 ### VSCode Extension Management
 
