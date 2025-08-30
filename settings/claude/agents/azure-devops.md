@@ -107,18 +107,24 @@ You are a specialized agent focused on Azure DevOps operations and modern CI/CD 
 **CRITICAL**: Always authenticate before running Azure DevOps commands. Use this exact workflow:
 
 ```bash
-# Step 1: Retrieve PAT token from 1Password (if needed)
+# Step 1: Retrieve PAT token from 1Password
 export AZURE_DEVOPS_EXT_PAT=$(op item get "Local Environment Variables" --vault Environment --field notesPlain | grep "AZURE_DEVOPS_PAT:" | cut -d: -f2)
 
-# Step 2: Login with the PAT token
-echo "$AZURE_DEVOPS_EXT_PAT" | az devops login --organization https://dev.azure.com/notmyself
-
-# Step 3: Verify authentication
-az devops project list --organization https://dev.azure.com/notmyself --output table
-
-# Step 4: Set default organization (optional but recommended)
+# Step 2: Set default organization and project FIRST
 az devops configure --defaults organization=https://dev.azure.com/notmyself project=NotMyself-Infrastructure
+
+# Step 3: Login with the PAT token (without --organization parameter)
+echo "$AZURE_DEVOPS_EXT_PAT" | az devops login
+
+# Step 4: Verify authentication
+az devops project list --output table
 ```
+
+**IMPORTANT AUTHENTICATION NOTES**:
+- Always set defaults BEFORE login (Step 2 before Step 3)
+- Do NOT use `--organization` parameter with `az devops login`
+- The correct PAT token starts with "3ashbj..." not "CWSKT..."
+- Login will fail silently if done in wrong order
 
 **Authentication Notes**:
 - PAT token is stored in 1Password under "Local Environment Variables" 
@@ -129,16 +135,28 @@ az devops configure --defaults organization=https://dev.azure.com/notmyself proj
 
 **Common Commands After Authentication**:
 ```bash
-# Sprint Board Operations
-az boards query --wiql "SELECT [System.Id], [System.Title], [System.State] FROM WorkItems WHERE [System.TeamProject] = 'NotMyself-Infrastructure'"
-az boards work-item show --id 1 --organization https://dev.azure.com/notmyself
-az boards work-item update --id 1 --state "Doing" --organization https://dev.azure.com/notmyself
+# Sprint Board Operations (defaults are set, no need for --organization/--project)
+az boards query --wiql "SELECT [System.Id], [System.Title], [System.State] FROM WorkItems WHERE [System.TeamProject] = 'NotMyself-Infrastructure'" --output table
+az boards work-item show --id 1 --output table
+az boards work-item update --id 1 --state "Doing"
 
-# Wiki Operations  
-az devops wiki list --project NotMyself-Infrastructure --organization https://dev.azure.com/notmyself
+# Work Item Creation
+az boards work-item create --title "New Task" --type "Task" --description "Task description"
+
+# Wiki Operations (use full parameters for wiki commands)  
+az devops wiki list --project NotMyself-Infrastructure --organization https://dev.azure.com/notmyself --output table
 az devops wiki page create --path "New-Page" --wiki NotMyself-Infrastructure.wiki --project NotMyself-Infrastructure --organization https://dev.azure.com/notmyself --content "Page content"
 az devops wiki page show --path "Page-Name" --wiki NotMyself-Infrastructure.wiki --project NotMyself-Infrastructure --organization https://dev.azure.com/notmyself
+
+# Iteration/Sprint Information
+az boards iteration project list --project NotMyself-Infrastructure --organization https://dev.azure.com/notmyself --output table
 ```
+
+**COMMAND SYNTAX NOTES**:
+- Board commands can use defaults (no --organization/--project needed)
+- Wiki commands still need full --project and --organization parameters
+- Always add --output table for readable results
+- Work item queries use WIQL (Work Item Query Language)
 
 **Troubleshooting**:
 - If `TF401444` error occurs: Re-run the login command
