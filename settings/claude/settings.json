@@ -82,7 +82,7 @@
         "@modelcontextprotocol/server-filesystem"
       ],
       "env": {
-        "ALLOWED_DIRECTORIES": ""
+        "ALLOWED_DIRECTORIES": "C:\\Users\\bobby\\src"
       }
     }
   }
