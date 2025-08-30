@@ -107,8 +107,8 @@ You are a specialized agent focused on Azure DevOps operations and modern CI/CD 
 **CRITICAL**: Always authenticate before running Azure DevOps commands. Use this exact workflow:
 
 ```bash
-# Step 1: Retrieve PAT token from 1Password
-export AZURE_DEVOPS_EXT_PAT=$(op item get "Local Environment Variables" --vault Environment --field notesPlain | grep "AZURE_DEVOPS_PAT:" | cut -d: -f2)
+# Step 1: Retrieve the AZURE_DEVOPS_EXT_PAT token from 1Password (starts with "CWSKT...")
+export AZURE_DEVOPS_EXT_PAT=$(op item get "Local Environment Variables" --vault Environment --field notesPlain | grep "AZURE_DEVOPS_EXT_PAT=" | cut -d= -f2)
 
 # Step 2: Set default organization and project FIRST
 az devops configure --defaults organization=https://dev.azure.com/notmyself project=NotMyself-Infrastructure
@@ -121,10 +121,11 @@ az devops project list --output table
 ```
 
 **IMPORTANT AUTHENTICATION NOTES**:
+- Use `AZURE_DEVOPS_EXT_PAT` (starts with "CWSKT...") for Azure CLI extension
+- Use `AZURE_DEVOPS_PAT` (starts with "3ashbj...") for direct REST API calls
 - Always set defaults BEFORE login (Step 2 before Step 3)
 - Do NOT use `--organization` parameter with `az devops login`
-- The correct PAT token starts with "3ashbj..." not "CWSKT..."
-- Login will fail silently if done in wrong order
+- Some operations may require additional repository permissions beyond work item access
 
 **Authentication Notes**:
 - PAT token is stored in 1Password under "Local Environment Variables" 
@@ -158,10 +159,26 @@ az boards iteration project list --project NotMyself-Infrastructure --organizati
 - Always add --output table for readable results
 - Work item queries use WIQL (Work Item Query Language)
 
+**Alternative: Direct REST API Access**:
+```bash
+# For operations that require higher permissions, use direct REST API with AZURE_DEVOPS_PAT
+export AZURE_DEVOPS_PAT=$(op item get "Local Environment Variables" --vault Environment --field notesPlain | grep "AZURE_DEVOPS_PAT:" | cut -d: -f2)
+
+# Work item queries via REST API
+curl -u ":$AZURE_DEVOPS_PAT" "https://dev.azure.com/notmyself/NotMyself-Infrastructure/_apis/wit/workitems?ids=1,2,3&api-version=6.0"
+
+# Pull request creation (if CLI fails due to permissions)
+curl -u ":$AZURE_DEVOPS_PAT" -H "Content-Type: application/json" \
+     -d '{"sourceRefName":"refs/heads/feature-branch","targetRefName":"refs/heads/main","title":"PR Title","description":"PR Description"}' \
+     "https://dev.azure.com/notmyself/NotMyself-Infrastructure/_apis/git/repositories/repo-id/pullrequests?api-version=6.0"
+```
+
 **Troubleshooting**:
 - If `TF401444` error occurs: Re-run the login command
+- If `TF400813` authorization error: PAT may lack required permissions for that operation
 - If commands fail: Verify organization and project names are correct
 - If 1Password fails: Use the static PAT value from environment variables
+- For repository operations: May need to use REST API with different PAT token
 
 ### YAML Pipeline Patterns
 - Use variables and variable groups for configuration management
