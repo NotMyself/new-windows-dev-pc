@@ -324,3 +324,30 @@ wsl bash -c "mkdir -p ~/.claude/agents && cp -r /mnt/c/Users/bobby/src/new-windo
 - `settings/claude/.mcp.json` - **DELETED** (redundant file)
 
 **Status**: ✅ **COMPLETE** - All MCP connection failures resolved across all configuration sources.
+
+### ✅ Bash Configuration Fix (August 30, 2025 - Final)
+
+**Issue**: Bash startup errors were appearing on every npm command execution:
+```
+/c/Users/bobby/.bashrc: line 1: $'\360\237\224\221': command not found
+/c/Users/bobby/.bashrc: line 2: unexpected EOF while looking for matching `"'
+```
+
+**Root Cause**: Malformed `.bashrc` file with:
+- Line 1: Emoji `🔑` that bash tried to execute as a command
+- Line 2: Incomplete export statement `export OP_SERVICE_ACCOUNT_TOKEN="\` with unterminated string
+
+**Resolution**: Fixed `.bashrc` file content:
+```bash
+# Before (broken):
+🔑 Setting up 1Password CLI in WSL
+export OP_SERVICE_ACCOUNT_TOKEN="\
+
+# After (fixed):
+# 1Password CLI setup for WSL
+# export OP_SERVICE_ACCOUNT_TOKEN="your_token_here"
+```
+
+**Verification**: ✅ All bash commands now execute cleanly without startup errors
+
+**Final Status**: ✅ **REORGANIZATION COMPLETE** - All configuration issues resolved, MCP servers working, bash errors eliminated.
