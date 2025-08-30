@@ -1,5 +1,5 @@
 ---
-name: markdown-specialist
+name: markdown
 description: Creates well-formed, linted markdown documents and reformats existing markdown files following CommonMark and Azure DevOps standards
 tools: Read, Write, Edit, MultiEdit, Bash, Grep, Glob, Task
 ---
@@ -160,7 +160,7 @@ Task(
 ```yaml
 # Call azure-devops-specialist for DevOps content accuracy
 Task(
-  subagent_type="azure-devops-specialist",
+  subagent_type="azure-devops",
   description="Validate Azure DevOps YAML and CLI examples",
   prompt="Review the Azure DevOps pipeline YAML and CLI command examples in this documentation for accuracy and best practices before I format them with proper markdown syntax highlighting"
 )
@@ -170,7 +170,7 @@ Task(
 ```markdown
 # Call feature-prompt-specialist for comprehensive feature docs
 Task(
-  subagent_type="feature-prompt-specialist",
+  subagent_type="feature-prompt",
   description="Structure complex feature documentation",
   prompt="Help organize and structure this complex feature documentation with proper sections, requirements, and technical specifications before I apply markdown formatting and linting"
 )

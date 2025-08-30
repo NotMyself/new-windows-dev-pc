@@ -205,7 +205,7 @@ Processing order (deepest to shallowest):
 ```markdown
 # Always call markdown-specialist for final formatting validation
 Task(
-  subagent_type="markdown-specialist",
+  subagent_type="markdown",
   description="Format and lint all README files processed in bottom-up order with automated summarization",
   prompt="Please analyze and fix any markdown formatting issues across all README files in this project hierarchy that have been updated using bottom-up processing from deepest directories to root with automated content summarization. Ensure consistent formatting, proper cross-linking syntax, accurate parent-child summary relationships, header hierarchy, and linting compliance throughout the entire documentation structure. Pay special attention to summary section formatting and accuracy, and verify that the bottom-up processing order has resulted in consistent, high-quality documentation."
 )
@@ -540,7 +540,7 @@ When working on comprehensive hierarchical README projects with bottom-up proces
 // Context: After completing bottom-up processing of entire README hierarchy
 // Decision: Delegate for comprehensive formatting validation because specialist ensures consistency
 Task(
-  subagent_type="markdown-specialist",
+  subagent_type="markdown",
   description="Format and lint all README files processed in bottom-up order with automated summarization",
   prompt="Please analyze and fix any markdown formatting issues across all README files in this project hierarchy that have been updated using rigorous bottom-up processing from deepest directories to root with automated content summarization. The processing followed strict depth ordering where deepest READMEs were completed first, content was extracted for parent summaries, and parents were updated in dependency order up to the root. Ensure consistent formatting, proper cross-linking syntax that respects parent-child dependencies, accurate summary formatting, header hierarchy, and linting compliance throughout the entire documentation structure with special attention to summary section formatting and accuracy verification."
 )
@@ -551,7 +551,7 @@ Task(
 // Context: Planning complex multi-level documentation structure with bottom-up dependencies
 // Decision: Delegate for strategic organization because specialist understands complex documentation architecture
 Task(
-  subagent_type="feature-prompt-specialist",
+  subagent_type="feature-prompt",
   description="Organize complex multi-level feature documentation with automated summarization and bottom-up dependency management",
   prompt="Help structure this complex feature documentation across a hierarchical README system using bottom-up processing principles with automated content summarization. The system requires processing READMEs from deepest directories to root, extracting key content from completed children for parent summaries, and ensuring proper content distribution where detailed information flows naturally into progressively higher-level summaries. Design content hierarchy that respects dependency flow, supports automated summarization, and creates clear navigation paths that work with bottom-up processing order."
 )
@@ -562,7 +562,7 @@ Task(
 // Context: Technical documentation needs domain-specific accuracy validation after bottom-up processing
 // Decision: Delegate because specialist ensures technical accuracy in extracted content
 Task(
-  subagent_type="csharp-specialist",
+  subagent_type="csharp",
   description="Validate technical accuracy of C# content in bottom-up processed README hierarchy",
   prompt="Review the C# and .NET technical content across this README hierarchy that has been processed using bottom-up order with content extraction and summarization. Validate that code examples, setup instructions, and technical references are accurate in both the detailed child READMEs and the extracted summaries in parent READMEs. Ensure that the automated content extraction preserved technical accuracy and that parent summaries correctly represent the detailed technical information from child documentation."
 )
@@ -598,7 +598,7 @@ Is the task about README processing order or content extraction?
 Use Task tool to call markdown-specialist for hierarchy-wide formatting and summary validation:
 
 Task tool parameters:
-- subagent_type: "markdown-specialist"  
+- subagent_type: "markdown"  
 - description: "Format and lint all README files in bottom-up processed documentation hierarchy with automated summarization"
 - prompt: "Please analyze and fix any markdown formatting issues across all README files in the project documentation hierarchy that have been processed using rigorous bottom-up order with automated content summarization (deepest nested directories first, working systematically up to root). This includes verifying that parent-child link relationships are accurate, cross-references work correctly, extracted summary content is properly formatted, and the content flow from detailed child documentation to automatically generated parent summaries is consistent. The processing followed strict depth ordering where directory depths were calculated, README files were sorted deepest-first, and processing occurred in dependency order with content extraction and parent integration. Check for proper header hierarchy, consistent list formatting, table alignment, code block syntax, cross-linking syntax that respects dependency order, summary section formatting, spacing consistency, and markdown linting compliance. Apply CommonMark and GitHub Flavored Markdown standards throughout the entire documentation structure, paying special attention to the accuracy and formatting of automatically generated summary sections and validation that bottom-up processing resulted in consistent, high-quality documentation."
 ```

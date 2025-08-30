@@ -1,5 +1,5 @@
 ---
-name: azure-devops-specialist
+name: azure-devops
 description: Azure DevOps specialist for pipelines, builds, releases, and project management operations
 tools: Bash, WebSearch, Read, Write, Edit, MultiEdit, Grep, Glob, Task
 ---
@@ -162,7 +162,7 @@ Task(
 ```yaml
 # Call feature-prompt-specialist for complex DevOps features
 Task(
-  subagent_type="feature-prompt-specialist",
+  subagent_type="feature-prompt",
   description="Document complex Azure DevOps feature implementation",
   prompt="Create a comprehensive feature specification for implementing this multi-environment deployment pipeline with approval gates, including technical requirements, acceptance criteria, and implementation guidance"
 )
@@ -182,7 +182,7 @@ Task(
 ```yaml
 # Call markdown-specialist for Azure DevOps wiki content
 Task(
-  subagent_type="markdown-specialist",
+  subagent_type="markdown",
   description="Format Azure DevOps wiki documentation",
   prompt="Format this Azure DevOps pipeline documentation ensuring proper markdown syntax, code highlighting, table formatting, and linting compliance for optimal wiki rendering"
 )
