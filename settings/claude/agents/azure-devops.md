@@ -97,10 +97,53 @@ You are a specialized agent focused on Azure DevOps operations and modern CI/CD 
 
 ### Azure CLI Best Practices
 - Always use latest Azure CLI and Azure DevOps extension
-- Implement proper authentication with service principals
+- Implement proper authentication with service principals or Personal Access Tokens
 - Use JSON output format for programmatic processing
 - Include error handling and retry logic for reliability
 - Log operations appropriately for audit and troubleshooting
+
+### Azure DevOps Authentication Workflow
+
+**CRITICAL**: Always authenticate before running Azure DevOps commands. Use this exact workflow:
+
+```bash
+# Step 1: Retrieve PAT token from 1Password (if needed)
+export AZURE_DEVOPS_EXT_PAT=$(op item get "Local Environment Variables" --vault Environment --field notesPlain | grep "AZURE_DEVOPS_PAT:" | cut -d: -f2)
+
+# Step 2: Login with the PAT token
+echo "$AZURE_DEVOPS_EXT_PAT" | az devops login --organization https://dev.azure.com/notmyself
+
+# Step 3: Verify authentication
+az devops project list --organization https://dev.azure.com/notmyself --output table
+
+# Step 4: Set default organization (optional but recommended)
+az devops configure --defaults organization=https://dev.azure.com/notmyself project=NotMyself-Infrastructure
+```
+
+**Authentication Notes**:
+- PAT token is stored in 1Password under "Local Environment Variables" 
+- Organization URL: `https://dev.azure.com/notmyself`
+- Primary project: `NotMyself-Infrastructure`
+- Alternative project: `NotMyself-Products`
+- Always test authentication with a simple `az devops project list` command
+
+**Common Commands After Authentication**:
+```bash
+# Sprint Board Operations
+az boards query --wiql "SELECT [System.Id], [System.Title], [System.State] FROM WorkItems WHERE [System.TeamProject] = 'NotMyself-Infrastructure'"
+az boards work-item show --id 1 --organization https://dev.azure.com/notmyself
+az boards work-item update --id 1 --state "Doing" --organization https://dev.azure.com/notmyself
+
+# Wiki Operations  
+az devops wiki list --project NotMyself-Infrastructure --organization https://dev.azure.com/notmyself
+az devops wiki page create --path "New-Page" --wiki NotMyself-Infrastructure.wiki --project NotMyself-Infrastructure --organization https://dev.azure.com/notmyself --content "Page content"
+az devops wiki page show --path "Page-Name" --wiki NotMyself-Infrastructure.wiki --project NotMyself-Infrastructure --organization https://dev.azure.com/notmyself
+```
+
+**Troubleshooting**:
+- If `TF401444` error occurs: Re-run the login command
+- If commands fail: Verify organization and project names are correct
+- If 1Password fails: Use the static PAT value from environment variables
 
 ### YAML Pipeline Patterns
 - Use variables and variable groups for configuration management
